@@ -40,8 +40,7 @@ iptables -A FORWARD -p tcp -d 10.0.11.20 --dport 22112 -j ACCEPT
 
 # MASQUERADE RULE
 iptables -A POSTROUTING  -t nat -o eth0 -j MASQUERADE 
+
 sudo invoke-rc.d netfilter-persistent save
 
-# REBOOT TO CONFIRM SAVED CHANGES TO IPTABLES
-sudo reboot now
 
