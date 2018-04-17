@@ -10,6 +10,7 @@ sudo sysctl -p /etc/sysctl.conf
 echo iptables-persistent iptables-persistent/autosave_v4 boolean true | sudo debconf-set-selections
 echo iptables-persistent iptables-persistent/autosave_v6 boolean true | sudo debconf-set-selections
 sudo apt-get -y install iptables-persistent
+sudo service netfilter-persistent start
 
 ## ADDING HARD-CODED PREDEFINED/FIXED IP ASSIGNMENTS
 ##
@@ -39,3 +40,8 @@ iptables -A FORWARD -p tcp -d 10.0.11.20 --dport 22112 -j ACCEPT
 
 # MASQUERADE RULE
 iptables -A POSTROUTING  -t nat -o eth0 -j MASQUERADE 
+sudo invoke-rc.d netfilter-persistent save
+
+# REBOOT TO CONFIRM SAVED CHANGES TO IPTABLES
+sudo reboot now
+
