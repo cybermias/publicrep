@@ -8,7 +8,7 @@ sudo sysctl -p /etc/sysctl.conf
 
 # AUTOMATIC SILENT INSTALL FOR iptables-persistent (NORMAL INSTALL REQUIRES USER INTERVENTION)_
 echo iptables-persistent iptables-persistent/autosave_v4 boolean true | sudo debconf-set-selections
-echo iptables-persistent iptables-persistent/autosave_v4 boolean true | sudo debconf-set-selections
+echo iptables-persistent iptables-persistent/autosave_v6 boolean true | sudo debconf-set-selections
 sudo apt-get -y install iptables-persistent
 
 ## ADDING HARD-CODED PREDEFINED/FIXED IP ASSIGNMENTS
