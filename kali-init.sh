@@ -6,7 +6,7 @@ sudo apt install -y xrdp tigervnc-standalone-server
 
 cd /etc/xrdp
 
-cat <<EOF | sudo patch -p1 -f -s
+cat <<EOF | sudo patch -p1 -f --ignore-whitespace
 --- a/xrdp.ini     2017-06-19 14:05:53.290490260 +0900
 +++ b/xrdp.ini  2017-06-19 14:11:17.788557402 +0900
 @@ -147,15 +147,6 @@ tcutils=true
