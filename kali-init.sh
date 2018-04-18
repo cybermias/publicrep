@@ -41,7 +41,6 @@ cat <<EOF | sudo patch -p1 -f -s
  [console]
  name=console
  lib=libvnc.so
-
 EOF
 
 sudo systemctl enable xrdp
