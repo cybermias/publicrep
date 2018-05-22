@@ -52,7 +52,7 @@ Invoke-Command -ScriptBlock $sb -ComputerName $env:COMPUTERNAME -Credential $cre
 #"Install each Chocolatey Package"
 $chocoPackages.Split(";") | ForEach {
     $command = "cinst " + $_ + " -y -force"
-    $command | Out-File $LogFile -Append
+    $command | Out-Null
     $sb = [scriptblock]::Create("$command")
 
     # Use the current user profile
