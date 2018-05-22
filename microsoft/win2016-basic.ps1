@@ -67,6 +67,12 @@ $cn.Delete("User", $userName)
 # Delete the artifactInstaller user profile
 gwmi win32_userprofile | where { $_.LocalPath -like "*$userName*" } | foreach { $_.Delete() }
 
+
+# Remove Autostart for ServerManager
+Get-Item HKCU:\Software\Microsoft\ServerManager
+Get-ItemProperty -Path HKCU:\Software\Microsoft\ServerManager -Name DoNotOpenServerManagerAtLogon | select DoNotOpenServerManagerAtLogon | Ft –AutoSize
+New-ItemProperty -Path HKCU:\Software\Microsoft\ServerManager -Name DoNotOpenServerManagerAtLogon -PropertyType DWORD -Value "0x1" –Force
+
 # Disable LocalAccountTokenFilterPolicy
 $LocalAccToken2 = Get-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\"
 If($LocalAccToken2.GetValue("LocalAccountTokenFilterPolicy") -eq 1) {
