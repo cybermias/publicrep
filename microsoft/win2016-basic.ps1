@@ -8,8 +8,8 @@ If(!($LocalAccToken1.GetValue("LocalAccountTokenFilterPolicy") -eq 1)) {
     -Name 'LocalAccountTokenFilterPolicy' -Value '1' -PropertyType 'DWord' -Force
 }
 
-#New-Item "c:\jdchoco" -type Directory -force | Out-Null
-#$LogFile = "c:\jdchoco\JDScript.log"
+New-Item "c:\jdchoco" -type Directory -force | Out-Null
+$LogFile = "c:\jdchoco\JDScript.log"
 #$chocoPackages | Out-File $LogFile -Append
 
 # Get username/password & machine name
@@ -52,7 +52,7 @@ Invoke-Command -ScriptBlock $sb -ComputerName $env:COMPUTERNAME -Credential $cre
 #"Install each Chocolatey Package"
 $chocoPackages.Split(";") | ForEach {
     $command = "cinst " + $_ + " -y -force"
-    $command | Out-Null
+    $command | Out-File $LogFile -Append
     $sb = [scriptblock]::Create("$command")
 
     # Use the current user profile
