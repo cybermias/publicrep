@@ -15,11 +15,12 @@ sudo dpkg -i openvpn-as-2.5.2-Ubuntu16.amd_64.deb
 #update the password for user openvpn
 sudo echo "openvpn:$userPassword"|sudo chpasswd
 
+sudo apt-get install sqlite3
+
 #configure server network settings
 #PUBLICIP=$(curl -s ipecho.net/plain)
 PUBLIC_IP=`wget http://ipecho.net/plain -O - -q ; echo`
 echo $PUBLICIP > /opt/publicip
-sudo apt-get install sqlite3
 sudo sqlite3 "/usr/local/openvpn_as/etc/db/config.db" "update config set value='$PUBLICIP' where name='host.name';"
 sudo sqlite3 "/usr/local/openvpn_as/etc/db/config.db" "update config set value='$vnet' where name='vpn.server.routing.private_network.0';"
 sudo sqlite3 "/usr/local/openvpn_as/etc/db/config.db" "update config set value='false' where name='vpn.client.routing.reroute_gw';"
