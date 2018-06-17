@@ -17,6 +17,7 @@ sudo echo "openvpn:$userPassword"|sudo chpasswd
 
 #configure server network settings
 PUBLICIP=$(curl -s ipecho.net/plain)
+echo $PUBLICIP > /opt/publicip
 sudo apt-get install sqlite3
 sudo sqlite3 "/usr/local/openvpn_as/etc/db/config.db" "update config set value='$PUBLICIP' where name='host.name';"
 sudo sqlite3 "/usr/local/openvpn_as/etc/db/config.db" "update config set value='$vnet' where name='vpn.server.routing.private_network.0';"
