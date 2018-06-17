@@ -17,6 +17,8 @@ sudo echo "openvpn:$userPassword"|sudo chpasswd
 
 sudo apt-get install sqlite3
 
+sudo echo '127.0.0.1 CMTS-OVPN' >> /etc/hosts
+
 #configure server network settings
 PUBLICIP=$(curl -s ipecho.net/plain)
 while [ ! $PUBLICIP ]; do
