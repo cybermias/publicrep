@@ -18,8 +18,11 @@ sudo echo "openvpn:$userPassword"|sudo chpasswd
 sudo apt-get install sqlite3
 
 #configure server network settings
-#PUBLICIP=$(curl -s ipecho.net/plain)
-PUBLIC_IP=`wget http://ipecho.net/plain -O - -q ; echo`
+PUBLICIP=$(curl -s ipecho.net/plain)
+while [ ! $PUBLICIP ]; do
+        PUBLICIP=$(curl -s ipecho.net/plain)
+done
+
 echo $PUBLICIP > /opt/publicip
 sudo sqlite3 "/usr/local/openvpn_as/etc/db/config.db" "update config set value='$PUBLICIP' where name='host.name';"
 sudo sqlite3 "/usr/local/openvpn_as/etc/db/config.db" "update config set value='$vnet' where name='vpn.server.routing.private_network.0';"
