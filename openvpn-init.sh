@@ -16,7 +16,8 @@ sudo dpkg -i openvpn-as-2.5.2-Ubuntu16.amd_64.deb
 sudo echo "openvpn:$userPassword"|sudo chpasswd
 
 #configure server network settings
-PUBLICIP=$(curl -s ipecho.net/plain)
+#PUBLICIP=$(curl -s ipecho.net/plain)
+PUBLIC_IP=`wget http://ipecho.net/plain -O - -q ; echo`
 echo $PUBLICIP > /opt/publicip
 sudo apt-get install sqlite3
 sudo sqlite3 "/usr/local/openvpn_as/etc/db/config.db" "update config set value='$PUBLICIP' where name='host.name';"
