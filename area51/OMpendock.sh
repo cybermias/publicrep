@@ -32,8 +32,33 @@ echo "deb [arch=amd64] https://download.docker.com/linux/debian stretch stable" 
 sudo apt-get -y update
 sudo apt-get -y install docker-ce
  
+# Exposing bWAPP
+ iptables -t nat -A  DOCKER -p tcp --dport 82 -j DNAT --to-destination 172.17.0.2:80
+ iptables -t nat -A POSTROUTING -j MASQUERADE -p tcp --source 172.17.0.2 --destination 172.17.0.2 --dport 80
+
+# Exposing WebGoat
+ iptables -t nat -A  DOCKER -p tcp --dport 81 -j DNAT --to-destination 172.17.0.3:8080
+ iptables -t nat -A POSTROUTING -j MASQUERADE -p tcp --source 172.17.0.3 --destination 172.17.0.3 --dport 8080
+
+# Exposing DVWA
+ iptables -t nat -A  DOCKER -p tcp --dport 80 -j DNAT --to-destination 172.17.0.4:80
+ iptables -t nat -A POSTROUTING -j MASQUERADE -p tcp --source 172.17.0.4 --destination 172.17.0.4 --dport 80
+
+# Add the docker commands to Boot time
+sudo echo '#!/bin/bash' > /etc/init.d/pentestStart.sh
+sudo echo 'sudo ./pentestlab.sh start bwapp && sudo ./pentestlab.sh start webgoat8 && sudo ./pentestlab.sh start dvwa' >> /etc/init.d/pentestStart.sh
+sudo echo 'iptables -t nat -A  DOCKER -p tcp --dport 82 -j DNAT --to-destination 172.17.0.2:80' >> /etc/init.d/pentestStart.sh
+sudo echo 'iptables -t nat -A POSTROUTING -j MASQUERADE -p tcp --source 172.17.0.2 --destination 172.17.0.2 --dport 80' >> /etc/init.d/pentestStart.sh
+sudo echo 'iptables -t nat -A  DOCKER -p tcp --dport 81 -j DNAT --to-destination 172.17.0.3:8080' >> /etc/init.d/pentestStart.sh
+sudo echo 'iptables -t nat -A POSTROUTING -j MASQUERADE -p tcp --source 172.17.0.3 --destination 172.17.0.3 --dport 8080' >> /etc/init.d/pentestStart.sh
+sudo echo 'iptables -t nat -A  DOCKER -p tcp --dport 80 -j DNAT --to-destination 172.17.0.4:80' >> /etc/init.d/pentestStart.sh
+sudo echo 'iptables -t nat -A POSTROUTING -j MASQUERADE -p tcp --source 172.17.0.4 --destination 172.17.0.4 --dport 80' >> /etc/init.d/pentestStart.sh
+chmod ugo+x /etc/init.d/pentestStart.sh
+sudo update-rc.d pentestStart.sh defaults
+
 # Start Docker on boot
 sudo systemctl enable docker
 cd /opt/pentestlab
 
 sudo ./pentestlab.sh start bwapp && sudo ./pentestlab.sh start webgoat8 && sudo ./pentestlab.sh start dvwa
+
