@@ -46,7 +46,7 @@ sudo apt-get -y install docker-ce
 
 # Add the docker commands to Boot time
 sudo echo '#!/bin/bash' > /etc/init.d/pentestStart.sh
-sudo echo 'sudo ./pentestlab.sh start bwapp && sudo ./pentestlab.sh start webgoat8 && sudo ./pentestlab.sh start dvwa' >> /etc/init.d/pentestStart.sh
+sudo echo 'sudo /opt/pentestlab/pentestlab.sh start bwapp && sudo /opt/pentestlab/pentestlab.sh start webgoat8 && sudo /opt/pentestlab/pentestlab.sh start dvwa' >> /etc/init.d/pentestStart.sh
 sudo echo 'iptables -t nat -A  DOCKER -p tcp --dport 82 -j DNAT --to-destination 172.17.0.2:80' >> /etc/init.d/pentestStart.sh
 sudo echo 'iptables -t nat -A POSTROUTING -j MASQUERADE -p tcp --source 172.17.0.2 --destination 172.17.0.2 --dport 80' >> /etc/init.d/pentestStart.sh
 sudo echo 'iptables -t nat -A  DOCKER -p tcp --dport 81 -j DNAT --to-destination 172.17.0.3:8080' >> /etc/init.d/pentestStart.sh
