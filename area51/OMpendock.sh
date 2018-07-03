@@ -1,7 +1,7 @@
 #!/bin/bash
-cd ~/Desktop
+
 sudo apt-get -y install git
-git clone https://github.com/eystsen/pentestlab
+git clone https://github.com/eystsen/pentestlab /opt/pentestlab
 cd pentestlab/
  
 if fuser /var/lib/dpkg/lock > /dev/null 2>&1
@@ -34,6 +34,6 @@ sudo apt-get -y install docker-ce
  
 # Start Docker on boot
 sudo systemctl enable docker
-cd Desktop/pentestlab/
+cd /opt/pentestlab
 
 sudo ./pentestlab.sh start bwapp && sudo ./pentestlab.sh start webgoat8 && sudo ./pentestlab.sh start dvwa
