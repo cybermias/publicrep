@@ -53,6 +53,7 @@ iptables -t nat -A  DOCKER -p tcp --dport 81 -j DNAT --to-destination 172.17.0.3
 iptables -t nat -A POSTROUTING -j MASQUERADE -p tcp --source 172.17.0.3 --destination 172.17.0.3 --dport 8080
 iptables -t nat -A  DOCKER -p tcp --dport 80 -j DNAT --to-destination 172.17.0.4:80
 iptables -t nat -A POSTROUTING -j MASQUERADE -p tcp --source 172.17.0.4 --destination 172.17.0.4 --dport 80
+docker run --rm -it -d -p 8080:80 cyrivs89/web-dvws
 EOF
 chmod ugo+x /etc/init.d/pentestStart.sh
 sudo update-rc.d pentestStart.sh defaults
@@ -62,3 +63,4 @@ sudo systemctl enable docker
 cd /opt/pentestlab
 
 sudo ./pentestlab.sh start bwapp && sudo ./pentestlab.sh start webgoat8 && sudo ./pentestlab.sh start dvwa
+docker run --rm -it -d -p 8080:80 cyrivs89/web-dvws
