@@ -10,8 +10,7 @@ then
         echo "Just wait a minute or two and try again"
         exit
 fi
- 
- 
+  
 sudo apt-get update
  
 # apt-get dependencies
@@ -45,24 +44,16 @@ sudo apt-get -y install docker-ce
  iptables -t nat -A POSTROUTING -j MASQUERADE -p tcp --source 172.17.0.4 --destination 172.17.0.4 --dport 80
 
 # Add the docker commands to Boot time
-cat <<EOF > /etc/init.d/penTEST.sh
+cat <<EOF > /etc/init.d/pentestStart.sh
 #!/bin/bash
 sudo /opt/pentestlab/pentestlab.sh start bwapp && sudo /opt/pentestlab/pentestlab.sh start webgoat8 && sudo /opt/pentestlab/pentestlab.sh start dvwa
 iptables -t nat -A  DOCKER -p tcp --dport 82 -j DNAT --to-destination 172.17.0.2:80
 iptables -t nat -A POSTROUTING -j MASQUERADE -p tcp --source 172.17.0.2 --destination 172.17.0.2 --dport 80
 iptables -t nat -A  DOCKER -p tcp --dport 81 -j DNAT --to-destination 172.17.0.3:8080
 iptables -t nat -A POSTROUTING -j MASQUERADE -p tcp --source 172.17.0.3 --destination 172.17.0.3 --dport 8080
+iptables -t nat -A  DOCKER -p tcp --dport 80 -j DNAT --to-destination 172.17.0.4:80
+iptables -t nat -A POSTROUTING -j MASQUERADE -p tcp --source 172.17.0.4 --destination 172.17.0.4 --dport 80
 EOF
-chmod ugo+x /etc/init.d/penTEST.sh
-
-sudo echo '#!/bin/bash' > /etc/init.d/pentestStart.sh
-sudo echo 'sudo /opt/pentestlab/pentestlab.sh start bwapp && sudo /opt/pentestlab/pentestlab.sh start webgoat8 && sudo /opt/pentestlab/pentestlab.sh start dvwa' >> /etc/init.d/pentestStart.sh
-sudo echo 'iptables -t nat -A  DOCKER -p tcp --dport 82 -j DNAT --to-destination 172.17.0.2:80' >> /etc/init.d/pentestStart.sh
-sudo echo 'iptables -t nat -A POSTROUTING -j MASQUERADE -p tcp --source 172.17.0.2 --destination 172.17.0.2 --dport 80' >> /etc/init.d/pentestStart.sh
-sudo echo 'iptables -t nat -A  DOCKER -p tcp --dport 81 -j DNAT --to-destination 172.17.0.3:8080' >> /etc/init.d/pentestStart.sh
-sudo echo 'iptables -t nat -A POSTROUTING -j MASQUERADE -p tcp --source 172.17.0.3 --destination 172.17.0.3 --dport 8080' >> /etc/init.d/pentestStart.sh
-sudo echo 'iptables -t nat -A  DOCKER -p tcp --dport 80 -j DNAT --to-destination 172.17.0.4:80' >> /etc/init.d/pentestStart.sh
-sudo echo 'iptables -t nat -A POSTROUTING -j MASQUERADE -p tcp --source 172.17.0.4 --destination 172.17.0.4 --dport 80' >> /etc/init.d/pentestStart.sh
 chmod ugo+x /etc/init.d/pentestStart.sh
 sudo update-rc.d pentestStart.sh defaults
 
@@ -71,4 +62,4 @@ sudo systemctl enable docker
 cd /opt/pentestlab
 
 sudo ./pentestlab.sh start bwapp && sudo ./pentestlab.sh start webgoat8 && sudo ./pentestlab.sh start dvwa
-
+docker run --name hacklab --net=host --privileged -it ston3o/docker-hacklab zsh
