@@ -63,4 +63,4 @@ sudo systemctl enable docker
 cd /opt/pentestlab
 
 sudo ./pentestlab.sh start bwapp && sudo ./pentestlab.sh start webgoat8 && sudo ./pentestlab.sh start dvwa
-docker run --rm -it -d -p 8080:80 cyrivs89/web-dvws
+#docker run --rm -it -d -p 8080:80 cyrivs89/web-dvws
