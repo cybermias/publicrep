@@ -24,11 +24,20 @@ cd phpvirtualbox
 cp config.php-example config.php
 
 cd /opt
-wget https://az792536.vo.msecnd.net/vms/VMBuild_20150916/VirtualBox/IE10/IE10.Win7.VirtualBox.zip
-unzip IE10.Win7.VirtualBox.zip
-rm IE10.Win7.VirtualBox.zip
+#wget https://az792536.vo.msecnd.net/vms/VMBuild_20150916/VirtualBox/IE10/IE10.Win7.VirtualBox.zip
+#unzip IE10.Win7.VirtualBox.zip
+#rm IE10.Win7.VirtualBox.zip
+#mkdir --parents ~/vm/ie10-windows7 && cd ~/vm/ie10-windows7
+#wget --continue --input-file https://github.com/magnetikonline/linuxmicrosoftievirtualmachines/raw/master/vmarchiveset/ie10-windows7.txt
+#unzip IE10.Win7.VirtualBox.zip
+#rm IE10.Win7.VirtualBox.zip
 
-vboxmanage import "IE10 - Win7.ova" --vsys 0 --memory 2048 --cpus 1 --vmname "win7ie10"
-vboxmanage modifyvm "win7ie10" --vrde on --vrdeport 3389 --vrdeaddress 0.0.0.0
+vagrant init nwedlake/Windows7x64
+vagrant up
+
+
+#vboxmanage import "IE10 - Win7.ova" --vsys 0 --memory 2048 --cpus 1 --vmname "win7ie10"
+#vboxmanage modifyvm "win7ie10" --vrde on --vrdeport 3389 --vrdeaddress 0.0.0.0
+#vboxmanage snapshot "win7ie10" take "Initial-Install-win7ie10"
 
 shutdown -r 1
