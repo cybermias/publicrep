@@ -11,8 +11,8 @@ base_network = "172.16.31"
     win7ie.vm.box = "nwedlake/Windows7x64"
     win7ie.vm.network :private_network, ip: "#{base_network}.10"
     win7ie.vm.network "forwarded_port", guest: 22, host: 2222, host_ip: "0.0.0.0"
-    win7ie.customize ["modifyvm", :id, "--vrde", "on"]
-    win7ie.customize ["modifyvm", :id, "--vrdeport", "3389"] # change here to a free port
+    #win7ie.customize ["modifyvm", :id, "--vrde", "on"]
+    #win7ie.customize ["modifyvm", :id, "--vrdeport", "3389"] # change here to a free port
     
     #win7ie.vm.provision "ansible" do |ansible|
     #  ansible.playbook = "kali-playbook.yml"
