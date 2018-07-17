@@ -14,10 +14,13 @@ sudo apt-get -y install apache2 libapache2-mod-php7.0 libapr1 libaprutil1 libapr
 
 vboxmanage setproperty websrvauthlibrary null
 
-echo "VBOXWEB_HOST=0.0.0.0" >> /etc/default/virtualbox
-echo "VBOXWEB_USER=cmtsadmin" >> /etc/default/virtualbox
+systemctl enable vboxweb.service
+sed -i '/--background/s/$/ --host 0.0.0.0/' /lib/systemd/system/vboxweb.service
+systemctl daemon-reload
 
 cd /var/www/html
 git clone https://github.com/phpvirtualbox/phpvirtualbox.git
+cd phpvirtualbox
+cp config.php-example config.php
 
 shutdown -r 1
