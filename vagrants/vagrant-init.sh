@@ -1,7 +1,6 @@
 #!/bin/sh
-
-wget https://releases.hashicorp.com/vagrant/2.1.2/vagrant_2.1.2_i686.deb
-sudo apt install ./vagrant_2.1.2_i686.deb
+wget https://releases.hashicorp.com/vagrant/2.1.2/vagrant_2.1.2_x86_64.deb
+sudo apt install ./vagrant_2.1.2_x86_64.deb
 
 #apt-add-repository ppa:ansible/ansible
 #apt-get update && sudo apt-get install -y ansible
@@ -10,10 +9,13 @@ sudo apt-get install -y ruby-dev zlib1g-dev liblzma-dev build-essential patch vi
 
 sudo apt-get -y install apache2 libapache2-mod-php7.0 libapr1 libaprutil1 libaprutil1-dbd-sqlite3 libaprutil1-ldap libapr1 php7.0-common php7.0-mysql php7.0-soap php-pear wget
 
-echo "sudo vboxwebsrv -b --host 0.0.0.0 --port 18083" > /etc/rc.local
-echo "exit 0" >> /etc/rc.local
+#echo "sudo vboxwebsrv -b --host 0.0.0.0 --port 18083" > /etc/rc.local
+#echo "exit 0" >> /etc/rc.local
 
 vboxmanage setproperty websrvauthlibrary null
+
+echo "VBOXWEB_HOST=0.0.0.0" > /etc/default/virtualbox
+echo "VBOXWEB_USER=cmtsadmin" > /etc/default/virtualbox
 
 cd /var/www/html
 git clone https://github.com/phpvirtualbox/phpvirtualbox.git
