@@ -17,4 +17,5 @@ base_network = "172.16.31"
     #kali_mini.vm.provision "ansible" do |ansible|
     #  ansible.playbook = "kali-playbook.yml"
     #end
+  end
 end
