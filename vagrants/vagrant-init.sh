@@ -14,8 +14,8 @@ sudo apt-get -y install apache2 libapache2-mod-php7.0 libapr1 libaprutil1 libapr
 
 vboxmanage setproperty websrvauthlibrary null
 
-echo "VBOXWEB_HOST=0.0.0.0" > /etc/default/virtualbox
-echo "VBOXWEB_USER=cmtsadmin" > /etc/default/virtualbox
+echo "VBOXWEB_HOST=0.0.0.0" >> /etc/default/virtualbox
+echo "VBOXWEB_USER=cmtsadmin" >> /etc/default/virtualbox
 
 cd /var/www/html
 git clone https://github.com/phpvirtualbox/phpvirtualbox.git
