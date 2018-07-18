@@ -1,21 +1,34 @@
 Vagrant.configure(2) do |config|
 
 base_network = "172.16.31"
-
+  
+  config.vm.box = "galeksandrp/ie8-win7-packer"
+  config.vm.network :private_network, ip: "#{base_network}.10"
+  config.vm.network "forwarded_port", guest: 22, host: 2222, host_ip: "0.0.0.0"
+  config.vm.provider "virtualbox" do |vb|    
+     # Display the VirtualBox GUI when booting the machine
+     #vb.gui = true
+     vb.customize ["modifyvm", :id, "--name", "win7ie8packer"]
+     vb.customize ["modifyvm", :id, "--vrde", "on"]
+     vb.customize ["modifyvm", :id, "--vrdeport", "3389"]
+     # Customize the amount of memory on the VM:
+     vb.memory = "2048"
+   end
+end  
   # win7ie
-  config.vm.define :win7ie do |win7ie|
+  #config.vm.define :win7ie do |win7ie|
     # uncomment the lines below for a gui kali
     #config.vm.provider "virtualbox" do |v|
     #  v.gui = true
     #end
-    win7ie.vm.box = "nwedlake/Windows7x64"
-    win7ie.vm.network :private_network, ip: "#{base_network}.10"
-    win7ie.vm.network "forwarded_port", guest: 22, host: 2222, host_ip: "0.0.0.0"
+    #win7ie.vm.box = "nwedlake/Windows7x64"
+   # win7ie.vm.network :private_network, ip: "#{base_network}.10"
+   # win7ie.vm.network "forwarded_port", guest: 22, host: 2222, host_ip: "0.0.0.0"
     #win7ie.customize ["modifyvm", :id, "--vrde", "on"]
     #win7ie.customize ["modifyvm", :id, "--vrdeport", "3389"] # change here to a free port
     
     #win7ie.vm.provision "ansible" do |ansible|
     #  ansible.playbook = "kali-playbook.yml"
     #end
-  end
-end
+ # end
+#end
