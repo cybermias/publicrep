@@ -12,13 +12,13 @@ base_network = "172.16.31"
      # Display the VirtualBox GUI when booting the machine
      #vb.gui = true
      vb.customize ["modifyvm", :id, "--name", "win7ie8"]
+     vb.customize ["modifyvm", :id, "--memory", "2048"]
      vb.customize ["modifyvm", :id, "--vrde", "on"]
      vb.customize ["modifyvm", :id, "--vrdeaddress", "0.0.0.0"] 
      vb.customize ["modifyvm", :id, "--vrdeport", "3389"]
      
      # Customize the amount of memory on the VM:
-     vb.memory = "2048"
-   end
+  end
 end  
   # win7ie
   #config.vm.define :win7ie do |win7ie|
