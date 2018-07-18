@@ -34,14 +34,14 @@ cd /opt
 #unzip IE10.Win7.VirtualBox.zip
 #rm IE10.Win7.VirtualBox.zip
 
-wget https://raw.githubusercontent.com/cybermias/publicrep/master/vagrants/Vagrantfile
-vagrant up
+sudo wget https://raw.githubusercontent.com/cybermias/publicrep/master/vagrants/Vagrantfile
+sudo vagrant up
 
-echo "cd /opt && vagrant up" > /etc/rc.local
+echo "cd /opt && sudo vagrant up" > /etc/rc.local
 echo "exit 0" >> /etc/rc.local
 
 #vboxmanage import "IE10 - Win7.ova" --vsys 0 --memory 2048 --cpus 1 --vmname "win7ie10"
 #vboxmanage modifyvm "win7ie10" --vrde on --vrdeport 3389 --vrdeaddress 0.0.0.0
 #vboxmanage snapshot "win7ie10" take "Initial-Install-win7ie10"
 
-shutdown -r 1
+#shutdown -r 1
