@@ -1,9 +1,9 @@
 #!/bin/sh
-#wget https://releases.hashicorp.com/vagrant/2.1.2/vagrant_2.1.2_x86_64.deb
-#sudo apt install ./vagrant_2.1.2_x86_64.deb
 
-#apt-add-repository ppa:ansible/ansible
-apt-get update && sudo apt-get install -y vagrant
+wget https://releases.hashicorp.com/vagrant/2.1.2/vagrant_2.1.2_x86_64.deb
+sudo apt install ./vagrant_2.1.2_x86_64.deb
+
+apt-get update 
 
 sudo apt-get install -y ruby-dev zlib1g-dev liblzma-dev build-essential patch virtualbox ruby-bundler imagemagick libmagickwand-dev libpq-dev libcurl4-openssl-dev libxml2-dev
 echo virtualbox-ext-pack virtualbox-ext-pack/license select true | sudo debconf-set-selections
