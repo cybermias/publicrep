@@ -6,6 +6,7 @@ base_network = "172.16.31"
   config.vm.network :private_network, ip: "#{base_network}.10"
   config.vm.network "forwarded_port", guest: 22, host: 2222, host_ip: "0.0.0.0"
   config.vm.provider "virtualbox" do |vb|    
+  config.vm.boot_timeout = 150
      # Display the VirtualBox GUI when booting the machine
      #vb.gui = true
      vb.customize ["modifyvm", :id, "--name", "win7ie8"]
