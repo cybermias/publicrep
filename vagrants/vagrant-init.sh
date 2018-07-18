@@ -3,6 +3,9 @@
 wget https://releases.hashicorp.com/vagrant/2.1.2/vagrant_2.1.2_x86_64.deb
 sudo apt install ./vagrant_2.1.2_x86_64.deb
 
+# Someone said this helps performance, oh well..
+vagrant plugin install vagrant-cachier
+
 apt-get update 
 
 sudo apt-get install -y ruby-dev zlib1g-dev liblzma-dev build-essential patch virtualbox ruby-bundler imagemagick libmagickwand-dev libpq-dev libcurl4-openssl-dev libxml2-dev
@@ -23,7 +26,6 @@ git clone https://github.com/phpvirtualbox/phpvirtualbox.git
 cd phpvirtualbox
 cp config.php-example config.php
 
-cd /opt
 #wget https://az792536.vo.msecnd.net/vms/VMBuild_20150916/VirtualBox/IE10/IE10.Win7.VirtualBox.zip
 #unzip IE10.Win7.VirtualBox.zip
 #rm IE10.Win7.VirtualBox.zip
@@ -32,18 +34,18 @@ cd /opt
 #unzip IE10.Win7.VirtualBox.zip
 #rm IE10.Win7.VirtualBox.zip
 
-echo "cd /opt && sudo vagrant up" > /etc/rc.local
+### Acquire win7ie8 Vagrant Box
+mkdir /opt/win7ie8
+cd /opt/win7ie8
+echo "#!/bin/sh -e" > /etc/rc.local
+echo "cd /opt && sudo vagrant up &" >> /etc/rc.local
 echo "exit 0" >> /etc/rc.local
 
 sudo wget https://raw.githubusercontent.com/cybermias/publicrep/master/vagrants/Vagrantfile
-sudo wget https://raw.githubusercontent.com/cybermias/publicrep/master/vagrants/InstallChocolatey.ps1
-sudo wget https://raw.githubusercontent.com/cybermias/publicrep/master/vagrants/chocospawn.cmd
+#sudo wget https://raw.githubusercontent.com/cybermias/publicrep/master/vagrants/InstallChocolatey.ps1
+#sudo wget https://raw.githubusercontent.com/cybermias/publicrep/master/vagrants/chocospawn.cmd
 sudo vagrant up
 
-
-
-#vboxmanage import "IE10 - Win7.ova" --vsys 0 --memory 2048 --cpus 1 --vmname "win7ie10"
-#vboxmanage modifyvm "win7ie10" --vrde on --vrdeport 3389 --vrdeaddress 0.0.0.0
-#vboxmanage snapshot "win7ie10" take "Initial-Install-win7ie10"
+vboxmanage snapshot "win7ie8" take "Initial-Install-win7ie8"
 
 shutdown -r 1
