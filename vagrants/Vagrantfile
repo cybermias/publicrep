@@ -12,7 +12,7 @@ base_network = "172.16.31"
      #vb.gui = true
      vb.customize ["modifyvm", :id, "--name", "win7ie8"]
      vb.customize ["modifyvm", :id, "--vrde", "on"]
-     vb.customize ["modifyvm", :id, "--vrdehost", "0.0.0.0"] 
+     vb.customize ["modifyvm", :id, "--vrdeaddress", "0.0.0.0"] 
      vb.customize ["modifyvm", :id, "--vrdeport", "3389"]
      
      # Customize the amount of memory on the VM:
