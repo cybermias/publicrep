@@ -19,6 +19,7 @@ vboxmanage setproperty websrvauthlibrary null
 systemctl enable vboxweb.service
 sed -i '/--background/s/$/ --host 0.0.0.0/' /lib/systemd/system/vboxweb.service
 systemctl daemon-reload
+systemctl vboxweb.service start
 
 cd /var/www/html
 git clone https://github.com/phpvirtualbox/phpvirtualbox.git
@@ -34,14 +35,16 @@ cd /opt
 #unzip IE10.Win7.VirtualBox.zip
 #rm IE10.Win7.VirtualBox.zip
 
+echo "cd /opt && sudo vagrant up" > /etc/rc.local
+echo "exit 0" >> /etc/rc.local
+
 sudo wget https://raw.githubusercontent.com/cybermias/publicrep/master/vagrants/Vagrantfile
 sudo vagrant up
 
-echo "cd /opt && sudo vagrant up" > /etc/rc.local
-echo "exit 0" >> /etc/rc.local
+
 
 #vboxmanage import "IE10 - Win7.ova" --vsys 0 --memory 2048 --cpus 1 --vmname "win7ie10"
 #vboxmanage modifyvm "win7ie10" --vrde on --vrdeport 3389 --vrdeaddress 0.0.0.0
 #vboxmanage snapshot "win7ie10" take "Initial-Install-win7ie10"
 
-#shutdown -r 1
+shutdown -r 1
