@@ -6,17 +6,19 @@ base_network = "172.16.31"
   config.vm.network :private_network, ip: "#{base_network}.10"
   config.vm.network "forwarded_port", guest: 22, host: 2222, host_ip: "0.0.0.0"
   config.vm.boot_timeout = 150
+  config.vm.provision :shell, path: "chocospawn.cmd"  
   config.vm.provider "virtualbox" do |vb|    
      # Display the VirtualBox GUI when booting the machine
      #vb.gui = true
      vb.customize ["modifyvm", :id, "--name", "win7ie8"]
      vb.customize ["modifyvm", :id, "--vrde", "on"]
+     vb.customize ["modifyvm", :id, "--vrdehost", "0.0.0.0"] 
      vb.customize ["modifyvm", :id, "--vrdeport", "3389"]
-     vb.customize ["modifyvm", :id, "--vrdehost", "0.0.0.0"]
+     
      # Customize the amount of memory on the VM:
      vb.memory = "2048"
    end
-  config.vm.provision :shell, path: "chocospawn.cmd"
+
 end  
   # win7ie
   #config.vm.define :win7ie do |win7ie|
