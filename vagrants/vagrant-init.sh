@@ -38,7 +38,7 @@ cp config.php-example config.php
 mkdir /opt/win7ie8
 cd /opt/win7ie8
 echo "#!/bin/sh -e" > /etc/rc.local
-echo "cd /opt && sudo vagrant up &" >> /etc/rc.local
+echo "cd /opt && su -c 'vagrant up' &" >> /etc/rc.local
 echo "exit 0" >> /etc/rc.local
 
 sudo wget https://raw.githubusercontent.com/cybermias/publicrep/master/vagrants/Vagrantfile
