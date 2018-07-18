@@ -39,6 +39,8 @@ echo "cd /opt && sudo vagrant up" > /etc/rc.local
 echo "exit 0" >> /etc/rc.local
 
 sudo wget https://raw.githubusercontent.com/cybermias/publicrep/master/vagrants/Vagrantfile
+sudo wget https://raw.githubusercontent.com/cybermias/publicrep/master/vagrants/InstallChocolatey.ps1
+sudo wget https://raw.githubusercontent.com/cybermias/publicrep/master/vagrants/chocospawn.cmd
 sudo vagrant up
 
 
