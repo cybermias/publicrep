@@ -5,6 +5,7 @@ sudo apt install ./vagrant_2.1.2_x86_64.deb
 
 # Someone said this helps performance, oh well..
 vagrant plugin install vagrant-cachier
+vagrant plugin install vagrant-vbguest
 
 apt-get update 
 
