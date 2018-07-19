@@ -9,7 +9,7 @@ vagrant plugin install vagrant-vbguest
 
 apt-get update 
 
-sudo apt-get install -y htop iotop ruby-dev zlib1g-dev liblzma-dev build-essential patch virtualbox ruby-bundler imagemagick libmagickwand-dev libpq-dev libcurl4-openssl-dev libxml2-dev
+sudo apt-get install -y htop sysstat ruby-dev zlib1g-dev liblzma-dev build-essential patch virtualbox ruby-bundler imagemagick libmagickwand-dev libpq-dev libcurl4-openssl-dev libxml2-dev
 echo virtualbox-ext-pack virtualbox-ext-pack/license select true | sudo debconf-set-selections
 sudo apt-get install -y virtualbox-ext-pack
 
@@ -36,6 +36,9 @@ cp config.php-example config.php
 #rm IE10.Win7.VirtualBox.zip
 
 ### Fix VirtualBox on temporary SSD
+
+mkdir /mnt/vagrant
+export VAGRANT_HOME=/mnt/vagrant
 mkdir /mnt/vboxtemp
 vboxmanage setproperty machinefolder /mnt/vboxtemp
 
@@ -43,16 +46,16 @@ vboxmanage setproperty machinefolder /mnt/vboxtemp
 ### Acquire win7ie8 Vagrant Box
 mkdir /mnt/win7ie8
 cd /mnt/win7ie8
-#echo "#!/bin/sh -e" > /etc/rc.local
-#echo "cd /mnt/win7ie8 && sudo vagrant up &" >> /etc/rc.local
-#echo "exit 0" >> /etc/rc.local
+echo "#!/bin/sh -e" > /etc/rc.local
+echo "cd /mnt/win7ie8 && sudo vagrant up &" >> /etc/rc.local
+echo "exit 0" >> /etc/rc.local
+echo "VAGRANT_HOME=/mnt/vagrant" >> ~/.bashrc
 
-#sudo wget https://raw.githubusercontent.com/cybermias/publicrep/master/vagrants/Vagrantfile
+sudo wget https://raw.githubusercontent.com/cybermias/publicrep/master/vagrants/Vagrantfile
 #sudo wget https://raw.githubusercontent.com/cybermias/publicrep/master/vagrants/InstallChocolatey.ps1
 #sudo wget https://raw.githubusercontent.com/cybermias/publicrep/master/vagrants/chocospawn.cmd
-#sudo vagrant up
+sudo vagrant up
 
-#vboxmanage snapshot "win7ie8" take "Initial-Install-win7ie8"
-
+vboxmanage snapshot "win7ie8" take "Initial-Install-win7ie8"
 
 shutdown -r 1
