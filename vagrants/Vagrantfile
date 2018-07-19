@@ -1,3 +1,5 @@
+$enable_serial_logging = false
+
 Vagrant.configure(2) do |config|
 
 base_network = "172.16.31"
@@ -21,6 +23,7 @@ base_network = "172.16.31"
      
      # Customize the amount of memory on the VM:
   end
+
 end  
   # win7ie
   #config.vm.define :win7ie do |win7ie|
