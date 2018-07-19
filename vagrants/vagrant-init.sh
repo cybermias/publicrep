@@ -35,18 +35,24 @@ cp config.php-example config.php
 #unzip IE10.Win7.VirtualBox.zip
 #rm IE10.Win7.VirtualBox.zip
 
+### Fix VirtualBox on temporary SSD
+mkdir /mnt/vboxtemp
+vboxmanage setproperty machinefolder /mnt/vboxtemp
+
+
 ### Acquire win7ie8 Vagrant Box
 mkdir /mnt/win7ie8
 cd /mnt/win7ie8
-echo "#!/bin/sh -e" > /etc/rc.local
-echo "cd /mnt/win7ie8 && sudo vagrant up &" >> /etc/rc.local
-echo "exit 0" >> /etc/rc.local
+#echo "#!/bin/sh -e" > /etc/rc.local
+#echo "cd /mnt/win7ie8 && sudo vagrant up &" >> /etc/rc.local
+#echo "exit 0" >> /etc/rc.local
 
-sudo wget https://raw.githubusercontent.com/cybermias/publicrep/master/vagrants/Vagrantfile
+#sudo wget https://raw.githubusercontent.com/cybermias/publicrep/master/vagrants/Vagrantfile
 #sudo wget https://raw.githubusercontent.com/cybermias/publicrep/master/vagrants/InstallChocolatey.ps1
 #sudo wget https://raw.githubusercontent.com/cybermias/publicrep/master/vagrants/chocospawn.cmd
-sudo vagrant up
+#sudo vagrant up
 
-vboxmanage snapshot "win7ie8" take "Initial-Install-win7ie8"
+#vboxmanage snapshot "win7ie8" take "Initial-Install-win7ie8"
+
 
 shutdown -r 1
