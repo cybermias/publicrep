@@ -9,7 +9,7 @@ vagrant plugin install vagrant-vbguest
 
 apt-get update 
 
-sudo apt-get install -y ruby-dev zlib1g-dev liblzma-dev build-essential patch virtualbox ruby-bundler imagemagick libmagickwand-dev libpq-dev libcurl4-openssl-dev libxml2-dev
+sudo apt-get install -y htop ruby-dev zlib1g-dev liblzma-dev build-essential patch virtualbox ruby-bundler imagemagick libmagickwand-dev libpq-dev libcurl4-openssl-dev libxml2-dev
 echo virtualbox-ext-pack virtualbox-ext-pack/license select true | sudo debconf-set-selections
 sudo apt-get install -y virtualbox-ext-pack
 
