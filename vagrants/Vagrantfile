@@ -4,26 +4,28 @@ Vagrant.configure(2) do |config|
 
 base_network = "172.16.31"
   
-  config.vm.box = "mrh1997/vanilla-win7-32bit"
-  config.vm.network :private_network, ip: "#{base_network}.10"
-  config.vm.network "forwarded_port", guest: 22, host: 2222, host_ip: "0.0.0.0"
-  config.vm.boot_timeout = 150
-  #config.vm.provision :shell, path: "chocospawn.cmd"
-  config.vm.provision :shell, inline: "slmgr /ato"  
-  config.vm.provision :shell, inline: 'powershell -NoProfile -ExecutionPolicy unrestricted -Command "iex ((new-object net.webclient).DownloadString(\'https://chocolatey.org/install.ps1\'))"'
-  config.vm.provision :shell, inline: 'choco install --force -y wget notepadplusplus nmap'
-  config.vm.provider "virtualbox" do |vb|    
-     # Display the VirtualBox GUI when booting the machine
-     #vb.gui = true
-     vb.customize ["modifyvm", :id, "--name", "win7ie8"]
-     vb.customize ["modifyvm", :id, "--memory", "2048"]
-     vb.customize ["modifyvm", :id, "--vrde", "on"]
-     vb.customize ["modifyvm", :id, "--vrdeaddress", "0.0.0.0"] 
-     vb.customize ["modifyvm", :id, "--vrdeport", "3389"]
-     
-     # Customize the amount of memory on the VM:
-  end
+  config.vm.define :win7ie8 do |win7ie8|
+    win7ie8.vm.box = "mrh1997/vanilla-win7-32bit"
+    win7ie8.vm.network :private_network, ip: "#{base_network}.10"
+    win7ie8.vm.network "forwarded_port", guest: 22, host: 2222, host_ip: "0.0.0.0"
+    win7ie8.vm.boot_timeout = 150
+    #win7ie8.vm.provision :shell, path: "chocospawn.cmd"
+    win7ie8.vm.provision :shell, inline: "slmgr /ato"  
+    win7ie8.vm.provision :shell, inline: 'powershell -NoProfile -ExecutionPolicy unrestricted -Command "iex ((new-object net.webclient).DownloadString(\'https://chocolatey.org/install.ps1\'))"'
+    win7ie8.vm.provision :shell, inline: 'choco install --force -y wget notepadplusplus nmap'
+    win7ie8.vm.provider "virtualbox" do |vb|    
+       # Display the VirtualBox GUI when booting the machine
+       #vb.gui = true
+       vb.customize ["modifyvm", :id, "--name", "win7ie8"]
+       vb.customize ["modifyvm", :id, "--memory", "2048"]
+       vb.customize ["modifyvm", :id, "--cpus", "2"]
+       vb.customize ["modifyvm", :id, "--vrde", "on"]
+       vb.customize ["modifyvm", :id, "--vrdeaddress", "0.0.0.0"] 
+       vb.customize ["modifyvm", :id, "--vrdeport", "3389"]
 
+       # Customize the amount of memory on the VM:
+    end
+  end
 end  
   # win7ie
   #config.vm.define :win7ie do |win7ie|
