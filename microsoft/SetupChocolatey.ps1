@@ -1,8 +1,15 @@
 param([Parameter(Mandatory=$true)][string]$chocoPackages)
 cls
 
-#New-Item "c:\jdchoco" -type Directory -force | Out-Null
-#$LogFile = "c:\jdchoco\JDScript.log"
+# Enable LocalAccountTokenFilterPolicy
+$LocalAccToken1 = Get-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\"
+If(!($LocalAccToken1.GetValue("LocalAccountTokenFilterPolicy") -eq 1)) {
+    New-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' `
+    -Name 'LocalAccountTokenFilterPolicy' -Value '1' -PropertyType 'DWord' -Force
+}
+
+New-Item "c:\jdchoco" -type Directory -force | Out-Null
+$LogFile = "c:\jdchoco\JDScript.log"
 #$chocoPackages | Out-File $LogFile -Append
 
 # Get username/password & machine name
