@@ -16,9 +16,11 @@ guacd-port:     4822
 
 auth-provider: net.sourceforge.guacamole.net.basic.BasicFileAuthenticationProvider
 basic-user-mapping: /etc/guacamole/user-mapping.xml
+
 EOF
 
 cat <<EOF > /etc/guacamole/user-mapping.xml
+<?xml version="1.0" encoding="UTF-8"?>
 <user-mapping>
     <authorize username="cmtsadmin" password="cmtsAdmin12#">
         <connection name="WIN-DESKTOP">
@@ -41,6 +43,7 @@ cat <<EOF > /etc/guacamole/user-mapping.xml
         </connection>
 
     </authorize>
+
 </user-mapping>
 EOF
 
