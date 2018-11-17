@@ -50,5 +50,7 @@ EOF
 service guacd restart
 service nginx restart
 service tomcat restart
+sleep 5s
+service guacd restart
 
 
