@@ -39,9 +39,9 @@ cat <<EOF > /etc/guacamole/user-mapping.xml
             <param name="hostname">10.200.11.200</param>
             <param name="port">3389</param>
             <param name="username">atlasAdmin</param>
-            <param name="password">cmtsAdmin12#$</param>
+            <!-- param name="password">cmtsAdmin12#$</param> -->
             <param name="ignore-cert">true</param>
-            <param name="security">any</param>
+            <param name="security">tls</param>
         </connection>
 
         <!-- Third authorized connection -->
