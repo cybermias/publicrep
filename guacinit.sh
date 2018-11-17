@@ -47,6 +47,8 @@ cat <<EOF > /etc/guacamole/user-mapping.xml
 </user-mapping>
 EOF
 
-service tomcat restart
-service nginx restart
 service guacd restart
+service nginx restart
+service tomcat restart
+
+
