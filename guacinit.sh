@@ -49,7 +49,7 @@ cat <<EOF > /etc/guacamole/user-mapping.xml
             <protocol>ssh</protocol>
             <param name="hostname">10.200.1.10</param>
             <param name="port">22</param>
-            <param name="username">root</param>
+            <param name="username">cmtsadmin</param>
             <param name="password">cmtsAdmin12#</param>
         </connection>
 
