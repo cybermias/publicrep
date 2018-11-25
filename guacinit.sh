@@ -45,14 +45,21 @@ cat <<EOF > /etc/guacamole/user-mapping.xml
         </connection>
 
         <!-- Third authorized connection -->
-        <connection name="KALI">
+        <connection name="KALI (SSH)">
             <protocol>ssh</protocol>
             <param name="hostname">10.200.1.10</param>
             <param name="port">22</param>
-            <param name="username">cmtsadmin</param>
+            <param name="username">root</param>
             <param name="password">cmtsAdmin12#</param>
         </connection>
 
+        <!-- Fourth authorized connection -->
+        <connection name="KALI (VNC)">
+            <protocol>vnc</protocol>
+            <param name="hostname">10.200.1.10</param>
+            <param name="port">5901</param>
+            <param name="password">123456</param>
+        </connection>
     </authorize>
 
 </user-mapping>
