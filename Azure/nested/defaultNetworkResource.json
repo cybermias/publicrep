@@ -1,0 +1,95 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"location": {
+			"type": "string",
+			"defaultValue": "[resourceGroup().location]"
+		},
+		"publicipDef": {
+			"type": "array",
+			"defaultValue": [
+			]
+		},
+		"publicipapi": {
+			"type": "string",
+			"defaultValue": "2018-08-01"
+		},
+		"vnetDef": {
+			"type": "object",
+			"defaultValue": {
+			}
+		},
+		"subnetsDef": {
+			"type": "array",
+			"defaultValue": [
+			]
+		},
+		"dashboardParam": {
+			"type": "object"
+		}
+	},
+	"variables": {
+	},
+	"resources": [
+	{
+		"comments": "Creation of ALL Public IP addresses",
+		"type": "Microsoft.Network/publicIPAddresses",
+		"name": "[parameters('publicipDef')[copyIndex()].internalname]",
+		"apiVersion": "[parameters('publicipapi')]",
+		"location": "[parameters('location')]",
+		"tags": {
+			"UserName": "[parameters('dashboardParam').UserName]",
+			"OwnerUserID": "[parameters('dashboardParam').OwnerUserID]",
+			"GroupName": "[parameters('dashboardParam').GroupName]",
+			"MemberOfGroupID": "[parameters('dashboardParam').MemberOfGroupID]",
+			"Deployment": "[parameters('dashboardParam').Deployment]",
+			"LabID": "[parameters('dashboardParam').LabID]",
+			"ResType": "[parameters('publicipDef')[copyIndex()].externalname]"
+		},
+		"properties": {
+			"publicIPAllocationMethod": "[parameters('publicipDef')[copyIndex()].allocation]"
+		},
+		"copy": {
+			"name": "IPAddresses",
+			"count": "[length(parameters('publicipDef'))]"			
+		}
+	},
+	{
+		"comments": "VNET and SUBNETS Creation Resource",
+		"name": "[parameters('vnetDef').name]",
+		"type": "Microsoft.Network/virtualNetworks",
+		"location": "[parameters('location')]",
+		"apiVersion": "[parameters('vnetDef').apiVnet]",
+		"tags": {
+			"UserName": "[parameters('dashboardParam').UserName]",
+			"OwnerUserID": "[parameters('dashboardParam').OwnerUserID]",
+			"GroupName": "[parameters('dashboardParam').GroupName]",
+			"MemberOfGroupID": "[parameters('dashboardParam').MemberOfGroupID]",
+			"Deployment": "[parameters('dashboardParam').Deployment]",
+			"LabID": "[parameters('dashboardParam').LabID]"
+		},
+		"properties": {
+			"addressSpace": {
+				"addressPrefixes": [
+					"[concat(parameters('vnetDef').prefix,parameters('vnetDef').suffix)]"
+				]
+			},
+			"copy": [
+			{
+				"name": "Subnets",
+				"count": "[length(parameters('subnetsDef'))]",
+				"input": {
+					"name": "[parameters('subnetsDef')[copyIndex('Subnets')].name]",
+					"properties": {
+						"addressPrefix": "[concat(parameters('vnetDef').prefix,parameters('subnetsDef')[copyIndex('Subnets')].addressPrefix)]"
+					}
+				}
+			}
+			]
+		}
+	}		
+	],
+	"outputs": {
+	}
+}
