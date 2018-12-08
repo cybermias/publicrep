@@ -32,6 +32,13 @@ cat <<EOF > /etc/guacamole/user-mapping.xml
             <param name="ignore-cert">true</param>
             <param name="security">any</param>
         </connection>
+ 
+        <connection name="WIN-DESKTOP (VNC)">
+            <protocol>rdp</protocol>
+            <param name="hostname">10.200.11.10</param>
+            <param name="port">5901</param>
+            <param name="password">Q123456</param>
+        </connection>
 
         <!-- Second authorized connection -->
         <connection name="WIN-DOMAIN">
