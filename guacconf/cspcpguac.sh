@@ -35,7 +35,7 @@ cat <<EOF > /etc/guacamole/user-mapping.xml
             <protocol>rdp</protocol>
             <param name="hostname">10.200.11.200</param>
             <param name="port">3389</param>
-            <param name="username">cmtsadmin</param>
+            <param name="username">atlasadmin</param>
             <param name="password">cmtsAdmin12#</param>
             <param name="ignore-cert">true</param>
             <param name="security">any</param>
