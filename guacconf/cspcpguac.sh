@@ -1,5 +1,7 @@
 #!/bin/bash
 
+vnet=$1
+
 cat <<EOF > /etc/guacamole/guacamole.properties
 # Hostname and port of guacamole proxy
 guacd-hostname: localhost
@@ -22,7 +24,7 @@ cat <<EOF > /etc/guacamole/user-mapping.xml
     <authorize username="cmtsadmin" password="cmtsAdmin12#">
         <connection name="WIN-DESKTOP">
             <protocol>rdp</protocol>
-            <param name="hostname">10.200.1.10</param>
+            <param name="hostname">$vnet.1.10</param>
             <param name="port">3389</param>
             <param name="username">cmtsadmin</param>
             <param name="password">cmtsAdmin12#</param>
@@ -33,7 +35,7 @@ cat <<EOF > /etc/guacamole/user-mapping.xml
         <!-- Third authorized connection -->
         <connection name="DC2016-SERVER">
             <protocol>rdp</protocol>
-            <param name="hostname">10.200.11.200</param>
+            <param name="hostname">$vnet.11.200</param>
             <param name="port">3389</param>
             <param name="username">atlasadmin</param>
             <param name="password">cmtsAdmin12#</param>
