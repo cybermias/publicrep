@@ -1,6 +1,11 @@
 #!/bin/bash
 
-vnet=$1
+if [ $# -eq 0 ]
+    then
+        vnet="10.200"
+else
+    vnet=$1
+fi
 
 cat <<EOF > /etc/guacamole/guacamole.properties
 # Hostname and port of guacamole proxy
