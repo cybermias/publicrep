@@ -38,7 +38,7 @@ cat <<EOF > /etc/guacamole/user-mapping.xml
         </connection>
         <!-- Second authorized connection -->
         <connection name="UNIX-Machine">
-            <protocol>rdp</protocol>
+            <protocol>ssh</protocol>
             <param name="hostname">$vnet.11.200</param>
             <param name="port">22</param>
             <param name="username">cmtsadmin</param>
