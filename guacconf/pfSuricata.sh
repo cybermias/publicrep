@@ -37,16 +37,14 @@ cat <<EOF > /etc/guacamole/user-mapping.xml
             <param name="security">any</param>
         </connection>
         <!-- Second authorized connection -->
-        <!-- Third authorized connection -->
-        <connection name="DC2016-SERVER">
+        <connection name="UNIX-Machine">
             <protocol>rdp</protocol>
             <param name="hostname">$vnet.11.200</param>
-            <param name="port">3389</param>
-            <param name="username">atlasadmin</param>
+            <param name="port">22</param>
+            <param name="username">cmtsadmin</param>
             <param name="password">cmtsAdmin12#</param>
-            <param name="ignore-cert">true</param>
-            <param name="security">any</param>
         </connection>
+        <!-- Third authorized connection -->
     </authorize>
 </user-mapping>
 EOF
