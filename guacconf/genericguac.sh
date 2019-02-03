@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Generic Guacamole configuration file. Requires parameters OR WILL FAIL
+# Parameters come in triplets (vmName vmIP vmProt). Allowed protocols are RDP, SSH or VNC.
+
 args=("$@")
 
 cat <<EOF > /etc/guacamole/guacamole.properties
