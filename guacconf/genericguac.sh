@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Generic Guacamole configuration file. Requires parameters OR WILL FAIL
-# Parameters come in triplets (vmName vmIP vmProt). Allowed protocols are RDP, SSH or VNC.
+# Parameters come in triplets (vmName vmIP vmProt). Allowed protocols are RDP, SSH, VNC and SSHctf [no user/pass].
 
 args=("$@")
 
@@ -58,6 +58,16 @@ EOF
             <param name="port">22</param>
             <param name="username">cmtsadmin</param>
             <param name="password">cmtsAdmin12#</param>
+        </connection>
+EOF
+	;;
+
+	'SSHctf')
+		cat <<EOF >> /etc/guacamole/user-mapping.xml
+        <connection name="$vmName (SSH)">
+            <protocol>ssh</protocol>
+            <param name="hostname">$vmIP</param>
+            <param name="port">22</param>
         </connection>
 EOF
 	;;
