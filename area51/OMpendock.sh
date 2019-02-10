@@ -22,11 +22,13 @@ sudo apt-get install \
      software-properties-common
  
 # Add gpg key for docker
-curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
  
 echo Adding to sources.list
-echo "deb [arch=amd64] https://download.docker.com/linux/debian stretch stable" | sudo tee --append /etc/apt/sources.list > /dev/null
- 
+sudo add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
  
 sudo apt-get -y update
 sudo apt-get -y install docker-ce
