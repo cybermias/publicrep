@@ -48,6 +48,7 @@ sudo apt-get -y install docker-ce
 # Add the docker commands to Boot time
 cat <<EOF > /etc/init.d/pentestStart.sh
 #!/bin/bash
+PATH=/usr/sbin:/sbin:/usr/bin:/bin
 sudo /opt/pentestlab/pentestlab.sh start bwapp && sudo /opt/pentestlab/pentestlab.sh start webgoat8 && sudo /opt/pentestlab/pentestlab.sh start dvwa
 iptables -t nat -A  DOCKER -p tcp --dport 82 -j DNAT --to-destination 172.17.0.2:80
 iptables -t nat -A POSTROUTING -j MASQUERADE -p tcp --source 172.17.0.2 --destination 172.17.0.2 --dport 80
@@ -58,7 +59,14 @@ iptables -t nat -A POSTROUTING -j MASQUERADE -p tcp --source 172.17.0.4 --destin
 docker run --rm -it -d -p 8080:80 cyrivs89/web-dvws
 EOF
 chmod ugo+x /etc/init.d/pentestStart.sh
-sudo update-rc.d pentestStart.sh defaults
+
+# Normal update-rc.d doesn't work anymore, especially not on 18.04. Reverting to Crontab
+#sudo update-rc.d pentestStart.sh defaults
+
+sudo crontab -l > ptcron
+sudo echo "@reboot /etc/init.d/pentestStart.sh" >> ptcron
+sudo crontab ptcron
+sudo rm ptcron
 
 # Start Docker on boot
 sudo systemctl enable docker
