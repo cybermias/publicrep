@@ -38,7 +38,7 @@ for ((i=0; i<$#; i+=3))
 	case "$vmProt" in
 	'RDP')
 		cat <<EOF >> /etc/guacamole/user-mapping.xml
-        <connection name="$vmName">
+        <connection name="$vmName[RDP]">
             <protocol>rdp</protocol>
             <param name="hostname">$vmIP</param>
             <param name="port">3389</param>
@@ -52,7 +52,7 @@ EOF
 
 	'RDPatlas')
 		cat <<EOF >> /etc/guacamole/user-mapping.xml
-        <connection name="$vmName">
+        <connection name="$vmName[RDP]">
             <protocol>rdp</protocol>
             <param name="hostname">$vmIP</param>
             <param name="port">3389</param>
@@ -66,7 +66,7 @@ EOF
 
 	'SSH')
 		cat <<EOF >> /etc/guacamole/user-mapping.xml
-        <connection name="$vmName (SSH)">
+        <connection name="$vmName[SSH]">
             <protocol>ssh</protocol>
             <param name="hostname">$vmIP</param>
             <param name="port">22</param>
@@ -78,7 +78,7 @@ EOF
 
 	'SSHctf')
 		cat <<EOF >> /etc/guacamole/user-mapping.xml
-        <connection name="$vmName (SSH)">
+        <connection name="$vmName[SSH]">
             <protocol>ssh</protocol>
             <param name="hostname">$vmIP</param>
             <param name="port">22</param>
@@ -88,14 +88,14 @@ EOF
 
 	'VNC')
 		cat <<EOF >> /etc/guacamole/user-mapping.xml
-        <connection name="$vmName (SSH)">
+        <connection name="$vmName[SSH]">
             <protocol>ssh</protocol>
             <param name="hostname">$vmIP</param>
             <param name="port">22</param>
             <param name="username">cmtsadmin</param>
             <param name="password">cmtsAdmin12#</param>
         </connection>
-        <connection name="$vmName (VNC)">
+        <connection name="$vmName[VNC]">
             <protocol>vnc</protocol>
             <param name="hostname">$vmIP</param>
             <param name="port">5901</param>
