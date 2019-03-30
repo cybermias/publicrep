@@ -8,4 +8,6 @@ done
 # After OpenVPN 2.7.3 update config.db required changes were moved to config_local.db
 sudo sqlite3 "/usr/local/openvpn_as/etc/db/config_local.db" "update config set value='$vnet' where name='vpn.server.routing.private_network.0';"
 sudo sqlite3 "/usr/local/openvpn_as/etc/db/config_local.db" "update config set value='$PUBLICIP' where name='host.name';"
-sudo systemctl restart openvpnas
+sleep 2
+sudo systemctl stop openvpnas
+sudo systemctl start openvpnas
