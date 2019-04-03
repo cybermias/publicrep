@@ -35,6 +35,8 @@ for ((i=0; i<$#; i+=3))
 	
 	#echo "Args are: $vmName $vmIP $vmProt"
 	
+	echo "Args are: $vmName $vmIP $vmProt" >> /opt/guacargs
+	
 	case "$vmProt" in
 	'RDP')
 		cat <<EOF >> /etc/guacamole/user-mapping.xml
