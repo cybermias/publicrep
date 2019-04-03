@@ -5,7 +5,7 @@
 
 args=("$@")
 
-cat <<EOF > /etc/guacamole/guacamole.properties
+sudo cat <<EOF > /etc/guacamole/guacamole.properties
 # Hostname and port of guacamole proxy
 guacd-hostname: localhost
 guacd-port:     4822
@@ -21,7 +21,7 @@ auth-provider: net.sourceforge.guacamole.net.basic.BasicFileAuthenticationProvid
 basic-user-mapping: /etc/guacamole/user-mapping.xml
 EOF
 
-cat <<EOF > /etc/guacamole/user-mapping.xml
+sudo cat <<EOF > /etc/guacamole/user-mapping.xml
 <?xml version="1.0" encoding="UTF-8"?>
 <user-mapping>
     <authorize username="cmtsadmin" password="cmtsAdmin12#">
@@ -35,11 +35,11 @@ for ((i=0; i<$#; i+=3))
 	
 	#echo "Args are: $vmName $vmIP $vmProt"
 	
-	echo "Args are: $vmName $vmIP $vmProt" >> /opt/guacargs
+	sudo echo "Args are: $vmName $vmIP $vmProt" >> /opt/guacargs
 	
 	case "$vmProt" in
 	'RDP')
-		cat <<EOF >> /etc/guacamole/user-mapping.xml
+		sudo cat <<EOF >> /etc/guacamole/user-mapping.xml
         <connection name="$vmName [RDP]">
             <protocol>rdp</protocol>
             <param name="hostname">$vmIP</param>
@@ -53,7 +53,7 @@ EOF
 	;;
 
 	'RDPatlas')
-		cat <<EOF >> /etc/guacamole/user-mapping.xml
+		sudo cat <<EOF >> /etc/guacamole/user-mapping.xml
         <connection name="$vmName [RDP]">
             <protocol>rdp</protocol>
             <param name="hostname">$vmIP</param>
@@ -67,7 +67,7 @@ EOF
 	;;
 
 	'SSH')
-		cat <<EOF >> /etc/guacamole/user-mapping.xml
+		sudo cat <<EOF >> /etc/guacamole/user-mapping.xml
         <connection name="$vmName [SSH]">
             <protocol>ssh</protocol>
             <param name="hostname">$vmIP</param>
@@ -79,7 +79,7 @@ EOF
 	;;
 
 	'SSHctf')
-		cat <<EOF >> /etc/guacamole/user-mapping.xml
+		sudo cat <<EOF >> /etc/guacamole/user-mapping.xml
         <connection name="$vmName [SSH]">
             <protocol>ssh</protocol>
             <param name="hostname">$vmIP</param>
@@ -89,7 +89,7 @@ EOF
 	;;
 
 	'VNC')
-		cat <<EOF >> /etc/guacamole/user-mapping.xml
+		sudo cat <<EOF >> /etc/guacamole/user-mapping.xml
         <connection name="$vmName [SSH]">
             <protocol>ssh</protocol>
             <param name="hostname">$vmIP</param>
@@ -109,14 +109,14 @@ EOF
 esac
 }
 
-cat <<EOF >> /etc/guacamole/user-mapping.xml
+sudo cat <<EOF >> /etc/guacamole/user-mapping.xml
     </authorize>
 </user-mapping>
 EOF
 
 
-service guacd restart
-service nginx restart
-service tomcat restart
+sudo service guacd restart
+sudo service nginx restart
+sudo service tomcat restart
 sleep 5s
-service guacd restart
+sudo service guacd restart
