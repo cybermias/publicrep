@@ -127,6 +127,7 @@ sudo service guacd restart
 # ADDING OPENVPN CONFIGURATION NOT TO ALTER ORIGINAL FIXVPNIP.SH (2.7.3 needs to be upgraded, its also faulty here)
 # Added at 20190709 - Before Itzik mimikatz class at HDE
 
+sleep 5
 sudo /usr/local/openvpn_as/scripts/sacli -k vpn.daemon.0.client.network -v $brnet ConfigPut
 sudo /usr/local/openvpn_as/scripts/sacli -k vpn.daemon.0.client.netmask_bits -v 29 ConfigPut
 
@@ -137,5 +138,6 @@ sudo /usr/local/openvpn_as/scripts/sacli -u cmtsadmin -k access_from.0 -v "+ALL_
 
 sleep 2
 
-/usr/local/openvpn_as/scripts/sacli stop
-/usr/local/openvpn_as/scripts/sacli start
+
+sudo systemctl stop openvpnas
+sudo systemctl start openvpnas
