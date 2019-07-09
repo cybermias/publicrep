@@ -29,5 +29,5 @@ sudo /usr/local/openvpn_as/scripts/sacli -u cmtsadmin -k access_from.0 -v "+ALL_
 
 sleep 2
 
-/usr/local/openvpn_as/scripts/sacli stop
-/usr/local/openvpn_as/scripts/sacli start
+sudo systemctl stop openvpnas
+sudo systemctl start openvpnas
