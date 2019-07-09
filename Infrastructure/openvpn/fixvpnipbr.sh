@@ -19,12 +19,12 @@ sudo sqlite3 "/usr/local/openvpn_as/etc/db/config_local.db" "update config set v
 #sudo sqlite3 "/usr/local/openvpn_as/etc/db/config.db" "insert into config VALUES(1,'vpn.server.static.0.netmask_bits','24');"
 #sudo sqlite3 "/usr/local/openvpn_as/etc/db/config.db" "insert into config VALUES(1,'vpn.server.static.0.network','$brnet');"
 
-sudo /usr/local/openvpn_as/scripts/sacli --key "vpn.daemon.0.client.network" --value "$brnet" ConfigPut
-sudo /usr/local/openvpn_as/scripts/sacli --key "vpn.daemon.0.client.netmask_bits" --value "29" ConfigPut
+sudo /usr/local/openvpn_as/scripts/sacli -k vpn.daemon.0.client.network -v $brnet ConfigPut
+sudo /usr/local/openvpn_as/scripts/sacli -k vpn.daemon.0.client.netmask_bits -v 29 ConfigPut
 
-sudo /usr/local/openvpn_as/scripts/sacli --user cmtsadmin --key "access_to.0" --value "+ROUTE:$vnet" userpropput
-sudo /usr/local/openvpn_as/scripts/sacli --user cmtsadmin --key "access_from.0" --value "+ALL_S2C_SUBNETS" userpropput
-sudo /usr/local/openvpn_as/scripts/sacli --user cmtsadmin --key "access_from.0" --value "+ALL_S2C_SUBNETS" userpropput
+sudo /usr/local/openvpn_as/scripts/sacli -u cmtsadmin -k access_to.0 -v '+ROUTE:$vnet' UserPropPut
+sudo /usr/local/openvpn_as/scripts/sacli -u cmtsadmin -k access_from.0 -v '+ALL_S2C_SUBNETS' UserPropPut
+
 
 
 sleep 2
