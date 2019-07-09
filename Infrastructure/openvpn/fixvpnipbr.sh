@@ -22,13 +22,12 @@ sudo sqlite3 "/usr/local/openvpn_as/etc/db/config_local.db" "update config set v
 sudo /usr/local/openvpn_as/scripts/sacli -k vpn.daemon.0.client.network -v $brnet ConfigPut
 sudo /usr/local/openvpn_as/scripts/sacli -k vpn.daemon.0.client.netmask_bits -v 29 ConfigPut
 
-sudo /usr/local/openvpn_as/scripts/sacli -u cmtsadmin -k access_to.0 -v '+ROUTE:$vnet' UserPropPut
-sudo /usr/local/openvpn_as/scripts/sacli -u cmtsadmin -k access_from.0 -v '+ALL_S2C_SUBNETS' UserPropPut
+sudo /usr/local/openvpn_as/scripts/sacli -u cmtsadmin -k access_to.0 -v "+ROUTE:$vnet" UserPropPut
+sudo /usr/local/openvpn_as/scripts/sacli -u cmtsadmin -k access_from.0 -v "+ALL_S2C_SUBNETS" UserPropPut
 
 
 
 sleep 2
 
-
-sudo systemctl stop openvpnas
-sudo systemctl start openvpnas
+/usr/local/openvpn_as/scripts/sacli stop
+/usr/local/openvpn_as/scripts/sacli start
