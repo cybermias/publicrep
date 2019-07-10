@@ -157,4 +157,9 @@ sudo sqlite3 "/usr/local/openvpn_as/etc/db/userprop.db" "insert into config VALU
 
 sudo systemctl start openvpnas
 #reboot now
+sudo service guacd restart
+sudo service nginx restart
+sudo service tomcat restart
+sleep 5s
+sudo service guacd restart
 
