@@ -118,11 +118,11 @@ sudo cat <<EOF >> /etc/guacamole/user-mapping.xml
 EOF
 
 
-sudo service guacd restart
-sudo service nginx restart
-sudo service tomcat restart
+#sudo service guacd restart
+#sudo service nginx restart
+#sudo service tomcat restart
 sleep 5s
-sudo service guacd restart
+#sudo service guacd restart
 
 # ADDING OPENVPN CONFIGURATION NOT TO ALTER ORIGINAL FIXVPNIP.SH (2.7.3 needs to be upgraded, its also faulty here)
 # Added at 20190709 - Before Itzik mimikatz class at HDE
@@ -149,11 +149,12 @@ sudo sqlite3 "/usr/local/openvpn_as/etc/db/config_local.db" "update config set v
 
 sudo sqlite3 "/usr/local/openvpn_as/etc/db/config_local.db" "update config set value='29' where name='vpn.daemon.0.client.netmask_bits';"
 sudo sqlite3 "/usr/local/openvpn_as/etc/db/config_local.db" "update config set value='$brnet' where name='vpn.daemon.0.client.network';"
+sudo sqlite3 "/usr/local/openvpn_as/etc/db/config_local.db" "update config set value='route' where name='vpn.server.routing.private_access';"
 
 sudo sqlite3 "/usr/local/openvpn_as/etc/db/userprop.db" "insert into config VALUES(3,'access_from.0','+ALL_S2C_SUBNETS');"
 sudo sqlite3 "/usr/local/openvpn_as/etc/db/userprop.db" "insert into config VALUES(3,'access_to.0','+ROUTE:$vnet');"
 
-sleep 2
 
-sudo systemctl start openvpnas
+#sudo systemctl start openvpnas
+reboot now
 
