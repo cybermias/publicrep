@@ -4,7 +4,7 @@
 # Parameters come in triplets (vmName vmIP vmProt). Allowed protocols are RDP, RDPatlas, SSH, VNC and SSHctf [no user/pass].
 vnet="$(/sbin/ip -o -4 addr list eth0 | awk '{print $4}' | cut -d. -f1-2).0.0/16"
 static="$(/sbin/ip -o -4 addr list eth0 | awk '{print $4}' | cut -d. -f1-2).253.252"
-brnet="$(/sbin/ip -o -4 addr list eth0 | awk '{print $4}' | cut -d. -f1-2).253.240"
+brnet="$(/sbin/ip -o -4 addr list eth0 | awk '{print $4}' | cut -d. -f1-2).253.224"
 
 args=("$@")
 
@@ -136,9 +136,10 @@ sudo service guacd restart
 
 sudo sqlite3 "/usr/local/openvpn_as/etc/db/userprop.db" "insert into config VALUES(3,'access_from.0','+ALL_S2C_SUBNETS');"
 sudo sqlite3 "/usr/local/openvpn_as/etc/db/userprop.db" "insert into config VALUES(3,'access_to.0','+ROUTE:$vnet');"
-sudo sqlite3 "/usr/local/openvpn_as/etc/db/config_local.db" "update config set value='29' where name='vpn.daemon.0.client.netmask_bits';"
+sudo sqlite3 "/usr/local/openvpn_as/etc/db/config_local.db" "update config set value='28' where name='vpn.daemon.0.client.netmask_bits';"
 sudo sqlite3 "/usr/local/openvpn_as/etc/db/config_local.db" "update config set value='$brnet' where name='vpn.daemon.0.client.network';"
 
+sudo echo "labgate" > /etc/hostname
 sleep 2
 
 
