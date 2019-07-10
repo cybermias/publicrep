@@ -155,6 +155,6 @@ sudo sqlite3 "/usr/local/openvpn_as/etc/db/userprop.db" "insert into config VALU
 sudo sqlite3 "/usr/local/openvpn_as/etc/db/userprop.db" "insert into config VALUES(3,'access_to.0','+ROUTE:$vnet');"
 
 
-#sudo systemctl start openvpnas
-reboot now
+sudo systemctl start openvpnas
+#reboot now
 
