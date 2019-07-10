@@ -136,9 +136,8 @@ sudo service guacd restart
 
 sudo sqlite3 "/usr/local/openvpn_as/etc/db/userprop.db" "insert into config VALUES(3,'access_from.0','+ALL_S2C_SUBNETS');"
 sudo sqlite3 "/usr/local/openvpn_as/etc/db/userprop.db" "insert into config VALUES(3,'access_to.0','+ROUTE:$vnet');"
-sudo sqlite3 "/usr/local/openvpn_as/etc/db/config_local.db" "insert into config VALUES(1,'vpn.daemon.0.client.netmask_bits','29');"
-sudo sqlite3 "/usr/local/openvpn_as/etc/db/config_local.db" "insert into config VALUES(1,'vpn.daemon.0.client.network','$brnet');"
-
+sudo sqlite3 "/usr/local/openvpn_as/etc/db/config_local.db" "update config set value='29' where name='vpn.daemon.0.client.netmask_bits';"
+sudo sqlite3 "/usr/local/openvpn_as/etc/db/config_local.db" "update config set value='$brnet' where name='vpn.daemon.0.client.network';"
 
 sleep 2
 
