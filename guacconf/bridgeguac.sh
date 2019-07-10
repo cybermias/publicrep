@@ -126,14 +126,18 @@ sudo service guacd restart
 
 # ADDING OPENVPN CONFIGURATION NOT TO ALTER ORIGINAL FIXVPNIP.SH (2.7.3 needs to be upgraded, its also faulty here)
 # Added at 20190709 - Before Itzik mimikatz class at HDE
+#sudo /usr/local/openvpn_as/scripts/sacli -k vpn.daemon.0.client.network -v $brnet ConfigPut
+#sudo /usr/local/openvpn_as/scripts/sacli -k vpn.daemon.0.client.netmask_bits -v 29 ConfigPut
 
-sleep 5
-sudo /usr/local/openvpn_as/scripts/sacli -k vpn.daemon.0.client.network -v $brnet ConfigPut
-sudo /usr/local/openvpn_as/scripts/sacli -k vpn.daemon.0.client.netmask_bits -v 29 ConfigPut
+#sudo /usr/local/openvpn_as/scripts/sacli -u cmtsadmin -k access_to.0 -v "+ROUTE:$vnet" UserPropPut
+#sudo /usr/local/openvpn_as/scripts/sacli -u cmtsadmin -k access_from.0 -v "+ALL_S2C_SUBNETS" UserPropPut
 
-sudo /usr/local/openvpn_as/scripts/sacli -u cmtsadmin -k access_to.0 -v "+ROUTE:$vnet" UserPropPut
-sudo /usr/local/openvpn_as/scripts/sacli -u cmtsadmin -k access_from.0 -v "+ALL_S2C_SUBNETS" UserPropPut
+# SACLI FAILS (both init.d and both azure custom script). Not sure why
 
+sudo sqlite3 "/usr/local/openvpn_as/etc/db/userprop.db" "insert into config VALUES(3,'access_from.0','+ALL_S2C_SUBNETS');"
+sudo sqlite3 "/usr/local/openvpn_as/etc/db/userprop.db" "insert into config VALUES(3,'access_to.0','+ROUTE:$vnet');"
+sudo sqlite3 "/usr/local/openvpn_as/etc/db/config_local.db" "insert into config VALUES(1,'vpn.daemon.0.client.netmask_bits','29');"
+sudo sqlite3 "/usr/local/openvpn_as/etc/db/config_local.db" "insert into config VALUES(1,'vpn.daemon.0.client.network','$brnet');"
 
 
 sleep 2
