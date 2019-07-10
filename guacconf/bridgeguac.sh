@@ -117,6 +117,18 @@ sudo cat <<EOF >> /etc/guacamole/user-mapping.xml
 </user-mapping>
 EOF
 
+sudo cat <<EOF > /etc/nginx/conf.d/default.conf
+server {
+    listen       80;
+    server_name  localhost;
+
+    location /mylab/ {
+        proxy_pass http://localhost:8080/guacamole/;
+    }
+}
+EOF
+
+rm /etc/nginx/conf.d/guacamole_ssl.conf
 
 #sudo service guacd restart
 #sudo service nginx restart
