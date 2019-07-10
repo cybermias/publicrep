@@ -145,4 +145,4 @@ sudo echo "labgate" > /etc/hostname
 sleep 2
 
 
-sudo systemctl start openvpnas
+sudo reboot now
