@@ -136,13 +136,24 @@ sudo service guacd restart
 
 sudo systemctl stop openvpnas
 
-sudo sqlite3 "/usr/local/openvpn_as/etc/db/userprop.db" "insert into config VALUES(3,'access_from.0','+ALL_S2C_SUBNETS');"
-sudo sqlite3 "/usr/local/openvpn_as/etc/db/userprop.db" "insert into config VALUES(3,'access_to.0','+ROUTE:$vnet');"
+sleep 2
+
+PUBLICIP=$(curl -s ipecho.net/plain)
+while [ ! $PUBLICIP ]; do
+        PUBLICIP=$(curl -s ipecho.net/plain)
+done
+
+# After OpenVPN 2.7.3 update config.db required changes were moved to config_local.db
+sudo sqlite3 "/usr/local/openvpn_as/etc/db/config_local.db" "update config set value='$vnet' where name='vpn.server.routing.private_network.0';"
+sudo sqlite3 "/usr/local/openvpn_as/etc/db/config_local.db" "update config set value='$PUBLICIP' where name='host.name';"
+
 sudo sqlite3 "/usr/local/openvpn_as/etc/db/config_local.db" "update config set value='29' where name='vpn.daemon.0.client.netmask_bits';"
 sudo sqlite3 "/usr/local/openvpn_as/etc/db/config_local.db" "update config set value='$brnet' where name='vpn.daemon.0.client.network';"
 
-sudo echo "labgate" > /etc/hostname
+sudo sqlite3 "/usr/local/openvpn_as/etc/db/userprop.db" "insert into config VALUES(3,'access_from.0','+ALL_S2C_SUBNETS');"
+sudo sqlite3 "/usr/local/openvpn_as/etc/db/userprop.db" "insert into config VALUES(3,'access_to.0','+ROUTE:$vnet');"
+
 sleep 2
 
+sudo systemctl start openvpnas
 
-sudo reboot now
