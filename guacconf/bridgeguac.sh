@@ -4,7 +4,7 @@
 # Parameters come in triplets (vmName vmIP vmProt). Allowed protocols are RDP, RDPatlas, SSH, VNC and SSHctf [no user/pass].
 vnet="$(/sbin/ip -o -4 addr list eth0 | awk '{print $4}' | cut -d. -f1-2).0.0/16"
 static="$(/sbin/ip -o -4 addr list eth0 | awk '{print $4}' | cut -d. -f1-2).253.252"
-brnet="$(/sbin/ip -o -4 addr list eth0 | awk '{print $4}' | cut -d. -f1-2).253.16"
+brnet="$(/sbin/ip -o -4 addr list eth0 | awk '{print $4}' | cut -d. -f1-2).253.0"
 
 args=("$@")
 
@@ -156,10 +156,13 @@ while [ ! $PUBLICIP ]; do
 done
 
 # After OpenVPN 2.7.3 update config.db required changes were moved to config_local.db
+# Note about IP DHCP assignment. For some reason, giving a pool is always "cut" by half by the openvpn service. 
+# Assign /28 and the server will provide an IP from /29 (while the first host is always an openvpn server ip).
+# The solution is to assign /28 (.0 to .14). The service will provide dhcp from /29 of .9 to .14.
 sudo sqlite3 "/usr/local/openvpn_as/etc/db/config_local.db" "update config set value='$vnet' where name='vpn.server.routing.private_network.0';"
 sudo sqlite3 "/usr/local/openvpn_as/etc/db/config_local.db" "update config set value='$PUBLICIP' where name='host.name';"
 
-sudo sqlite3 "/usr/local/openvpn_as/etc/db/config_local.db" "update config set value='29' where name='vpn.daemon.0.client.netmask_bits';"
+sudo sqlite3 "/usr/local/openvpn_as/etc/db/config_local.db" "update config set value='28' where name='vpn.daemon.0.client.netmask_bits';"
 sudo sqlite3 "/usr/local/openvpn_as/etc/db/config_local.db" "update config set value='$brnet' where name='vpn.daemon.0.client.network';"
 sudo sqlite3 "/usr/local/openvpn_as/etc/db/config_local.db" "update config set value='route' where name='vpn.server.routing.private_access';"
 
