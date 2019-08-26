@@ -4,6 +4,8 @@
 # At CSP3 Yossi Barishiev needed a domain environment that could allow him to install Symantec. We use ATLASORG.
 # This file (guaccsp3) is fixed to support the current usernames of Atlasorg.
 # Login to DC will be done with atlasadmin, while logging to workstation is with normal domain users.
+#
+# Specified to work with CSP-VPN-PF-ATLASORGCTG-SYMANTEC-V0.9.json
 
 # Generic Guacamole configuration file. Requires parameters OR WILL FAIL
 # Parameters come in triplets (vmName vmIP vmProt). Allowed protocols are RDP, RDPatlas, SSH, VNC and SSHctf [no user/pass].
