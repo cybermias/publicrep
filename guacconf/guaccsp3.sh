@@ -53,8 +53,9 @@ for ((i=0; i<$#; i+=3))
         <connection name="$vmName [RDP]">
             <protocol>rdp</protocol>
             <param name="hostname">$vmIP</param>
+	    <param name="domain">atlas.lab</param>
             <param name="port">3389</param>
-            <param name="username">atlas.lab\jeremy</param>
+            <param name="username">jeremy</param>
             <param name="password">atlasAdmin!</param>
             <param name="ignore-cert">true</param>
             <param name="security">any</param>
@@ -68,7 +69,8 @@ EOF
             <protocol>rdp</protocol>
             <param name="hostname">$vmIP</param>
             <param name="port">3389</param>
-            <param name="username">atlas.lab\ikant</param>
+	    <param name="domain">atlas.lab</param>
+            <param name="username">ikant</param>
             <param name="password">Aa12345</param>
             <param name="ignore-cert">true</param>
             <param name="security">any</param>
