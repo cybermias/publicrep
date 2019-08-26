@@ -12,7 +12,6 @@
 vnet="$(/sbin/ip -o -4 addr list eth0 | awk '{print $4}' | cut -d. -f1-2).0.0/16"
 static="$(/sbin/ip -o -4 addr list eth0 | awk '{print $4}' | cut -d. -f1-2).253.252"
 brnet="$(/sbin/ip -o -4 addr list eth0 | awk '{print $4}' | cut -d. -f1-2).253.0"
-sha=$(echo -n "atlasAdmin12#" | sha256sum)
 
 args=("$@")
 
@@ -189,7 +188,7 @@ sudo sqlite3 "/usr/local/openvpn_as/etc/db/config_local.db" "update config set v
 
 sudo sqlite3 "/usr/local/openvpn_as/etc/db/userprop.db" "insert into config VALUES(3,'access_from.0','+ALL_S2C_SUBNETS');"
 sudo sqlite3 "/usr/local/openvpn_as/etc/db/userprop.db" "insert into config VALUES(3,'access_to.0','+ROUTE:$vnet');"
-sudo sqlite3 "/usr/local/openvpn_as/etc/db/userprop.db" "update config set value='${sha::-3}' where name='pvt_password_digest';"
+
 
 sudo systemctl start openvpnas
 #reboot now
