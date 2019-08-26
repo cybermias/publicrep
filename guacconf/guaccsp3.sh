@@ -54,7 +54,7 @@ for ((i=0; i<$#; i+=3))
             <protocol>rdp</protocol>
             <param name="hostname">$vmIP</param>
             <param name="port">3389</param>
-            <param name="username">Jeremy</param>
+            <param name="username">atlas.lab\Jeremy</param>
             <param name="password">atlasAdmin!</param>
             <param name="ignore-cert">true</param>
             <param name="security">any</param>
@@ -62,13 +62,13 @@ for ((i=0; i<$#; i+=3))
 EOF
 	;;
 	
-  'RDPkant')
+  	'RDPkant')
 		sudo cat <<EOF >> /etc/guacamole/user-mapping.xml
         <connection name="$vmName [RDP]">
             <protocol>rdp</protocol>
             <param name="hostname">$vmIP</param>
             <param name="port">3389</param>
-            <param name="username">ikant</param>
+            <param name="username">atlas.lab\ikant</param>
             <param name="password">Aa12345</param>
             <param name="ignore-cert">true</param>
             <param name="security">any</param>
