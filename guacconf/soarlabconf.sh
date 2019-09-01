@@ -82,7 +82,7 @@ EOF
             <param name="hostname">$vmIP</param>
             <param name="port">3389</param>
 	    <param name="domain">soarlab</param>
-            <param name="username">john</param>
+            <param name="username">johnl</param>
             <param name="password">johSoar12#</param>
             <param name="ignore-cert">true</param>
             <param name="security">any</param>
