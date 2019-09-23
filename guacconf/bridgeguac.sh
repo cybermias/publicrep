@@ -2,6 +2,10 @@
 
 # Generic Guacamole configuration file. Requires parameters OR WILL FAIL
 # Parameters come in triplets (vmName vmIP vmProt). Allowed protocols are RDP, RDPatlas, SSH, VNC and SSHctf [no user/pass].
+
+# edited at 20190923 to support new gate snapshot (removed the conf files at nginx) CMTS-SNAPSHOT-LABGATE-C76-C.A1
+
+
 vnet="$(/sbin/ip -o -4 addr list eth0 | awk '{print $4}' | cut -d. -f1-2).0.0/16"
 static="$(/sbin/ip -o -4 addr list eth0 | awk '{print $4}' | cut -d. -f1-2).253.252"
 brnet="$(/sbin/ip -o -4 addr list eth0 | awk '{print $4}' | cut -d. -f1-2).253.0"
@@ -117,18 +121,18 @@ sudo cat <<EOF >> /etc/guacamole/user-mapping.xml
 </user-mapping>
 EOF
 
-sudo cat <<EOF > /etc/nginx/conf.d/default.conf
-server {
-    listen       80;
-    server_name  localhost;
+#sudo cat <<EOF > /etc/nginx/conf.d/default.conf
+#server {
+#    listen       80;
+#    server_name  localhost;
 
-    location /mylab/ {
-        proxy_pass http://localhost:8080/guacamole/;
-    }
-}
-EOF
+#    location /mylab/ {
+#        proxy_pass http://localhost:8080/guacamole/;
+#    }
+#}
+#EOF
 
-rm /etc/nginx/conf.d/guacamole_ssl.conf
+#rm /etc/nginx/conf.d/guacamole_ssl.conf
 
 #sudo service guacd restart
 #sudo service nginx restart
