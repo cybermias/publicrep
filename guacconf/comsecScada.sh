@@ -6,7 +6,7 @@
 # edited at 20190923 to support new gate snapshot (removed the conf files at nginx) CMTS-SNAPSHOT-LABGATE-C76-C.A1
 
 
-vnet="$(/sbin/ip -o -4 addr list eth0 | awk '{print $4}' | cut -d. -f1-2).0.0/8"
+vnet="$(/sbin/ip -o -4 addr list eth0 | awk '{print $4}' | cut -d. -f1).0.0.0/8"
 static="$(/sbin/ip -o -4 addr list eth0 | awk '{print $4}' | cut -d. -f1-2).253.252"
 brnet="$(/sbin/ip -o -4 addr list eth0 | awk '{print $4}' | cut -d. -f1-2).253.0"
 
