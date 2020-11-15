@@ -52,6 +52,7 @@ for ((i=0; i<$#; i+=3))
             <param name="password">cmtsAdmin12#</param>
             <param name="ignore-cert">true</param>
             <param name="security">any</param>
+            <param name="disable-glyph-caching">true</param>	
         </connection>
 EOF
 	;;
@@ -66,7 +67,6 @@ EOF
             <param name="password">cmtsAdmin12#</param>
             <param name="ignore-cert">true</param>
             <param name="security">any</param>
-            <param name="disable-glyph-caching">true</param>
         </connection>
 EOF
 	;;
@@ -121,7 +121,6 @@ EOF
 
 
 sudo service guacd restart
-sudo service nginx restart
 sudo service tomcat restart
 sleep 5s
 sudo service guacd restart
