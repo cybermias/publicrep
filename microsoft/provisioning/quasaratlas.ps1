@@ -9,8 +9,11 @@ param(
   [String]$downloadlink
 )
 
-$localcred = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $defAdminUsr,($defAdminPwd | convertto-securestring -asplaintext -force)
-$domaincred = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ($domain + "\" + $domAdminUsr),($domAdminPwd | convertto-securestring -asplaintext -force)
+$temppwd = ConvertTo-SecureString -String $defAdminPwd -AsPlainText -Force
+$localcred = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $defAdminUsr,$temppwd
+
+$temppwd = ConvertTo-SecureString -String $domAdminPwd -AsPlainText -Force
+$domaincred = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ($domain + "\" + $domAdminUsr),$temppwd
 
 add-computer -domainname $domain -domaincredential $domaincred
 Add-LocalGroupMember -group "Remote Desktop Users" -member $domAdminUsr
@@ -22,6 +25,6 @@ Invoke-WebRequest -uri $downloadlink -OutFile $localpath
 Start-Process powershell.exe -Credential $localcred -ArgumentList "start-process -filepath $localpath -verb runas"
 
 cscript c:\windows\system32\slmgr.vbs /rearm
-REG ADD "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management\" /v "PagingFiles" /t REG_MULTI_SZ /d "D:\pagefile.sys 0 0" /f
+REG ADD "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management\" /v "PagingFiles" /t REG_MULTI_SZ /d "D:\pagefile.sys 0 0" /f
 
 shutdown /r /t 03
