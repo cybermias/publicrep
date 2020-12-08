@@ -6,7 +6,7 @@ param(
   [String]$domAdminUsr,
   [String]$domAdminPwd,
   [String]$localpath,
-  [String]$downloadlink,
+  [String]$downloadlink
 )
 
 $localcred = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $defAdminUsr,($defAdminPwd | convertto-securestring -asplaintext -force)
