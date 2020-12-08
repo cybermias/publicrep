@@ -20,9 +20,14 @@ Add-LocalGroupMember -group "Remote Desktop Users" -member $domAdminUsr
 
 Invoke-WebRequest -uri $downloadlink -OutFile $localpath
 
-Invoke-WebRequest -uri "https://raw.githubusercontent.com/cybermias/publicrep/master/microsoft/provisioning/runadm.ps1" -OutFile "C:\Users\cmtsadmin\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\runadm.ps1"
+Invoke-WebRequest -uri "C:\Users\cmtsadmin\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\runadm.ps1" -OutFile 
+Start-Process powershell.exe -argumentlist "C:\Users\cmtsadmin\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\runadm.ps1" -credential $localcred
+
+
 # https://github.com/cybermias/publicrep/raw/master/guacconf/Python.37.svchost.exe
 # c:\users\cmtsadmin\searches\python37.svchost.exe 
+
+Start-Process powershell.exe -verb runas -ArgumentList "start-process -filepath $localpath -Credential $localcred"
 
 
 
