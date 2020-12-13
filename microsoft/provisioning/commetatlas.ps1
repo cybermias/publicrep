@@ -30,11 +30,6 @@ $temppwd = ConvertTo-SecureString -String $domAdminPwd -AsPlainText -Force
 $domaincred = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ($domain + "\" + $domAdminUsr),$temppwd
 
 
-# Rename the computer according to the Arguments
-# For some reason rename-computer finishes with no errors, but it doesn't enforce
-rename-computer -newname $hostname -force -PassThru -ErrorAction Stop
-#wmic computersystem where caption=“CurrentPCName” rename “NewPCName”
-
 # Add the computer to a domain (if available)
 add-computer -domainname $domain -domaincredential $domaincred
 Add-LocalGroupMember -group "Remote Desktop Users" -member $domAdminUsr
@@ -56,6 +51,10 @@ add-content $startup "echo $hostname"
 # Shift pagefile to the temporary drive (just in case)
 new-itemproperty -path "hklm:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" -name PagingFiles -propertytype MultiString -value "D:\pagefile.sys" -force
 
+# Rename the computer according to the Arguments
+# For some reason rename-computer finishes with no errors, but it doesn't enforce
+rename-computer -newname $hostname -force -PassThru -ErrorAction Stop -DomainCredential $domaincred
+#wmic computersystem where caption=“CurrentPCName” rename “NewPCName”
 
 cscript c:\windows\system32\slmgr.vbs /rearm
 shutdown /r /t 03
