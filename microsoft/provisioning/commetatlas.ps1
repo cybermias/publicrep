@@ -31,8 +31,9 @@ $domaincred = New-Object -TypeName System.Management.Automation.PSCredential -Ar
 
 
 # Rename the computer according to the Arguments
-rename-computer -newname $hostname -force
-
+# For some reason rename-computer finishes with no errors, but it doesn't enforce
+rename-computer -newname $hostname -force -PassThru -ErrorAction Stop
+#wmic computersystem where caption=“CurrentPCName” rename “NewPCName”
 
 # Add the computer to a domain (if available)
 add-computer -domainname $domain -domaincredential $domaincred
