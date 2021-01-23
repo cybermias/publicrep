@@ -3,6 +3,10 @@
 # Generic Guacamole configuration file. Requires parameters OR WILL FAIL
 # Parameters come in triplets (vmName vmIP vmProt). Allowed protocols are RDP, RDPatlas, SSH, VNC and SSHctf [no user/pass].
 
+### CHANGELOG OF 20210124
+### Added the possibility to iptables RDP connectivity to internal hosts (!!) [Macabi Client]
+### **NOTICE*** Due to time considerations, only *STATIC* iptables rules were assigned. Revise script for a more granular approach (automation! :D).
+
 ### CHANGELOG OF 20200111
 ### Based on changes of guacconf2020 file, but adding the QRADAR SSH parameters
 
@@ -161,6 +165,24 @@ sudo sqlite3 "/usr/local/openvpn_as/etc/db/config_local.db" "update config set v
 sudo sqlite3 "/usr/local/openvpn_as/etc/db/userprop.db" "insert into config VALUES(3,'access_from.0','+ALL_S2C_SUBNETS');"
 sudo sqlite3 "/usr/local/openvpn_as/etc/db/userprop.db" "insert into config VALUES(3,'access_to.0','+ROUTE:$vnet');"
 
+# IPTABLES to NAT direct RDP access to every machine *STATICALLY!* (will require automation in further version, check ChangeLog)
+
+lahLan="$(/sbin/ip -o -4 addr list eth0 | awk '{print $4}' | cut -d. -f1-2).1"
+lbhLan="$(/sbin/ip -o -4 addr list eth0 | awk '{print $4}' | cut -d. -f1-2).11"
+for ((i=10; i<18; i+=1))
+{
+	sudo iptables -t nat -A PREROUTING -p tcp --dport 33$i -j DNAT --to-destination $lahLan.$i3389
+}
+
+sudo iptables -t nat -A PREROUTING -p tcp --dport 33200 -j DNAT --to-destination $lbhLan.200:3389
+sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+
+
+echo iptables-persistent iptables-persistent/autosave_v4 boolean true | sudo debconf-set-selections
+echo iptables-persistent iptables-persistent/autosave_v6 boolean true | sudo debconf-set-selections
+sudo apt-get -y install iptables-persistent
+
+#END OF IPTABLES KOMBINA
 
 sudo systemctl start openvpnas
 sudo service guacd restart
