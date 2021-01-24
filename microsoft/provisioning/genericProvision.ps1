@@ -29,7 +29,7 @@ do {
             add-computer -domainname $domain -domaincredential $domaincred
         } catch {
             $joined = $false
-            Start-Sleep -Seconds 3
+            Start-Sleep -Seconds 1
         }
 }until ($joined)
 
@@ -45,7 +45,7 @@ do {
             rename-computer -newname $hostname -force -PassThru -ErrorAction Stop -DomainCredential $domaincred
         } catch {
             $renamed = $false
-            Start-Sleep -Seconds 3
+            Start-Sleep -Seconds 1
         }
 }until ($renamed)
 do {
@@ -54,7 +54,7 @@ do {
             Add-LocalGroupMember -group "Remote Desktop Users" -member $domAdminUsr
         } catch {
             $added = $false
-            Start-Sleep -Seconds 3
+            Start-Sleep -Seconds 1
         }
 }until ($added)
 
