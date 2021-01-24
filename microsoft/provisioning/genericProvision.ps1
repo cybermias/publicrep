@@ -26,9 +26,11 @@ $domaincred = New-Object -TypeName System.Management.Automation.PSCredential -Ar
 do {
     $failed = $false
     Try {
+        Write-Host "Adding Computer to Domain.."
         add-computer -domainname $domain -domaincredential $domaincred -ErrorAction Stop 
     } catch { 
         $failed = $true 
+        Write-Host "Adding Computer to Domain failed, sleeping for 4 seconds.."
         start-Sleep -Seconds 4
     }
 } while ($failed)
@@ -42,9 +44,11 @@ new-itemproperty -path "hklm:\SYSTEM\CurrentControlSet\Control\Session Manager\M
 do {
     $failed = $false
     Try {
-        rename-computer -newname $hostname -force -PassThru -DomainCredential $domaincred -ErrorAction Stop 
+        Write-Host "Renaming Computer.."
+        rename-computer -newname $hostname -force -PassThru -DomainCredential $domaincred -ErrorAction Stop
     } catch { 
-        $failed = $true 
+        $failed = $true
+        Write-Host "Renaming Computer Failed, sleeping for 4 seconds.."
         start-Sleep -Seconds 4
     }
 } while ($failed)
