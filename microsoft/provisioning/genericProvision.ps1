@@ -34,34 +34,35 @@ $domaincred = New-Object -TypeName System.Management.Automation.PSCredential -Ar
 #    }
 #} while ($failed)
 
-Remove-ItemProperty -path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" -name "Hostname" 
-Remove-ItemProperty -path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" -name "NV Hostname" 
-Set-ItemProperty -path "HKLM:\SYSTEM\CurrentControlSet\Control\Computername\Computername" -name "Computername" -value $hostname
-Set-ItemProperty -path "HKLM:\SYSTEM\CurrentControlSet\Control\Computername\ActiveComputername" -name "Computername" -value $hostname
-Set-ItemProperty -path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" -name "Hostname" -value $hostname
-Set-ItemProperty -path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" -name "NV Hostname" -value  $hostname
-Set-ItemProperty -path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -name "AltDefaultDomainName" -value $hostname
-Set-ItemProperty -path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -name "DefaultDomainName" -value $hostname
+#Remove-ItemProperty -path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" -name "Hostname" 
+#Remove-ItemProperty -path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" -name "NV Hostname" 
+#Set-ItemProperty -path "HKLM:\SYSTEM\CurrentControlSet\Control\Computername\Computername" -name "Computername" -value $hostname
+#Set-ItemProperty -path "HKLM:\SYSTEM\CurrentControlSet\Control\Computername\ActiveComputername" -name "Computername" -value $hostname
+#Set-ItemProperty -path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" -name "Hostname" -value $hostname
+#Set-ItemProperty -path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" -name "NV Hostname" -value  $hostname
+#Set-ItemProperty -path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -name "AltDefaultDomainName" -value $hostname
+#Set-ItemProperty -path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -name "DefaultDomainName" -value $hostname
 
 rename-computer -newname $hostname -force -PassThru
 start-Sleep -Seconds 5
 
+Set-ItemProperty "HKLM:\Software\Microsoft\Windows\CurrentVersion\RunOnce" -Name '!AddDomain' -Value "powershell.exe -noexit -command 'add-computer -domainname $domain -domaincredential $domaincred -force ; Add-LocalGroupMember -group "Remote Desktop Users" -member ($domain + "\Domain Users") ; shutdown /r /t 05'"
 # Add computer to domain (after succesfully changing computer name *AND* avoiding restart
-do {
-    $failed = $false
-    Try {
-        Write-Host "Adding Computer to Domain.."
-        add-computer -domainname $domain -domaincredential $domaincred -force -ErrorAction Stop 
-    } catch { 
-        $failed = $true 
-        Write-Host "Adding Computer to Domain failed, sleeping for 4 seconds.."
-        Write-Output $_.Exception.Message
-        start-Sleep -Seconds 5
-    }
-} while ($failed)
+#do {
+#    $failed = $false
+#    Try {
+#        Write-Host "Adding Computer to Domain.."
+#        add-computer -domainname $domain -domaincredential $domaincred -force -ErrorAction Stop 
+#    } catch { 
+#        $failed = $true 
+#        Write-Host "Adding Computer to Domain failed, sleeping for 4 seconds.."
+#        Write-Output $_.Exception.Message
+#        start-Sleep -Seconds 5
+#    }
+#} while ($failed)
 
 # Allow all Domain user accounts remote (RDP) access to machines
-Add-LocalGroupMember -group "Remote Desktop Users" -member ($domain + "\Domain Users") | Out-Null
+# Add-LocalGroupMember -group "Remote Desktop Users" -member ($domain + "\Domain Users") | Out-Null
 
 # Shift pagefile to the temporary drive (just in case)
 new-itemproperty -path "hklm:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" -name PagingFiles -propertytype MultiString -value "D:\pagefile.sys" -force
