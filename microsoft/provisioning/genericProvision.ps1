@@ -42,7 +42,7 @@ new-itemproperty -path "hklm:\SYSTEM\CurrentControlSet\Control\Session Manager\M
 do {
     $failed = $false
     Try {
-        rename-computer -newname $hostname -force -PassThru -ErrorAction Stop -DomainCredential $domaincred -ErrorAction Stop 
+        rename-computer -newname $hostname -force -PassThru -DomainCredential $domaincred -ErrorAction Stop 
     } catch { 
         $failed = $true 
         start-Sleep -Seconds 4
