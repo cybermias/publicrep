@@ -36,17 +36,17 @@ do {
     }
 } while ($failed)
 
-start-Sleep -Seconds 5
-do {
-    $failed = $false
-    Try {
-        Add-LocalGroupMember -group "Remote Desktop Users" -member $domAdminUsr -ErrorAction Stop
-    } catch { 
-        $failed = $true
-        Write-Output $_.Exception.Message
-        start-Sleep -Seconds 4
-    }
-} while ($failed)
+#start-Sleep -Seconds 5
+#do {
+#    $failed = $false
+#    Try {
+#        Add-LocalGroupMember -group "Remote Desktop Users" -member $domAdminUsr -ErrorAction Stop
+#    } catch { 
+#        $failed = $true
+#        Write-Output $_.Exception.Message
+#        start-Sleep -Seconds 4
+#    }
+#} while ($failed)
 
 # Shift pagefile to the temporary drive (just in case)
 new-itemproperty -path "hklm:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" -name PagingFiles -propertytype MultiString -value "D:\pagefile.sys" -force
