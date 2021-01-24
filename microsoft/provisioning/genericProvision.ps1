@@ -23,16 +23,15 @@ $domaincred = New-Object -TypeName System.Management.Automation.PSCredential -Ar
 
 # Add the computer to a domain (if available)
 
-$success = $null
 do {
-        $joined = $true
-        try {
-            add-computer -domainname $domain -domaincredential $domaincred -ErrorAction Stop
-            $success = $true
-        } catch {
-            Start-Sleep -Seconds 2
-        }
-}until ( $success)
+    $failed = $false
+    Try {
+        add-computer -domainname $domain -domaincredential $domaincred -ErrorAction Stop 
+    } catch { 
+        $failed = $true 
+        start-Sleep -Seconds 4
+    }
+} while ($failed)
 
 # Shift pagefile to the temporary drive (just in case)
 new-itemproperty -path "hklm:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" -name PagingFiles -propertytype MultiString -value "D:\pagefile.sys" -force
@@ -40,25 +39,25 @@ new-itemproperty -path "hklm:\SYSTEM\CurrentControlSet\Control\Session Manager\M
 # Rename the computer according to the Arguments
 # For some reason rename-computer finishes with no errors, but it doesn't enforce
 
-$success = $null
 do {
-        try {
-            rename-computer -newname $hostname -force -PassThru -ErrorAction Stop -DomainCredential $domaincred -ErrorAction Stop
-            $success = $true
-        } catch {
-            Start-Sleep -Seconds 2
-        }
-}until ($success)
+    $failed = $false
+    Try {
+        rename-computer -newname $hostname -force -PassThru -ErrorAction Stop -DomainCredential $domaincred -ErrorAction Stop 
+    } catch { 
+        $failed = $true 
+        start-Sleep -Seconds 4
+    }
+} while ($failed)
 
-$success = $null
 do {
-        try {
-            Add-LocalGroupMember -group "Remote Desktop Users" -member $domAdminUsr -ErrorAction Stop
-            $success = $true
-        } catch {
-            Start-Sleep -Seconds 2
-        }
-}until ($success)
+    $failed = $false
+    Try {
+        Add-LocalGroupMember -group "Remote Desktop Users" -member $domAdminUsr -ErrorAction Stop
+    } catch { 
+        $failed = $true 
+        start-Sleep -Seconds 4
+    }
+} while ($failed)
 
 
 cscript c:\windows\system32\slmgr.vbs /rearm
