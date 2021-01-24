@@ -180,8 +180,9 @@ sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 
 echo iptables-persistent iptables-persistent/autosave_v4 boolean true | sudo debconf-set-selections
 echo iptables-persistent iptables-persistent/autosave_v6 boolean true | sudo debconf-set-selections
-sudo apt-get -y install iptables-persistent
-
+time (while ps -opid= -C apt-get > /dev/null; do sleep 1; done); \
+  sudo apt-get -y install iptables-persistent
+  
 #END OF IPTABLES KOMBINA
 
 sudo systemctl start openvpnas
