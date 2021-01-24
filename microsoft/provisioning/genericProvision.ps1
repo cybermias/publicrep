@@ -23,15 +23,16 @@ $domaincred = New-Object -TypeName System.Management.Automation.PSCredential -Ar
 
 # Add the computer to a domain (if available)
 
+$success = $null
 do {
         $joined = $true
         try {
-            add-computer -domainname $domain -domaincredential $domaincred
+            add-computer -domainname $domain -domaincredential $domaincred -ErrorAction Stop
+            $success = $true
         } catch {
-            $joined = $false
-            Start-Sleep -Seconds 1
+            Start-Sleep -Seconds 2
         }
-}until ($joined)
+}until ( $success)
 
 # Shift pagefile to the temporary drive (just in case)
 new-itemproperty -path "hklm:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" -name PagingFiles -propertytype MultiString -value "D:\pagefile.sys" -force
@@ -39,24 +40,25 @@ new-itemproperty -path "hklm:\SYSTEM\CurrentControlSet\Control\Session Manager\M
 # Rename the computer according to the Arguments
 # For some reason rename-computer finishes with no errors, but it doesn't enforce
 
+$success = $null
 do {
-        $renamed = $true
         try {
-            rename-computer -newname $hostname -force -PassThru -ErrorAction Stop -DomainCredential $domaincred
+            rename-computer -newname $hostname -force -PassThru -ErrorAction Stop -DomainCredential $domaincred -ErrorAction Stop
+            $success = $true
         } catch {
-            $renamed = $false
-            Start-Sleep -Seconds 1
+            Start-Sleep -Seconds 2
         }
-}until ($renamed)
+}until ($success)
+
+$success = $null
 do {
-        $added = $true
         try {
-            Add-LocalGroupMember -group "Remote Desktop Users" -member $domAdminUsr
+            Add-LocalGroupMember -group "Remote Desktop Users" -member $domAdminUsr -ErrorAction Stop
+            $success = $true
         } catch {
-            $added = $false
-            Start-Sleep -Seconds 1
+            Start-Sleep -Seconds 2
         }
-}until ($added)
+}until ($success)
 
 
 cscript c:\windows\system32\slmgr.vbs /rearm
