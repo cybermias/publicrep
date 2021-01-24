@@ -22,7 +22,17 @@ $temppwd = ConvertTo-SecureString -String $domAdminPwd -AsPlainText -Force
 $domaincred = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ($domain + "\" + $domAdminUsr),$temppwd
 
 # Add the computer to a domain (if available)
-add-computer -domainname $domain -domaincredential $domaincred
+
+do {
+        $joined = $true
+        try {
+            add-computer -domainname $domain -domaincredential $domaincred
+        } catch {
+            $joined = $false
+            Start-Sleep -Seconds 3
+            }
+        }
+}until ($joined)
 Add-LocalGroupMember -group "Remote Desktop Users" -member $domAdminUsr
 
 # Shift pagefile to the temporary drive (just in case)
