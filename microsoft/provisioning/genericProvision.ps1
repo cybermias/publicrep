@@ -35,6 +35,8 @@ do {
         start-Sleep -Seconds 4
     }
 } while ($failed)
+
+start-Sleep -Seconds 5
 do {
     $failed = $false
     Try {
@@ -51,7 +53,7 @@ new-itemproperty -path "hklm:\SYSTEM\CurrentControlSet\Control\Session Manager\M
 
 # Rename the computer according to the Arguments
 # For some reason rename-computer finishes with no errors, but it doesn't enforce
-
+start-Sleep -Seconds 5
 do {
     $failed = $false
     Try {
