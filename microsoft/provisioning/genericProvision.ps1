@@ -46,7 +46,7 @@ $domaincred = New-Object -TypeName System.Management.Automation.PSCredential -Ar
 rename-computer -newname $hostname -force -PassThru
 start-Sleep -Seconds 5
 
-Set-ItemProperty "HKLM:\Software\Microsoft\Windows\CurrentVersion\RunOnce" -Name '!AddDomain' -Value "powershell.exe -noexit -command 'add-computer -domainname $domain -domaincredential $domaincred -force ; Add-LocalGroupMember -group "Remote Desktop Users" -member ($domain + "\Domain Users") ; shutdown /r /t 05'"
+Set-ItemProperty -path "HKLM:\Software\Microsoft\Windows\CurrentVersion\RunOnce" -Name "!AddDomain" -Value "powershell.exe -noexit -command 'add-computer -domainname $domain -domaincredential $domaincred -force ; Add-LocalGroupMember -group "Remote Desktop Users" -member ($domain + "\Domain Users") ; shutdown /r /t 05'" -force
 # Add computer to domain (after succesfully changing computer name *AND* avoiding restart
 #do {
 #    $failed = $false
