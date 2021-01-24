@@ -31,6 +31,7 @@ do {
     } catch { 
         $failed = $true 
         Write-Host "Adding Computer to Domain failed, sleeping for 4 seconds.."
+        Write-Output $_.Exception.Message
         start-Sleep -Seconds 4
     }
 } while ($failed)
@@ -49,6 +50,7 @@ do {
     } catch { 
         $failed = $true
         Write-Host "Renaming Computer Failed, sleeping for 4 seconds.."
+        Write-Output $_.Exception.Message
         start-Sleep -Seconds 4
     }
 } while ($failed)
@@ -58,7 +60,8 @@ do {
     Try {
         Add-LocalGroupMember -group "Remote Desktop Users" -member $domAdminUsr -ErrorAction Stop
     } catch { 
-        $failed = $true 
+        $failed = $true
+        Write-Output $_.Exception.Message
         start-Sleep -Seconds 4
     }
 } while ($failed)
