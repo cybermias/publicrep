@@ -30,9 +30,9 @@ do {
         } catch {
             $joined = $false
             Start-Sleep -Seconds 3
-            }
         }
 }until ($joined)
+
 Add-LocalGroupMember -group "Remote Desktop Users" -member $domAdminUsr
 
 # Shift pagefile to the temporary drive (just in case)
