@@ -45,27 +45,9 @@ Add-LocalGroupMember -group "Remote Desktop Users" -member ($domain + "\Domain U
 # Fix evaluation license
 cscript c:\windows\system32\slmgr.vbs /rearm
 
-}
-
-
-if ($state -eq "domain")
-{
-  # Add computer to domain (after succesfully changing computer name *AND* init-extension restart
-
-  
-  
-  
-  $restartRequired = "yes"
-}
-
-
 # Repeating activtiy through any kind of initialization
 Get-EventLog -LogName * | ForEach { Clear-EventLog $_.Log }
-
-if ($restartRequired -eq "yes")
-{
-  shutdown /r /t 03
-}
+shutdown /r /t 03
 
 ### TRASH / ARCHIVE
 
