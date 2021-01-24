@@ -30,17 +30,9 @@ start-sleep -seconds $halt
 new-itemproperty -path "hklm:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" -name PagingFiles -propertytype MultiString -value "D:\pagefile.sys" -force
 
 start-sleep -seconds $halt
-do {
-    $failed = $false
-    Try {
-        Write-Host "Adding Computer to Domain.."
-        add-computer -domainname $domain -domaincredential $domaincred -Options JoinWithNewName,AccountCreate -force -ErrorAction Stop 
-    } catch { 
-        $failed = $true 
-        Write-Output $_.Exception.Message
-        start-Sleep -Seconds 3
-    }
-} while ($failed)
+
+add-computer -domainname $domain -domaincredential $domaincred -Options JoinWithNewName,AccountCreate -force
+
 
 Add-LocalGroupMember -group "Remote Desktop Users" -member ($domain + "\Domain Users") | Out-Null
 # Fix evaluation license
@@ -51,4 +43,14 @@ Get-EventLog -LogName * | ForEach { Clear-EventLog $_.Log }
 shutdown /r /t 03
 
 ### TRASH / ARCHIVE
-
+#do {
+#    $failed = $false
+#    Try {
+#        Write-Host "Adding Computer to Domain.."
+#        add-computer -domainname $domain -domaincredential $domaincred -Options JoinWithNewName,AccountCreate -force -ErrorAction Stop 
+#    } catch { 
+#        $failed = $true 
+#        Write-Output $_.Exception.Message
+#        start-Sleep -Seconds 3
+#    }
+#} while ($failed)
