@@ -60,6 +60,6 @@ do {
     }
 } while ($failed)
 
-Write-Host "All Variables used are: $domaincred ; $hostname ;
+Write-Host "All Variables used are: $domaincred ; $hostname ; $domain"
 cscript c:\windows\system32\slmgr.vbs /rearm
 shutdown /r /t 03
