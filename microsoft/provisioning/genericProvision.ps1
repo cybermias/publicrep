@@ -83,7 +83,7 @@ do {
     $failed = $false
     Try {
         Write-Host "Adding Computer to Domain.."
-        add-computer -domainname $domain -domaincredential $domaincred -newname $hostname -Options JoinWithNewName,AccountCreate -ErrorAction Stop 
+        add-computer -domainname $domain -domaincredential $domaincred -Options JoinWithNewName,AccountCreate -ErrorAction Stop 
     } catch { 
         $failed = $true 
         Write-Host "Adding Computer to Domain failed, sleeping for 4 seconds.."
