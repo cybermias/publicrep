@@ -23,6 +23,8 @@ $localcred = New-Object -TypeName System.Management.Automation.PSCredential -Arg
 $temppwd = ConvertTo-SecureString -String $domAdminPwd -AsPlainText -Force
 $domaincred = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ($domain + "\" + $domAdminUsr),$temppwd
 
+Rename-Computer -NewName $hostname
+start-sleep -seconds $halt
 
 # Shift pagefile to the temporary drive (just in case)
 new-itemproperty -path "hklm:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" -name PagingFiles -propertytype MultiString -value "D:\pagefile.sys" -force
@@ -32,12 +34,11 @@ do {
     $failed = $false
     Try {
         Write-Host "Adding Computer to Domain.."
-        add-computer -domainname $domain -domaincredential $domaincred -newname $hostname -force -ErrorAction Stop 
+        add-computer -domainname $domain -domaincredential $domaincred -Options JoinWithNewName,AccountCreate -force -ErrorAction Stop 
     } catch { 
         $failed = $true 
-        Write-Host "Adding Computer to Domain failed, sleeping for 4 seconds.."
         Write-Output $_.Exception.Message
-        start-Sleep -Seconds 5
+        start-Sleep -Seconds 3
     }
 } while ($failed)
 
