@@ -21,6 +21,12 @@ $localcred = New-Object -TypeName System.Management.Automation.PSCredential -Arg
 $temppwd = ConvertTo-SecureString -String $domAdminPwd -AsPlainText -Force
 $domaincred = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ($domain + "\" + $domAdminUsr),$temppwd
 
+
+
+# Shift pagefile to the temporary drive (just in case)
+new-itemproperty -path "hklm:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" -name PagingFiles -propertytype MultiString -value "D:\pagefile.sys" -force
+
+
 # Add the computer to a domain (if available)
 
 do {
@@ -36,24 +42,11 @@ do {
     }
 } while ($failed)
 
-#start-Sleep -Seconds 5
-#do {
-#    $failed = $false
-#    Try {
-#        Add-LocalGroupMember -group "Remote Desktop Users" -member $domAdminUsr -ErrorAction Stop
-#    } catch { 
-#        $failed = $true
-#        Write-Output $_.Exception.Message
-#        start-Sleep -Seconds 4
-#    }
-#} while ($failed)
-
-# Shift pagefile to the temporary drive (just in case)
-new-itemproperty -path "hklm:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" -name PagingFiles -propertytype MultiString -value "D:\pagefile.sys" -force
+start-Sleep -Seconds 5
+Add-LocalGroupMember -group "Remote Desktop Users" -member ($domain + "\Domain Admins") | Out-Null
 
 # Rename the computer according to the Arguments
 # For some reason rename-computer finishes with no errors, but it doesn't enforce
-start-Sleep -Seconds 5
 do {
     $failed = $false
     Try {
@@ -61,14 +54,12 @@ do {
         rename-computer -newname $hostname -force -PassThru -DomainCredential $domaincred -ErrorAction Stop
     } catch { 
         $failed = $true
-        Write-Host "Renaming Computer Failed, sleeping for 4 seconds.."
+        Write-Host "Renaming Computer Failed, sleeping for 4 seconds.(Parameters: hostname: $hostname, domaincred: $domaincred)"
         Write-Output $_.Exception.Message
         start-Sleep -Seconds 4
     }
 } while ($failed)
 
-
-
-
+Write-Host "All Variables used are: $domaincred ; $hostname ;
 cscript c:\windows\system32\slmgr.vbs /rearm
 shutdown /r /t 03
