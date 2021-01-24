@@ -33,14 +33,31 @@ do {
         }
 }until ($joined)
 
-Add-LocalGroupMember -group "Remote Desktop Users" -member $domAdminUsr
-
 # Shift pagefile to the temporary drive (just in case)
 new-itemproperty -path "hklm:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" -name PagingFiles -propertytype MultiString -value "D:\pagefile.sys" -force
 
 # Rename the computer according to the Arguments
 # For some reason rename-computer finishes with no errors, but it doesn't enforce
-rename-computer -newname $hostname -force -PassThru -ErrorAction Stop -DomainCredential $domaincred
+
+do {
+        $renamed = $true
+        try {
+            rename-computer -newname $hostname -force -PassThru -ErrorAction Stop -DomainCredential $domaincred
+        } catch {
+            $renamed = $false
+            Start-Sleep -Seconds 3
+        }
+}until ($renamed)
+do {
+        $added = $true
+        try {
+            Add-LocalGroupMember -group "Remote Desktop Users" -member $domAdminUsr
+        } catch {
+            $added = $false
+            Start-Sleep -Seconds 3
+        }
+}until ($added)
+
 
 cscript c:\windows\system32\slmgr.vbs /rearm
 shutdown /r /t 03
