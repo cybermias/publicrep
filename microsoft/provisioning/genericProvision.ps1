@@ -64,18 +64,15 @@ new-itemproperty -path "hklm:\SYSTEM\CurrentControlSet\Control\Session Manager\M
 #  shutdown /r /t 03
 #}
 
-do {
-    $failed = $false
-    Try {
-        Write-Host "Renaming Computer.."
-        rename-computer -newname $hostname -force -PassThru -ErrorAction Stop
-    } catch { 
-        $failed = $true
-        Write-Host "Renaming Computer Failed, sleeping for 4 seconds.(Parameters: hostname: $hostname)"
-        Write-Output $_.Exception.Message
-        start-Sleep -Seconds 4
-    }
-} while ($failed)
+# Force change computer name without a restart
+Remove-ItemProperty -path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" -name "Hostname" 
+Remove-ItemProperty -path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" -name "NV Hostname" 
+Set-ItemProperty -path "HKLM:\SYSTEM\CurrentControlSet\Control\Computername\Computername" -name "Computername" -value $hostname
+Set-ItemProperty -path "HKLM:\SYSTEM\CurrentControlSet\Control\Computername\ActiveComputername" -name "Computername" -value $hostname
+Set-ItemProperty -path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" -name "Hostname" -value $hostname
+Set-ItemProperty -path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" -name "NV Hostname" -value  $hostname
+Set-ItemProperty -path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -name "AltDefaultDomainName" -value $hostname
+Set-ItemProperty -path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -name "DefaultDomainName" -value $hostname
 
 start-Sleep -Seconds 5
 
@@ -83,7 +80,7 @@ do {
     $failed = $false
     Try {
         Write-Host "Adding Computer to Domain.."
-        add-computer -domainname $domain -domaincredential $domaincred -Options JoinWithNewName,AccountCreate -ErrorAction Stop 
+        add-computer -domainname $domain -domaincredential $domaincred -Options -ErrorAction Stop 
     } catch { 
         $failed = $true 
         Write-Host "Adding Computer to Domain failed, sleeping for 4 seconds.."
