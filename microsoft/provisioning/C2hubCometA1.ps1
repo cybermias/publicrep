@@ -5,7 +5,7 @@ PS1 script to provision Windows10 virtualmachines made with snapshots (specifica
 Script is based on "genericProvision.ps1" script that was created for the Multiple (copyIndex()) win10 hosts in the MACABI environment. It required a $halt variable to avoid conflicting AD-Joining machines.
 
 This version (C2hubCometA1) is mainly used for Dark Comet integration (a more recent version of atlasCommet.ps1) and is based on the "genericProvision" variant.
->#
+#>
 
 param(
   [String]$defAdminUsr, 
