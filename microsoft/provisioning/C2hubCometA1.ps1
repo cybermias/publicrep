@@ -13,6 +13,8 @@ param(
   [String]$domain,
   [String]$domAdminUsr,
   [String]$domAdminPwd,
+  [String]$localpath,
+  [String]$downloadlink,
   [String]$hostname
 )
 # Static URLs to download ProvisioningVM* and static download locatןםמ
