@@ -28,7 +28,7 @@ $hideFile.attributes = "Hidden"
 
 # Add a startup script (BAT) to make sure ProvisioningVM* is run upon logging in (consistency with provisioning!)
 add-content $startup "@echo off"
-add-content $startup "powershell -c start -verb runas $localpath -windowstyle hidden" 
+add-content $startup "powershell -c start -verb runas \"$localpath\" -windowstyle hidden" 
 add-content $startup "echo $hostname"
 
 # Define PSCredential variables following input from arguments (Domain and Local)
