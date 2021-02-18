@@ -67,6 +67,8 @@ EOF
 
 sudo sed -i "" '/<syslog>/r /conf/syslogdef' /conf/config.xml
 sudo sed -i "" '/<nat>/r /conf/natdef' /conf/config.xml
+sudo rm /conf/syslogdef
+sudo rm /conf/natdef
 
 sudo awk '/.*allow LAN/{print "                        <log></log>"}1' /conf/config.xml > /conf/config.new
 sudo rm /conf/config.xml
