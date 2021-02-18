@@ -15,13 +15,11 @@ do
   esac
 done
 
-sudo cp /conf/config.xml /conf/config.bcp
-
 ## Additional manual configuration due to outdated snapshots (adding log and nat)
 sudo sed -i "" '/<syslog>/,/<\/syslog>/{//!d;}' /conf/config.xml
 sudo sed -i "" '/<nat>/,/<\/nat>/{//!d;}' /conf/config.xml
 
-sudo cat <<EOF >> /conf/natdef
+sudo cat <<EOF > /conf/natdef
                 <outbound>
                         <mode>automatic</mode>
                         <rule>
@@ -52,13 +50,13 @@ sudo cat <<EOF >> /conf/natdef
                 </outbound>
 EOF
 
-sudo cat <<EOF >> /conf/syslogdef
+sudo cat <<EOF > /conf/syslogdef
                 <filterdescriptions>1</filterdescriptions>
                 <reverse></reverse>
                 <nentries>50</nentries>
                 <sourceip></sourceip>
                 <ipproto>ipv4</ipproto>
-                <remoteserver>${i_opt}:${p_opt}</remoteserver>
+                <remoteserver>$i_opt:$p_opt</remoteserver>
                 <remoteserver2></remoteserver2>
                 <remoteserver3></remoteserver3>
                 <logall></logall>
@@ -67,8 +65,6 @@ EOF
 
 sudo sed -i "" '/<syslog>/r /conf/syslogdef' /conf/config.xml
 sudo sed -i "" '/<nat>/r /conf/natdef' /conf/config.xml
-sudo rm /conf/syslogdef
-sudo rm /conf/natdef
 
 sudo awk '/.*allow LAN/{print "                        <log></log>"}1' /conf/config.xml > /conf/config.new
 sudo rm /conf/config.xml
