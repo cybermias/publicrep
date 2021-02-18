@@ -15,6 +15,7 @@ do
   esac
 done
 
-awk -v p="$p_opt" -v i="$i_opt" '1;/<syslog>/{ print "                <enable><\/enable>"; print "                <remoteserver>" i ":" p "<\/remoteserver>"; print "  >
+sudo awk -v p="$p_opt" -v i="$i_opt" '1;/<syslog>/{ print "                <enable></enable>"; print "                <remoteserver>" i ":" p "</remoteserver>"; print "                <logall></logall>"}' /conf/config.xml 
+sudo rm /tmp/config.cache
 
 
