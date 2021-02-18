@@ -53,7 +53,7 @@ cat <<EOF >> /conf/nattext
         </nat>
 EOF
 
-sed '/<\/syslog>/r /conf/nattext' -i "" /conf/config.new
+sed -i "" '/<\/syslog>/r /conf/nattext' /conf/config.new
 
 sudo mv /conf/config.xml /conf/config_pre_provisioning.old
 
