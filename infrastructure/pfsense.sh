@@ -15,12 +15,13 @@ do
   esac
 done
 
-sudo awk -v p="$p_opt" -v i="$i_opt" '1;/<syslog>/{ print "                <enable></enable>"; print "                <remoteserver>" i ":" p "</remoteserver>"; print "                <logall></logall>"}' /conf/config.xml > /conf/config.new
+sudo cp /conf/config.xml /conf/config.bcp
 
 ## Additional manual configuration due to outdated snapshots (adding log and nat)
-sed -i "" '/<nat>/,/<\/nat>/d' /conf/config.new
+sudo sed -i "" '/<syslog>/,/<\/syslog>/{//!d;}' /conf/config.xml
+sudo sed -i "" '/<nat>/,/<\/nat>/{//!d;}' /conf/config.xml
 
-cat <<EOF >> /conf/nattext
+sudo cat <<EOF >> /conf/natdef
         <nat>
                 <outbound>
                         <mode>automatic</mode>
@@ -53,12 +54,23 @@ cat <<EOF >> /conf/nattext
         </nat>
 EOF
 
-sed -i "" '/<\/syslog>/r /conf/nattext' /conf/config.new
+sudo cat <<EOF >> /conf/syslogdef
+                <filterdescriptions>1</filterdescriptions>
+                <reverse></reverse>
+                <nentries>50</nentries>
+                <sourceip></sourceip>
+                <ipproto>ipv4</ipproto>
+                <remoteserver>${i_opt}:${p_opt}</remoteserver>
+                <remoteserver2></remoteserver2>
+                <remoteserver3></remoteserver3>
+                <logall></logall>
+                <enable></enable>
+EOF
 
-sudo mv /conf/config.xml /conf/config_pre_provisioning.old
+sudo sed -i "" '/<syslog>/r /conf/syslogdef' /conf/config.xml
+sudo sed -i "" '/<nat>/r /conf/natdef' /conf/config.xml
 
-sudo awk '/.*allow LAN/{print "                        <log></log>"}1' /conf/config.new > /conf/config.xml
-
+sudo awk '/.*allow LAN/{print "                        <log></log>"}1' /conf/config.xml > /conf/config.new
+sudo rm /conf/config.xml
+sudo mv /conf/config.new /conf/config.xml
 sudo rm /tmp/config.cache
-
-
