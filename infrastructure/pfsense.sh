@@ -22,7 +22,6 @@ sudo sed -i "" '/<syslog>/,/<\/syslog>/{//!d;}' /conf/config.xml
 sudo sed -i "" '/<nat>/,/<\/nat>/{//!d;}' /conf/config.xml
 
 sudo cat <<EOF >> /conf/natdef
-        <nat>
                 <outbound>
                         <mode>automatic</mode>
                         <rule>
@@ -51,7 +50,6 @@ sudo cat <<EOF >> /conf/natdef
                                 </created>
                         </rule>
                 </outbound>
-        </nat>
 EOF
 
 sudo cat <<EOF >> /conf/syslogdef
