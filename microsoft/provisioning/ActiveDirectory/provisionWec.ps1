@@ -35,9 +35,8 @@ Invoke-WebRequest -uri https://raw.githubusercontent.com/OTRF/Blacksmith/master/
 Restart-Service wecsvc
 
 New-GPO -Name "SysmonEvents" -Comment "Event Forwarding for Sysmon"
-
 Set-GPRegistryValue -Name "SysmonEvents" -Key "HKLM\Software\Policies\Microsoft\Windows\EventLog\EventForwarding\SubscriptionManager" -ValueName 1 -Type String -Value "Server=http://$fqdn:5985/wsman/SubscriptionManager/WEC,Refresh=60"
-
+New-GPLink -Name "SysmonEvents" -Target "dc=Atlas,dc=Lab" -Enforced yes -LinkEnabled yes
 
 
 
