@@ -56,11 +56,7 @@ sudo cat <<EOF > /conf/syslogdef
                 <nentries>50</nentries>
                 <sourceip></sourceip>
                 <ipproto>ipv4</ipproto>
-                <remoteserver>$i_opt:$p_opt</remoteserver>
-                <remoteserver2></remoteserver2>
-                <remoteserver3></remoteserver3>
                 <logall></logall>
-                <enable></enable>
                 <filter></filter>
                 <dhcp></dhcp>
                 <portalauth></portalauth>
@@ -73,6 +69,10 @@ sudo cat <<EOF > /conf/syslogdef
                 <ppp></ppp>
                 <routing></routing>
                 <ntpd></ntpd>
+                <remoteserver>$i_opt:$p_opt</remoteserver>
+                <remoteserver2></remoteserver2>
+                <remoteserver3></remoteserver3>
+                <enable></enable>
 EOF
 
 sudo sed -i "" '/<syslog>/r /conf/syslogdef' /conf/config.xml
@@ -140,3 +140,4 @@ sudo awk '/.*allow LAN/{print "                        <log></log>"}1' /conf/con
 sudo rm /conf/config.xml
 sudo mv /conf/config.new /conf/config.xml
 sudo rm /tmp/config.cache
+/etc/rc.filter_configure
