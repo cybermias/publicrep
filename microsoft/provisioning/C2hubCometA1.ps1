@@ -62,7 +62,9 @@ Add-LocalGroupMember -group "Remote Desktop Users" -member ($domain + "\Domain U
 cscript c:\windows\system32\slmgr.vbs /rearm
 
 # Add the WEF script
-. { iwr -useb $wefscript } | iex; install
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Unrestricted -Force
+Invoke-WebRequest -uri $wefscript -outfile provision.ps1
+.\provision.ps1
 
 # Clear all the relevant logs (old snapshot logs and provisioning-generated logs, so fresh start). Enforcing final Restart.
 Get-EventLog -LogName * | ForEach { Clear-EventLog $_.Log }
