@@ -122,7 +122,6 @@ local7.*                                                        @${i_opt}:${p_op
 *.*                                                             @${i_opt}:${p_opt}
 EOF
 
-sudo echo "*.*                                                             @${i_opt}:${p_opt}" >> /etc/syslog.conf
 sudo service syslogd restart
 
 sudo awk '/.*allow LAN/{print "                        <log></log>"}1' /conf/config.xml > /conf/config.new
