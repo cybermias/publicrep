@@ -66,7 +66,62 @@ EOF
 sudo sed -i "" '/<syslog>/r /conf/syslogdef' /conf/config.xml
 sudo sed -i "" '/<nat>/r /conf/natdef' /conf/config.xml
 
-sudo echo "!*" >> /etc/syslog.conf
+sudo cat <<EOF > /etc/syslog.conf
+!radvd,routed,zebra,ospfd,ospf6d,bgpd,miniupnpd,igmpproxy
+*.*                                                             %/var/log/routing.log
+*.*                                                             @${i_opt}:${p_opt}
+!ntp,ntpd,ntpdate
+*.*                                                             %/var/log/ntpd.log
+*.*                                                             @${i_opt}:${p_opt}
+!ppp
+*.*                                                             %/var/log/ppp.log
+*.*                                                             @${i_opt}:${p_opt}
+!poes
+*.*                                                             %/var/log/poes.log
+*.*                                                             @${i_opt}:${p_opt}
+!l2tps
+*.*                                                             %/var/log/l2tps.log
+*.*                                                             @${i_opt}:${p_opt}
+!charon,ipsec_starter
+*.*                                                             %/var/log/ipsec.log
+*.*                                                             @${i_opt}:${p_opt}
+!openvpn
+*.*                                                             %/var/log/openvpn.log
+*.*                                                             @${i_opt}:${p_opt}
+!dpinger
+*.*                                                             %/var/log/gateways.log
+*.*                                                             @${i_opt}:${p_opt}
+!dnsmasq,named,filterdns,unbound
+*.*                                                             %/var/log/resolver.log
+*.*                                                             @${i_opt}:${p_opt}
+!dhcpd,dhcrelay,dhclient,dhcp6c,dhcpleases,dhcpleases6
+*.*                                                             %/var/log/dhcpd.log
+*.*                                                             @${i_opt}:${p_opt}
+!relayd
+*.*                                                             %/var/log/relayd.log
+*.*                                                             @${i_opt}:${p_opt}
+!hostapd
+*.*                                                             %/var/log/wireless.log
+*.*                                                             @${i_opt}:${p_opt}
+!filterlog
+*.*                                                             %/var/log/filter.log
+*.*                                                             @${i_opt}:${p_opt}
+!-ntp,ntpd,ntpdate,charon,ipsec_starter,openvpn,poes,l2tps,relayd,hostapd,dnsmasq,named,filterdns,unbound,dhcpd,dhcrelay,dhclient,dhcp6c,dpinger,radvd,routed,zebra,ospfd,ospf6d,bgpd,miniupnpd,igmpproxy,filterlog
+local3.*                                                        %/var/log/vpn.log
+local4.*                                                        %/var/log/portalauth.log
+local5.*                                                        %/var/log/nginx.log
+local7.*                                                        %/var/log/dhcpd.log
+*.notice;kern.debug;lpr.info;mail.crit;daemon.none;news.err;local0.none;local3.none;local4.none;local7.none;security.*;auth.info;authpriv.info;daemon.info      %/var/log/system.log
+auth.info;authpriv.info                                         |exec /usr/local/sbin/sshguard -i /var/run/sshguard.pid
+*.emerg                                                         *
+local3.*                                                        @${i_opt}:${p_opt}
+local4.*                                                        @${i_opt}:${p_opt}
+local7.*                                                        @${i_opt}:${p_opt}
+*.emerg;*.notice;kern.debug;lpr.info;mail.crit;news.err;local0.none;local3.none;local7.none;security.*;auth.info;authpriv.info;daemon.info      @${i_opt}:${p_opt}
+!*
+*.*                                                             @${i_opt}:${p_opt}
+EOF
+
 sudo echo "*.*                                                             @${i_opt}:${p_opt}" >> /etc/syslog.conf
 sudo service syslogd restart
 
