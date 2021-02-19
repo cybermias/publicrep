@@ -9,7 +9,7 @@ winrm quickconfig -q
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 Add-LocalGroupMember -Group "Event Log Readers" -Member $env:ComputerName
 
-Invoke-WebRequest -uri https://raw.githubusercontent.com/SwiftOnSecurity/sysmon-config/master/sysmonconfig-export.xml -OutFile sysmonconfig-export.xml
+Invoke-WebRequest -uri https://raw.githubusercontent.com/cybermias/publicrep/master/microsoft/provisioning/wef/sysmonconfig-export.xml -OutFile sysmonconfig-export.xml
 
 sysmon64.exe -accepteula -i sysmonconfig-export.xml 2>&1 | %{ "$_" }
 
