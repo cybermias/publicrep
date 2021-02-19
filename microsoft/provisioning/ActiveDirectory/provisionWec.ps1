@@ -34,7 +34,7 @@ Invoke-WebRequest -uri https://raw.githubusercontent.com/OTRF/Blacksmith/master/
 & wecutil qc /quiet
 Restart-Service wecsvc
 
-New-GPO -Name "SysmonEvents" -Comment "Event Forwarding for Sysmon"
+# Altering the default domain policy (as my attempts to create a new policy and enforce it went to valhalla. Apperantly, the default policy already has a misconfigured SubscriptionManager without the "Server=" element in it)
 Set-GPRegistryValue -Name "SysmonEvents" -Key "HKLM\Software\Policies\Microsoft\Windows\EventLog\EventForwarding\SubscriptionManager" -ValueName 1 -Type String -Value "Server=http://$fqdn:5985/wsman/SubscriptionManager/WEC,Refresh=60"
 New-GPLink -Name "SysmonEvents" -Target "dc=Atlas,dc=Lab" -Enforced yes -LinkEnabled yes
 
