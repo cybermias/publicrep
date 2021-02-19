@@ -28,7 +28,7 @@ $fqdn = $collector+"."+$domain
 
 sysmon64.exe -accepteula -i 2>&1 | %{ "$_" }
 
-Invoke-WebRequest -uri https://raw.githubusercontent.com/OTRF/Blacksmith/master/resources/configs/wef/subscriptions/sysmon.xml -outfile sysmon.xml
+Invoke-WebRequest -uri https://raw.githubusercontent.com/cybermias/publicrep/master/microsoft/provisioning/sysmon/sysmon.xml -outfile sysmon.xml
 
 & wecutil cs sysmon.xml
 & wecutil qc /quiet
