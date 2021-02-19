@@ -35,7 +35,7 @@ Invoke-WebRequest -uri https://raw.githubusercontent.com/OTRF/Blacksmith/master/
 Restart-Service wecsvc
 
 # Altering the default domain policy (as my attempts to create a new policy and enforce it went to valhalla. Apperantly, the default policy already has a misconfigured SubscriptionManager without the "Server=" element in it)
-Set-GPRegistryValue -Name "Default Domain Policy" -Key "HKLM\Software\Policies\Microsoft\Windows\EventLog\EventForwarding\SubscriptionManager" -ValueName 1 -Type String -Value "Server=http://$fqdn:5985/wsman/SubscriptionManager/WEC,Refresh=60"
+Set-GPRegistryValue -Name "Default Domain Policy" -Key "HKLM\Software\Policies\Microsoft\Windows\EventLog\EventForwarding\SubscriptionManager" -ValueName 1 -Type String -Value "Server=http://$($fqdn):5985/wsman/SubscriptionManager/WEC,Refresh=60"
 
 
 
