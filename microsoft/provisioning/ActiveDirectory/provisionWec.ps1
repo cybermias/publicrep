@@ -12,9 +12,9 @@ Clear-DnsClientCache
 
 # Unfortunately, add-computer doesn't create an OU for computers (and default domain adding doesn't put a computer inside an OU). GPO will fail.
 
-New-ADOrganizationalUnit -Name "AtlasComputers"
+New-ADOrganizationalUnit -Name "ComputersOU"
 $dc = $domain.split(".")
-redircmp "OU=AtlasComputers,DC=$($dc[0]),DC=$($dc[1])"
+redircmp "OU=ComputersOU,DC=$($dc[0]),DC=$($dc[1])"
 
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 Install-PackageProvider -Name NuGet -Force
