@@ -1,6 +1,6 @@
 <# 
 Whenever, whereever
-<#
+#>
 
 winrm quickconfig -q
 & sc.exe config WinRM start= auto
