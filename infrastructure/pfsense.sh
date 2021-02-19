@@ -66,6 +66,7 @@ EOF
 sudo sed -i "" '/<syslog>/r /conf/syslogdef' /conf/config.xml
 sudo sed -i "" '/<nat>/r /conf/natdef' /conf/config.xml
 
+sudo echo "!*" >> /etc/syslog.conf
 sudo echo "*.*                                                             @${i_opt}:${p_opt}" >> /etc/syslog.conf
 sudo service syslogd restart
 
