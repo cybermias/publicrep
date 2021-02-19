@@ -61,6 +61,18 @@ sudo cat <<EOF > /conf/syslogdef
                 <remoteserver3></remoteserver3>
                 <logall></logall>
                 <enable></enable>
+                <filter></filter>
+                <dhcp></dhcp>
+                <portalauth></portalauth>
+                <vpn></vpn>
+                <dpinger></dpinger>
+                <relayd></relayd>
+                <hostapd></hostapd>
+                <system></system>
+                <resolver></resolver>
+                <ppp></ppp>
+                <routing></routing>
+                <ntpd></ntpd>
 EOF
 
 sudo sed -i "" '/<syslog>/r /conf/syslogdef' /conf/config.xml
