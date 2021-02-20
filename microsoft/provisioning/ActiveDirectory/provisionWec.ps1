@@ -3,8 +3,8 @@ Following WEC/WEF definitions, a script is needed.
 #>
 
 param(
-  [String]$domain
-  [String]$splunkip
+  [String]$domain,
+  [String]$splunkip,
   [String]$splunkport
 )
 
