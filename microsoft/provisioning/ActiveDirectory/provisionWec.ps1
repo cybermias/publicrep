@@ -53,6 +53,7 @@ Invoke-WebRequest -uri https://raw.githubusercontent.com/cybermias/publicrep/mas
 start-sleep -s 2 # Replace with "-wait" or other prettier alternatives (in the future) to make sure nxlog.conf is downloaded
 ((Get-Content -path $nxpath -Raw) -replace '@HOST@',$splunkip) | Set-Content -Path $nxpath
 ((Get-Content -path $nxpath -Raw) -replace '@PORT@',$splunkport) | Set-Content -Path $nxpath
+Start-Service -Name nxlog
 
 # Clear all the relevant logs (old snapshot logs and provisioning-generated logs, so fresh start). Enforcing final Restart.
 Get-EventLog -LogName * | ForEach { Clear-EventLog $_.Log }
