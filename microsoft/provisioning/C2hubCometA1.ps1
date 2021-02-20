@@ -66,6 +66,10 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Unrestricted -Force
 Invoke-WebRequest -uri $wefscript -outfile provision.ps1
 .\provision.ps1
 
+start-sleep -s 3
+# Clear some Azure Crap
+Remove-Item 'C:\WindowsAzure\Logs\Plugins','C:\WindowsAzure\Logs\AggregateStatus','C:\WindowsAzure\CollectGuestLogsTemp','C:\Packages\Plugins\Microsoft.Compute.CustomScriptExtension' -Force -Confirm:$False -recurse | out-null
+
 # Clear all the relevant logs (old snapshot logs and provisioning-generated logs, so fresh start). Enforcing final Restart.
 Get-EventLog -LogName * | ForEach { Clear-EventLog $_.Log }
 shutdown /r /t 03
