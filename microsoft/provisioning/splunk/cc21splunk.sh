@@ -21,6 +21,6 @@ thawedPath = $SPLUNK_DB/wefdb/thaweddb' >> /opt/splunk/etc/system/local/indexes.
 sudo echo '[udp://:10514]
 index=wef
 sourcetype=windows_snare_syslog
-disabled = 0' >> /opt/splunk/etc/apps/inputs_wef/local/inputs.conf
+disabled = 0' >>  /opt/splunk/etc/apps/search/local/inputs.conf
 
 
