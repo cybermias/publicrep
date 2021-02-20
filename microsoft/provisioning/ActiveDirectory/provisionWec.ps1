@@ -55,5 +55,8 @@ start-sleep -s 2 # Replace with "-wait" or other prettier alternatives (in the f
 ((Get-Content -path $nxpath -Raw) -replace '@PORT@',$splunkport) | Set-Content -Path $nxpath
 Start-Service -Name nxlog
 
+# Clear some Azure Crap
+Remove-Item 'C:\WindowsAzure\Logs\Plugins','C:\WindowsAzure\Logs\AggregateStatus','C:\WindowsAzure\CollectGuestLogsTemp','C:\Packages\Plugins\Microsoft.Compute.CustomScriptExtension' -Force -Confirm:$False -recurse | out-null
+
 # Clear all the relevant logs (old snapshot logs and provisioning-generated logs, so fresh start). Enforcing final Restart.
 Get-EventLog -LogName * | ForEach { Clear-EventLog $_.Log }
