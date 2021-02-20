@@ -4,6 +4,8 @@ Following WEC/WEF definitions, a script is needed.
 
 param(
   [String]$domain
+  [String]$splunkip
+  [String]$splunkport
 )
 
 # Old Atlas.Lab forwards require the Azure forwarder (issues with 9.9.9.9 not accepting some lousy bashupload.com translation)
@@ -41,6 +43,16 @@ Restart-Service wecsvc
 # Altering the default domain policy (as my attempts to create a new policy and enforce it went to valhalla. Apperantly, the default policy already has a misconfigured SubscriptionManager without the "Server=" element in it)
 Set-GPRegistryValue -Name "Default Domain Policy" -Key "HKLM\Software\Policies\Microsoft\Windows\EventLog\EventForwarding\SubscriptionManager" -ValueName 1 -Type String -Value "Server=http://$($fqdn):5985/wsman/SubscriptionManager/WEC,Refresh=60"
 
+# Install nxlog and fix nxlog.conf
+$nxpath = "C:\Program Files (x86)\nxlog\conf\nxlog.conf"
+Invoke-WebRequest -uri https://github.com/cybermias/publicrep/raw/master/microsoft/provisioning/ActiveDirectory/nxlog/nxlog-ce-2.10.2150.msi -outfile nxlog.msi
+Start-Process msiexec '/i nxlog.msi /quiet' -Wait 
+start-sleep -s 5 # Needs to validate if "-wait" will wait util file is downloaded. Just in case for now.
+Remove-Item $nxpath | out-null
+Invoke-WebRequest -uri https://raw.githubusercontent.com/cybermias/publicrep/master/microsoft/provisioning/ActiveDirectory/nxlog/nxlog.conf -outfile $nxpath
+start-sleep -s 2 # Replace with "-wait" or other prettier alternatives (in the future) to make sure nxlog.conf is downloaded
+((Get-Content -path $nxpath -Raw) -replace '@HOST@',$splunkip) | Set-Content -Path $nxpath
+((Get-Content -path $nxpath -Raw) -replace '@PORT@',$splunkport) | Set-Content -Path $nxpath
 
-
-
+# Clear all the relevant logs (old snapshot logs and provisioning-generated logs, so fresh start). Enforcing final Restart.
+Get-EventLog -LogName * | ForEach { Clear-EventLog $_.Log }
