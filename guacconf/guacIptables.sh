@@ -168,7 +168,7 @@ sudo sqlite3 "/usr/local/openvpn_as/etc/db/userprop.db" "insert into config VALU
 # IPTABLES to NAT direct RDP access to every machine *STATICALLY!* (will require automation in further version, check ChangeLog)
 
 lahLan="$(/sbin/ip -o -4 addr list eth0 | awk '{print $4}' | cut -d. -f1-2).1"
-lbhLan="$(/sbin/ip -o -4 addr list eth0 | awk '{print $4}' | cut -d. -f1-2).11"
+lbhLan="$(/sbin/ip -o -4 addr list eth0 | awk '{print $4}' | cut -d. -f1-2).99"
 for ((i=10; i<18; i+=1))
 {
 	sudo iptables -t nat -A PREROUTING -p tcp --dport 33$i -j DNAT --to-destination $lahLan.$i:3389
