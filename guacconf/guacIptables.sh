@@ -168,13 +168,19 @@ sudo sqlite3 "/usr/local/openvpn_as/etc/db/userprop.db" "insert into config VALU
 # IPTABLES to NAT direct RDP access to every machine *STATICALLY!* (will require automation in further version, check ChangeLog)
 
 lahLan="$(/sbin/ip -o -4 addr list eth0 | awk '{print $4}' | cut -d. -f1-2).1"
-lbhLan="$(/sbin/ip -o -4 addr list eth0 | awk '{print $4}' | cut -d. -f1-2).99"
-for ((i=10; i<18; i+=1))
+lbhLan="$(/sbin/ip -o -4 addr list eth0 | awk '{print $4}' | cut -d. -f1-2).11"
+for ((i=10; i<100; i+=1))
 {
+	# Setting ports 3310 to 3399 for LAH1 to LAH99 (.10 until .99)
+	# Setting ports 2210 to 2299 for LAH1 to LAH99 (.10 until .99)
 	sudo iptables -t nat -A PREROUTING -p tcp --dport 33$i -j DNAT --to-destination $lahLan.$i:3389
+	sudo iptables -t nat -A PREROUTING -p tcp --dport 22$i -j DNAT --to-destination $lahLan.$i:22
 }
 
+# Setting ports 20033 for LBH1 (AD) RDP
+# Setting ports 10022 for LBH2 (100) SSH
 sudo iptables -t nat -A PREROUTING -p tcp --dport 33200 -j DNAT --to-destination $lbhLan.200:3389
+sudo iptables -t nat -A PREROUTING -p tcp --dport 33100 -j DNAT --to-destination $lbhLan.100:22
 sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 
 
