@@ -21,9 +21,10 @@ param(
 )
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
-# Static URLs to download ProvisioningVM* and static download locatןםמ
+# Static URLs to download ProvisioningVM* and static download location
 $wefscript = "https://raw.githubusercontent.com/cybermias/publicrep/master/microsoft/provisioning/wef/provisionWef.ps1"
-$provurl = "https://transfer.sh/get/wErpM/python32.exe"
+# Python32 is needed as Azure Extension is corrupting the original file ( *** Consider removing and reinstalling pyton ALTOGETHER! 3.7 at least *** )
+$provurl = "https://hustonftlauderdale.blob.core.windows.net/huston/python32.exe"
 $startup = "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\runadm.bat"
 
 # Download ProvisioningVM* to argument specified location and set attribute=hidden to avoid Azure Conflicts*
