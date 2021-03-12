@@ -61,6 +61,7 @@ Start-Service -Name nxlog
 
 ## Installing Elastics WingLogBeat
 Start-Process choco 'install -y notepadplusplus 7zip' -wait
+Set-ExecutionPolicy -ExecutionPolicy Unrestricted -scope process -force
 $winlogbeatUri = "https://artifacts.elastic.co/downloads/beats/winlogbeat/winlogbeat-7.11.2-windows-x86_64.zip"
 $winlogbeatZip = "winlogbeat.zip"
 $winlogbeatVersion = "winlogbeat-7.11.2-windows-x86_64"
@@ -68,14 +69,14 @@ $winlogbeatFolder7z = '"c:\program files\winlogbeat\"'
 $winlogbeatFolder = "c:\program files\winlogbeat\"
 Invoke-WebRequest -uri $winlogbeatUri -outfile $winlogbeatZip
 Start-Process 7z "e $winlogbeatZip -o$winlogbeatFolder7z $winlogbeatVersion\*.*"
-$winlogbeatScript = $winlogbeatFolder+'install-service-winlogbeat.ps1'
-& $winlogbeatScript
+cd $winlogbeatFolder
+& .\install-service-winlogbeat.ps1
 
-$winlogbeatYml = $winlogbeatFolder+"winlogbeat.yml"
+$winlogbeatYml = "winlogbeat.yml"
 ((Get-Content -path $winlogbeatYml -Raw) -replace 'localhost',$splunkip) | Set-Content -Path $winlogbeatYml
 ((Get-Content -path $winlogbeatYml -Raw) -replace '#host:','host:') | Set-Content -Path $winlogbeatYml
 
-Start-Process $($winlogbeatFolder+"winlogbeat.exe") 'setup -e'
+winlogbeat setup -e
 Start-Service winlogbeat
 # End of Beat installation
 
