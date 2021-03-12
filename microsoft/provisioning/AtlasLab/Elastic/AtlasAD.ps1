@@ -6,7 +6,8 @@ This version avoids the nxlog software used for Splunk, and customizes a deploym
 
 param(
   [String]$domain,
-  [String]$elasticip,
+  [String]$siemip,
+  [String]$siemport,
   [String]$deploy
 )
 
@@ -45,22 +46,25 @@ Restart-Service wecsvc
 # Altering the default domain policy (as my attempts to create a new policy and enforce it went to valhalla. Apperantly, the default policy already has a misconfigured SubscriptionManager without the "Server=" element in it)
 Set-GPRegistryValue -Name "Default Domain Policy" -Key "HKLM\Software\Policies\Microsoft\Windows\EventLog\EventForwarding\SubscriptionManager" -ValueName 1 -Type String -Value "Server=http://$($fqdn):5985/wsman/SubscriptionManager/WEC,Refresh=60"
 
-<#
-# Install nxlog and fix nxlog.conf
-$nxpath = "C:\Program Files (x86)\nxlog\conf\nxlog.conf"
-Invoke-WebRequest -uri https://github.com/cybermias/publicrep/raw/master/microsoft/provisioning/ActiveDirectory/nxlog/nxlog-ce-2.10.2150.msi -outfile nxlog.msi
-Start-Process msiexec '/i nxlog.msi /quiet' -Wait 
-start-sleep -s 5 # Needs to validate if "-wait" will wait util file is downloaded. Just in case for now.
-Remove-Item $nxpath | out-null
-Invoke-WebRequest -uri https://raw.githubusercontent.com/cybermias/publicrep/master/microsoft/provisioning/ActiveDirectory/nxlog/nxlog.conf -outfile $nxpath
-start-sleep -s 2 # Replace with "-wait" or other prettier alternatives (in the future) to make sure nxlog.conf is downloaded
-((Get-Content -path $nxpath -Raw) -replace '@HOST@',$elasticip) | Set-Content -Path $nxpath
-((Get-Content -path $nxpath -Raw) -replace '@PORT@',$splunkport) | Set-Content -Path $nxpath
-Start-Service -Name nxlog
-#>
+if ($deploy -eq "splunk")
+{
+	# Install nxlog and fix nxlog.conf (Not using UF until licenses are cleared)
+	$nxpath = "C:\Program Files (x86)\nxlog\conf\nxlog.conf"
+	Invoke-WebRequest -uri https://github.com/cybermias/publicrep/raw/master/microsoft/provisioning/ActiveDirectory/nxlog/nxlog-ce-2.10.2150.msi -outfile nxlog.msi
+	Start-Process msiexec '/i nxlog.msi /quiet' -Wait 
+	start-sleep -s 5 # Needs to validate if "-wait" will wait util file is downloaded. Just in case for now.
+	Remove-Item $nxpath | out-null
+	Invoke-WebRequest -uri https://raw.githubusercontent.com/cybermias/publicrep/master/microsoft/provisioning/ActiveDirectory/nxlog/nxlog.conf -outfile $nxpath
+	start-sleep -s 2 # Replace with "-wait" or other prettier alternatives (in the future) to make sure nxlog.conf is downloaded
+	((Get-Content -path $nxpath -Raw) -replace '@HOST@',$siemip) | Set-Content -Path $nxpath
+	((Get-Content -path $nxpath -Raw) -replace '@PORT@',$siemport) | Set-Content -Path $nxpath
+	Start-Service -Name nxlog
+	# Assign Elastic with DNS record (future: automize the hostname)
+	Add-DnsServerResourceRecordA -Name "Splunk" -IPv4Address $siemip -ZoneName $domain -ComputerName $env:ComputerName -CreatePtr
+}
 
 ## Installing Elastics WingLogBeat
-if ($deploy -eq 1)
+if ($deploy -eq "elastic")
 {
 	Start-Process choco 'install -y notepadplusplus 7zip'
 	Set-ExecutionPolicy -ExecutionPolicy Unrestricted -scope process -force
@@ -75,16 +79,16 @@ if ($deploy -eq 1)
     	cd ($winlogbeatRoot+"winlogbeat")
 	& .\install-service-winlogbeat.ps1
 
-	((Get-Content -path $winlogbeatYml -Raw) -replace 'localhost',$elasticip) | Set-Content -Path $winlogbeatYml
+	((Get-Content -path $winlogbeatYml -Raw) -replace 'localhost',$siemip) | Set-Content -Path $winlogbeatYml
 	((Get-Content -path $winlogbeatYml -Raw) -replace '#host:','host:') | Set-Content -Path $winlogbeatYml
 
 	start-process winlogbeat.exe 'setup -e' -wait
 	Start-Service winlogbeat
+	# Assign Elastic with DNS record (future: automize the hostname)
+	Add-DnsServerResourceRecordA -Name "ElasticSearch" -IPv4Address $siemip -ZoneName $domain -ComputerName $env:ComputerName -CreatePtr
 }
 # End of Beat installation
 
-# Assign Elastic with DNS record (future: automize the hostname)
-Add-DnsServerResourceRecordA -Name "ElasticSearch" -IPv4Address $elasticip -ZoneName $domain -ComputerName $env:ComputerName -CreatePtr
 # Clear some Azure Crap
 Remove-Item 'C:\WindowsAzure\Logs\Plugins','C:\WindowsAzure\Logs\AggregateStatus','C:\WindowsAzure\CollectGuestLogsTemp','C:\Packages\Plugins\Microsoft.Compute.CustomScriptExtension' -Force -Confirm:$False -recurse | out-null
 
