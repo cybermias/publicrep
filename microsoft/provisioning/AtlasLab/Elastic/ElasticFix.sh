@@ -62,8 +62,8 @@ sudo sed -i "s/FiOS/UNTRUST/g" /etc/pfelk/conf.d/20-interfaces.conf
 sudo sed -i "s/Home Network/TRUST/g" /etc/pfelk/conf.d/20-interfaces.conf
 sudo systemctl start elasticsearch 
 sudo systemctl start kibana 
-sudo /bin/systemctl daemon-reload
-sudo systemctl enable logstash.service
+sudo systemctl daemon-reload
+sudo systemctl enable logstash
 sudo systemctl start logstash
 
 ## Add Dashboards and Templates for pfelk
