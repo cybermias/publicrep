@@ -7,7 +7,7 @@ This version avoids the nxlog software used for Splunk, and customizes a deploym
 param(
   [String]$domain,
   [String]$siemip,
-  [String]$siemport,
+  #[String]$siemport,
   [String]$deploy
 )
 
