@@ -75,7 +75,7 @@ if ! [[ "${os_codename}" =~ (precise|maya|trusty|qiana|rebecca|rafaela|rosa) ]];
      { echo -e "\\n${RED}#${RESET} Failed to install pfELK Templates"; sleep 3; }
   else
      sudo wget -q https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/scripts/pfelk-template-installer.sh -P /tmp/pfELK/
-     sudochmod +x /tmp/pfELK/pfelk-template-installer.sh
+     sudo chmod +x /tmp/pfELK/pfelk-template-installer.sh
      sudo bash /tmp/pfELK/pfelk-template-installer.sh > /dev/null 2>&1
      sleep 3
   fi
@@ -108,7 +108,7 @@ else
     { echo -e "${RED}#${RESET} Failed to Install pfELK Dashboards\\n\\n"; sleep 3; }
   else
      sudo wget -q https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/scripts/pfelk-dashboard-installer.sh -P /tmp/pfELK/
-     sudo hmod +x /tmp/pfELK/pfelk-dashboard-installer.sh
+     sudo chmod +x /tmp/pfELK/pfelk-dashboard-installer.sh
      sudo bash /tmp/pfELK/pfelk-dashboard-installer.sh
      sleep 3
   fi
