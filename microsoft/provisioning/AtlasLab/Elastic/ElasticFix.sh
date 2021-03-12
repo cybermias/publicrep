@@ -66,10 +66,56 @@ sudo systemctl enable logstash
 sudo systemctl start logstash
 
 ## Add Dashboards and Templates for pfelk
-sudo wget -q https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/scripts/pfelk-template-installer.sh -P /tmp/
-sudo wget -q https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/scripts/pfelk-dashboard-installer.sh -P /tmp/
-sudo chmod +x /tmp/pfelk-template-installer.sh
-sudo chmod +x /tmp/pfelk-dashboard-installer.sh
-sudo ./tmp/pfelk-template-installer.sh > /dev/null 2>&1
-sleep 4
-sudo ./ptmp/felk-dashboard-installer.sh > /dev/null 2>&1
+# Templates
+if ! [[ "${os_codename}" =~ (precise|maya|trusty|qiana|rebecca|rafaela|rosa) ]]; then
+  SERVICE_ELASTIC=$(systemctl is-active elasticsearch)
+  if ! [ "$SERVICE_ELASTIC" = 'active' ]; then
+     { echo -e "\\n${RED}#${RESET} Failed to install pfELK Templates"; sleep 3; }
+  else
+     echo -e "\\n${WHITE_R}#${RESET} Installing pfELK Templates!${RESET}";
+     wget -q https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/scripts/pfelk-template-installer.sh -P /tmp/pfELK/
+     chmod +x /tmp/pfELK/pfelk-template-installer.sh
+     /tmp/pfELK/pfelk-template-installer.sh > /dev/null 2>&1
+     echo -e "${GREEN}#${RESET} Done."
+     sleep 3
+  fi
+else
+  SERVICE_ELASTIC=$(systemctl is-active elasticsearch)
+  if ! [ "$SERVICE_ELASTIC" = 'active' ]; then
+    { echo -e "\\n${WHITE_R}#${RESET} Failed to install pfELK Templates"; sleep 3; }
+  else
+     echo -e "\\n${WHITE_R}#${RESET} Installing pfELK Templates!${RESET}";
+     wget -q https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/scripts/pfelk-template-installer.sh -P /tmp/pfELK/
+     chmod +x /tmp/pfELK/pfelk-template-installer.sh
+     /tmp/pfELK/pfelk-template-installer.sh > /dev/null 2>&1
+     echo -e "${GREEN}#${RESET} Done."
+     sleep 3
+  fi
+fi
+
+#Dashboards
+if ! [[ "${os_codename}" =~ (precise|maya|trusty|qiana|rebecca|rafaela|rosa) ]]; then
+  SERVICE_KIBANA=$(systemctl is-active kibana)
+  if ! [ "$SERVICE_KIBANA" = 'active' ]; then
+     { echo -e "\\n${RED}#${RESET} Failed to Install pfELK Dashboards\\n\\n"; sleep 3; }
+  else
+     echo -e "\\n${WHITE_R}#${RESET} Installing Kibana Saved Objects (i.e. pfELK Dashboards)!${RESET}";
+     wget -q https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/scripts/pfelk-dashboard-installer.sh -P /tmp/pfELK/
+     chmod +x /tmp/pfELK/pfelk-dashboard-installer.sh
+     /tmp/pfELK/pfelk-dashboard-installer.sh > /dev/null 2>&1
+     echo -e "${GREEN}#${RESET} Done."
+     sleep 3
+  fi
+else
+  SERVICE_KIBANA=$(systemctl is-active kibana)
+  if ! [ "$SERVICE_KIBANA" = 'active' ]; then
+    { echo -e "${RED}#${RESET} Failed to Install pfELK Dashboards\\n\\n"; sleep 3; }
+  else
+     echo -e "\\n${WHITE_R}#${RESET} Installing Kibana Saved Objects (i.e. pfELK Dashboards)!${RESET}";
+     wget -q https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/scripts/pfelk-dashboard-installer.sh -P /tmp/pfELK/
+     chmod +x /tmp/pfELK/pfelk-dashboard-installer.sh
+     /tmp/pfELK/pfelk-dashboard-installer.sh
+     echo -e "${GREEN}#${RESET} Done."
+     sleep 3
+  fi
+fi
