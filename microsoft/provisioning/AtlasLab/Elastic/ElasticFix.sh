@@ -4,9 +4,9 @@
 # This script must be rewritten with automation for "AD" (as DNS) ip address and pfSense LAN interface ip address
 # Additional automation is required for the "AD" (as NTP Sync) 
 
-sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/scripts/pfelk-installer.sh
-sudo chmod +x pfelk-installer.sh
-sudo ./pfelk-installer.sh
+sudo wget -q https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/scripts/pfelk-installer.sh -P /tmp/
+sudo chmod +x /tmp/pfelk-installer.sh
+sudo bash /tmp/pfelk-installer.sh
 
 sudo sed -i 's/\"localhost\"/\"0\"/g' /etc/elasticsearch/elasticsearch.yml
 sudo bash -c 'echo "discovery.type: single-node" >> /etc/elasticsearch/elasticsearch.yml'
@@ -24,5 +24,4 @@ sudo sed -i "s/igb1/hn1/g" /etc/pfelk/conf.d/20-interfaces.conf
 sudo sed -i "s/FiOS/UNTRUST/g" /etc/pfelk/conf.d/20-interfaces.conf
 sudo sed -i "s/Home Network/TRUST/g" /etc/pfelk/conf.d/20-interfaces.conf
 
-
-wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/scripts/pfelk-installer.sh
+sudo systemctl restart logstash
