@@ -72,4 +72,5 @@ sudo wget -q https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/script
 sudo chmod +x /tmp/pfelk-template-installer.sh
 sudo chmod +x /tmp/pfelk-dashboard-installer.sh
 sudo ./tmp/pfelk-template-installer.sh > /dev/null 2>&1
+sleep 4
 sudo ./ptmp/felk-dashboard-installer.sh > /dev/null 2>&1
