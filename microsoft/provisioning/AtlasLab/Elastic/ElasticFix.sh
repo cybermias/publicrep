@@ -4,11 +4,7 @@
 # This script must be rewritten with automation for "AD" (as DNS) ip address and pfSense LAN interface ip address
 # Additional automation is required for the "AD" (as NTP Sync) 
 
-sudo wget -q https://raw.githubusercontent.com/cybermias/publicrep/master/microsoft/provisioning/AtlasLab/Elastic/pfelk_installer.sh -P /tmp/
-sudo chmod +x /tmp/pfelk-installer.sh
-sudo bash /tmp/pfelk-installer.sh
-
-sudo sed -i 's/\"localhost\"/\"0\"/g' /etc/elasticsearch/elasticsearch.yml
+sudo sed -i 's/\"localhost\"/\"0.0.0.0\"/g' /etc/elasticsearch/elasticsearch.yml
 sudo bash -c 'echo "discovery.type: single-node" >> /etc/elasticsearch/elasticsearch.yml'
 
 # DNS
