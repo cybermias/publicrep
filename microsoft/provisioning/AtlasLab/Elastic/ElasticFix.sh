@@ -55,11 +55,12 @@ sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/scripts/e
 sudo chmod +x /etc/pfelk/scripts/error-data.sh
 
 ## Amend pfsense interfaces (NOT AUTOMATED!)
-sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/conf.d/20-interfaces.conf -P /etc/pfelk/conf.d/
 sudo sed -i "s/igb0/hn0/g" /etc/pfelk/conf.d/20-interfaces.conf
 sudo sed -i "s/igb1/hn1/g" /etc/pfelk/conf.d/20-interfaces.conf
 sudo sed -i "s/FiOS/UNTRUST/g" /etc/pfelk/conf.d/20-interfaces.conf
 sudo sed -i "s/Home Network/TRUST/g" /etc/pfelk/conf.d/20-interfaces.conf
+
+## Get everything up and running
 sudo systemctl start elasticsearch 
 sudo systemctl start kibana 
 sudo systemctl enable logstash
