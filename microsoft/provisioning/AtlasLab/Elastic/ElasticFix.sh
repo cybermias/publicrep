@@ -52,12 +52,20 @@ sudo mkdir -p /etc/pfelk/logs
 sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/scripts/error-data.sh -P /etc/pfelk/scripts/
 sudo chmod +x /etc/pfelk/scripts/error-data.sh
 
+## Add Deashboards and Templates for pfelk
 sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/scripts/pfelk-template-installer.sh
 https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/scripts/pfelk-dashboard-installer.sh
 sudo chmod +x pfelk-template-installer.sh
 sudo chmod +x pfelk-dashboard-installer.sh
 sudo ./pfelk-template-installer.sh
 sudo ./pfelk-dashboard-installer.sh
+
+## Amend pfsense interfaces (NOT AUTOMATED!)
+sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/conf.d/20-interfaces.conf -P /etc/pfelk/conf.d/
+sudo sed -i "s/igb0/hn0/g" /etc/pfelk/conf.d/20-interfaces.conf
+sudo sed -i "s/igb1/hn1/g" /etc/pfelk/conf.d/20-interfaces.conf
+sudo sed -i "s/FiOS/UNTRUST/g" /etc/pfelk/conf.d/20-interfaces.conf
+sudo sed -i "s/Home Network/TRUST/g" /etc/pfelk/conf.d/20-interfaces.conf
 
 sudo systemctl enable logstash.service
 sudo service elasticsearch restart
