@@ -83,7 +83,7 @@ if ($deploy -eq "elastic")
 	((Get-Content -path $winlogbeatYml -Raw) -replace '#host:','host:') | Set-Content -Path $winlogbeatYml
 	
 	# Give Elastic (pfelk) time to breath (<==verify this matter)
-	start-sleep -s 2 
+	start-sleep -s 6 
 	start-process winlogbeat.exe 'setup -e' -wait
 	Start-Service winlogbeat
 	# Assign Elastic with DNS record (future: automate the hostname)
