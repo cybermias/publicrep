@@ -3,10 +3,12 @@
 ## Comments
 # This script must be rewritten with automation for "AD" (as DNS) ip address and pfSense LAN interface ip address
 # Additional automation is required for the "AD" (as NTP Sync) 
+sudo systemctl stop elasticsearch
+sudo systemctl stop kibana
+sudo systemctl stop logstash
 
 sudo sed -i 's/\"localhost\"/\"0\"/g' /etc/elasticsearch/elasticsearch.yml
 sudo bash -c 'echo "discovery.type: single-node" >> /etc/elasticsearch/elasticsearch.yml'
-sudo service elasticsearch restart
 
 # DNS
 sudo bash -c 'echo "nameserver 10.200.11.200" >> /etc/resolv.conf'
@@ -52,6 +54,18 @@ sudo mkdir -p /etc/pfelk/logs
 sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/scripts/error-data.sh -P /etc/pfelk/scripts/
 sudo chmod +x /etc/pfelk/scripts/error-data.sh
 
+## Amend pfsense interfaces (NOT AUTOMATED!)
+sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/conf.d/20-interfaces.conf -P /etc/pfelk/conf.d/
+sudo sed -i "s/igb0/hn0/g" /etc/pfelk/conf.d/20-interfaces.conf
+sudo sed -i "s/igb1/hn1/g" /etc/pfelk/conf.d/20-interfaces.conf
+sudo sed -i "s/FiOS/UNTRUST/g" /etc/pfelk/conf.d/20-interfaces.conf
+sudo sed -i "s/Home Network/TRUST/g" /etc/pfelk/conf.d/20-interfaces.conf
+sudo systemctl elasticsearch start
+sudo systemctl kibana start
+sudo /bin/systemctl daemon-reload
+sudo systemctl enable logstash.service
+sudo systemctl start logstash
+
 ## Add Dashboards and Templates for pfelk
 sudo wget -q https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/scripts/pfelk-template-installer.sh -P /tmp/
 sudo wget -q https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/scripts/pfelk-dashboard-installer.sh -P /tmp/
@@ -59,16 +73,3 @@ sudo chmod +x /tmp/pfelk-template-installer.sh
 sudo chmod +x /tmp/pfelk-dashboard-installer.sh
 sudo ./tmp/pfelk-template-installer.sh > /dev/null 2>&1
 sudo ./ptmp/felk-dashboard-installer.sh > /dev/null 2>&1
-
-## Amend pfsense interfaces (NOT AUTOMATED!)
-sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/conf.d/20-interfaces.conf -P /etc/pfelk/conf.d/
-sudo sed -i "s/igb0/hn0/g" /etc/pfelk/conf.d/20-interfaces.conf
-sudo sed -i "s/igb1/hn1/g" /etc/pfelk/conf.d/20-interfaces.conf
-sudo sed -i "s/FiOS/UNTRUST/g" /etc/pfelk/conf.d/20-interfaces.conf
-sudo sed -i "s/Home Network/TRUST/g" /etc/pfelk/conf.d/20-interfaces.conf
-
-sudo systemctl enable logstash.service
-sudo service elasticsearch restart
-sudo service kibana restart
-sudo systemctl start logstash
-
