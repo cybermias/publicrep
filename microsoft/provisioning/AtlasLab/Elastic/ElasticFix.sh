@@ -48,9 +48,10 @@ sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/databases
 sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/databases/rule-names.csv -P /etc/pfelk/databases/
 sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/databases/service-names-port-numbers.csv -P /etc/pfelk/databases/
 
-sudo mkdir -p /etc/pfelk/logs
-sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/scripts/error-data.sh -P /etc/pfelk/scripts/
-sudo chmod +x /etc/pfelk/scripts/error-data.sh
+sudo wget -q https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/scripts/error-data.sh -P /etc/pfelk/scripts/
+sudo chmod +x /etc/pfelk/scripts/pfelk-error.sh
+
+sleep 4
 
 ## Amend pfsense interfaces (NOT AUTOMATED!)
 sudo sed -i "s/igb0/hn0/g" /etc/pfelk/conf.d/20-interfaces.conf
