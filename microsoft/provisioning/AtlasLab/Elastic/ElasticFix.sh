@@ -3,8 +3,6 @@
 ## Comments
 # This script must be rewritten with automation for "AD" (as DNS) ip address and pfSense LAN interface ip address
 # Additional automation is required for the "AD" (as NTP Sync) 
-sudo systemctl stop elasticsearch
-sudo systemctl stop kibana
 sudo systemctl stop logstash
 
 sudo sed -i 's/\"localhost\"/\"0\"/g' /etc/elasticsearch/elasticsearch.yml
@@ -61,10 +59,11 @@ sudo sed -i "s/FiOS/UNTRUST/g" /etc/pfelk/conf.d/20-interfaces.conf
 sudo sed -i "s/Home Network/TRUST/g" /etc/pfelk/conf.d/20-interfaces.conf
 
 ## Get everything up and running
-sudo systemctl start elasticsearch 
-sudo systemctl start kibana 
+sudo systemctl restart elasticsearch 
 sudo systemctl enable logstash
 sudo systemctl start logstash
+
+sleep 5
 
 ## Add Dashboards and Templates for pfelk
 # Templates
