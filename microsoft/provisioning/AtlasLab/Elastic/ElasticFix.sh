@@ -49,7 +49,7 @@ sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/patterns/
 #sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/databases/service-names-port-numbers.csv -P /etc/pfelk/databases/
 
 sudo wget -q https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/scripts/error-data.sh -P /etc/pfelk/scripts/
-sudo chmod +x /etc/pfelk/scripts/pfelk-error.sh
+sudo chmod +x /etc/pfelk/scripts/error-data.sh
 
 sleep 4
 
