@@ -27,6 +27,17 @@ sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/conf.d/30
 sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/conf.d/45-cleanup.conf -P /etc/pfelk/conf.d/
 sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/conf.d/50-outputs.conf -P /etc/pfelk/conf.d/
 
+# Fix outputs to avoid all the crap around it
+sudo cat <<EOF > /etc/pfelk/conf.d/50-outputs.conf
+  if "firewall" in [tags] {
+    elasticsearch {
+      hosts => ["http://localhost:9200"]
+      index => "pfelk-firewall-%{+YYYY.MM}"
+      manage_template => false
+    }
+  }
+EOF
+
 # Extra pfelk (not all configured)
 #sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/conf.d/35-rules-desc.conf -P /etc/pfelk/conf.d/
 #sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/conf.d/36-ports-desc.conf -P /etc/pfelk/conf.d/
