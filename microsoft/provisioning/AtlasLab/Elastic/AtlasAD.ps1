@@ -6,8 +6,8 @@ This version avoids the nxlog software used for Splunk, and customizes a deploym
 
 param(
   [String]$domain,
-  [String]$splunkip,
-  [String]$splunkport
+  [String]$elasticip,
+  [String]$deploy
 )
 
 # Old Atlas.Lab forwards require the Azure forwarder (issues with 9.9.9.9 not accepting some lousy bashupload.com translation)
@@ -54,30 +54,33 @@ start-sleep -s 5 # Needs to validate if "-wait" will wait util file is downloade
 Remove-Item $nxpath | out-null
 Invoke-WebRequest -uri https://raw.githubusercontent.com/cybermias/publicrep/master/microsoft/provisioning/ActiveDirectory/nxlog/nxlog.conf -outfile $nxpath
 start-sleep -s 2 # Replace with "-wait" or other prettier alternatives (in the future) to make sure nxlog.conf is downloaded
-((Get-Content -path $nxpath -Raw) -replace '@HOST@',$splunkip) | Set-Content -Path $nxpath
+((Get-Content -path $nxpath -Raw) -replace '@HOST@',$elasticip) | Set-Content -Path $nxpath
 ((Get-Content -path $nxpath -Raw) -replace '@PORT@',$splunkport) | Set-Content -Path $nxpath
 Start-Service -Name nxlog
 #>
 
 ## Installing Elastics WingLogBeat
-Start-Process choco 'install -y notepadplusplus 7zip' -wait
-Set-ExecutionPolicy -ExecutionPolicy Unrestricted -scope process -force
-$winlogbeatUri = "https://artifacts.elastic.co/downloads/beats/winlogbeat/winlogbeat-7.11.2-windows-x86_64.zip"
-$winlogbeatZip = "winlogbeat.zip"
-$winlogbeatVersion = "winlogbeat-7.11.2-windows-x86_64"
-$winlogbeatFolder7z = '"c:\program files\winlogbeat\"'
-$winlogbeatFolder = "c:\program files\winlogbeat\"
-Invoke-WebRequest -uri $winlogbeatUri -outfile $winlogbeatZip
-Start-Process 7z "e $winlogbeatZip -o$winlogbeatFolder7z $winlogbeatVersion\*.*"
-cd $winlogbeatFolder
-& .\install-service-winlogbeat.ps1
+if ($deploy -eq 1)
+{
+	Start-Process choco 'install -y notepadplusplus 7zip' -wait
+	Set-ExecutionPolicy -ExecutionPolicy Unrestricted -scope process -force
+	$winlogbeatUri = "https://artifacts.elastic.co/downloads/beats/winlogbeat/winlogbeat-7.11.2-windows-x86_64.zip"
+	$winlogbeatZip = "winlogbeat.zip"
+	$winlogbeatVersion = "winlogbeat-7.11.2-windows-x86_64"
+	$winlogbeatFolder7z = '"c:\program files\winlogbeat\"'
+	$winlogbeatFolder = "c:\program files\winlogbeat\"
+	Invoke-WebRequest -uri $winlogbeatUri -outfile $winlogbeatZip
+	Start-Process 7z "e $winlogbeatZip -o$winlogbeatFolder7z $winlogbeatVersion\*.*"
+	cd $winlogbeatFolder
+	& .\install-service-winlogbeat.ps1
 
-$winlogbeatYml = "winlogbeat.yml"
-((Get-Content -path $winlogbeatYml -Raw) -replace 'localhost',$splunkip) | Set-Content -Path $winlogbeatYml
-((Get-Content -path $winlogbeatYml -Raw) -replace '#host:','host:') | Set-Content -Path $winlogbeatYml
+	$winlogbeatYml = "winlogbeat.yml"
+	((Get-Content -path $winlogbeatYml -Raw) -replace 'localhost',$elasticip) | Set-Content -Path $winlogbeatYml
+	((Get-Content -path $winlogbeatYml -Raw) -replace '#host:','host:') | Set-Content -Path $winlogbeatYml
 
-winlogbeat setup -e
-Start-Service winlogbeat
+	winlogbeat setup -e
+	Start-Service winlogbeat
+}
 # End of Beat installation
 
 # Clear some Azure Crap
