@@ -66,7 +66,7 @@ if ($deploy -eq "splunk")
 ## Installing Elastics WingLogBeat
 if ($deploy -eq "elastic")
 {
-	Start-Process choco 'install -y notepadplusplus 7zip'
+	#Start-Process choco 'install -y notepadplusplus 7zip'
 	Set-ExecutionPolicy -ExecutionPolicy Unrestricted -scope process -force
 	$winlogbeatUri = "https://artifacts.elastic.co/downloads/beats/winlogbeat/winlogbeat-7.11.2-windows-x86_64.zip"
 	$winlogbeatZip = "winlogbeat.zip"
