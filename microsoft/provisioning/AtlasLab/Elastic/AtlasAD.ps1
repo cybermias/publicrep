@@ -83,6 +83,8 @@ if ($deploy -eq 1)
 }
 # End of Beat installation
 
+# Assign Elastic with DNS record (future: automize the hostname)
+Add-DnsServerResourceRecordA -Name "ElasticSearch" -IPv4Address $elasticip -ZoneName $domain -ComputerName $env:ComputerName -CreatePtr
 # Clear some Azure Crap
 Remove-Item 'C:\WindowsAzure\Logs\Plugins','C:\WindowsAzure\Logs\AggregateStatus','C:\WindowsAzure\CollectGuestLogsTemp','C:\Packages\Plugins\Microsoft.Compute.CustomScriptExtension' -Force -Confirm:$False -recurse | out-null
 
