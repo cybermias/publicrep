@@ -52,13 +52,13 @@ sudo mkdir -p /etc/pfelk/logs
 sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/scripts/error-data.sh -P /etc/pfelk/scripts/
 sudo chmod +x /etc/pfelk/scripts/error-data.sh
 
-## Add Deashboards and Templates for pfelk
-sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/scripts/pfelk-template-installer.sh
-https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/scripts/pfelk-dashboard-installer.sh
-sudo chmod +x pfelk-template-installer.sh
-sudo chmod +x pfelk-dashboard-installer.sh
-sudo ./pfelk-template-installer.sh
-sudo ./pfelk-dashboard-installer.sh
+## Add Dashboards and Templates for pfelk
+sudo wget -q https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/scripts/pfelk-template-installer.sh -P /tmp/
+sudo wget -q https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/scripts/pfelk-dashboard-installer.sh -P /tmp/
+sudo chmod +x /tmp/pfelk-template-installer.sh
+sudo chmod +x /tmp/pfelk-dashboard-installer.sh
+sudo ./tmp/pfelk-template-installer.sh > /dev/null 2>&1
+sudo ./ptmp/felk-dashboard-installer.sh > /dev/null 2>&1
 
 ## Amend pfsense interfaces (NOT AUTOMATED!)
 sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/conf.d/20-interfaces.conf -P /etc/pfelk/conf.d/
