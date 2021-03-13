@@ -52,17 +52,17 @@ sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/conf.d/45
 #sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/databases/rule-names.csv -P /etc/pfelk/databases/
 #sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/databases/service-names-port-numbers.csv -P /etc/pfelk/databases/
 
+# Adding the grok pattern offered by current pfelk
+sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/patterns/pfelk.grok -P /etc/logstash/patterns/
+sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/patterns/openvpn.grok -P /etc/logstash/patterns/
+
 # Replacing the syslog port (as configured in pfsense) <== Requires parameter automation
 sudo sed -i "s/@PORT@/20514/g" /etc/logstash/conf.d/01-inputs.conf
 
 # Additional error-collecting script from current pfelk
-sudo wget -q https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/scripts/error-data.sh -P /etc/logstash/scripts/
-sudo chmod +x /etc/logstash/scripts/error-data.sh
-sleep 4
-
-# Adding the grok pattern offered by current pfelk
-sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/patterns/pfelk.grok -P /etc/logstash/patterns/
-sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/patterns/openvpn.grok -P /etc/logstash/patterns/
+#sudo wget -q https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/scripts/error-data.sh -P /etc/logstash/scripts/
+#sudo chmod +x /etc/logstash/scripts/error-data.sh
+#sleep 4
 
 
 ## Leftovers from other pfelk version - requiring the pfsense IP. Not used for currently implementation.
