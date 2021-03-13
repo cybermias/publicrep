@@ -13,7 +13,7 @@ sudo service logstash stop
 # Fixing yml for "localhost" and adding a non-cluster parameter required to work properly
 sudo sed -i 's/\"localhost\"/\"0.0.0.0\"/g' /etc/elasticsearch/elasticsearch.yml
 sudo bash -c 'echo "discovery.type: single-node" >> /etc/elasticsearch/elasticsearch.yml'
-sudo systemctl restart elasticsearch 
+#sudo systemctl restart elasticsearch 
 
 # DNS nameserver addition (for the AD, requires automation through parameter)
 sudo bash -c 'echo "nameserver 10.200.11.200" >> /etc/resolv.conf'
@@ -79,6 +79,8 @@ sudo sed -i "s/5141/20514/g" /etc/pfelk/conf.d/01-inputs.conf
 #sudo sed -i "s/FiOS/UNTRUST/g" /etc/pfelk/conf.d/20-interfaces.conf
 #sudo sed -i "s/Home Network/TRUST/g" /etc/pfelk/conf.d/20-interfaces.conf
 
+sudo systemctl enable logstash
+sudo systemctl start logstash
 ## Get everything up and running
 sleep 5
 
@@ -106,5 +108,4 @@ else
   fi
 fi
 
-sudo systemctl enable logstash
-sudo systemctl start logstash
+
