@@ -60,6 +60,20 @@ input {
 }
 EOF
 
+# Adjusting 02-types.conf to fit only necessary types (firewall-2 for pfelk)
+sudo cat <<EOF > /etc/pfelk/conf.d/02-types.conf
+  if [type] == "firewall-2" {
+    mutate {
+      add_field => [ "[observer][type]", "firewall" ]
+      ### Adjust the name, product and serial_number as desired ###
+      add_field => [ "[observer][name]", "pfSense" ]
+      add_field => [ "[observer][product]", "pfSense" ]
+      add_field => [ "[observer][serial_number]", "001" ]
+      rename => { "host" => "[observer][ip]" } 
+    }
+  }
+EOF
+
 # Removed pfelk confs that were either not used (or had no value in the initial pfelk installation - apperantly not used too)
 #sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/conf.d/35-rules-desc.conf -P /etc/pfelk/conf.d/
 #sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/conf.d/36-ports-desc.conf -P /etc/pfelk/conf.d/
@@ -104,9 +118,9 @@ if ! [[ "${os_codename}" =~ (precise|maya|trusty|qiana|rebecca|rafaela|rosa) ]];
   if ! [ "$SERVICE_ELASTIC" = 'active' ]; then
      { echo -e "\\n${RED}#${RESET} Failed to install pfELK Templates"; sleep 3; }
   else
-     sudo wget -q https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/scripts/pfelk-template-installer.sh -P /tmp/pfELK/
-     sudo chmod +x /tmp/pfELK/pfelk-template-installer.sh
-     sudo bash /tmp/pfELK/pfelk-template-installer.sh > /dev/null 2>&1
+     sudo wget -q https://raw.githubusercontent.com/cybermias/publicrep/master/microsoft/provisioning/AtlasLab/Elastic/pfelk_templates.sh -P /tmp/pfELK/
+     sudo chmod +x /tmp/pfELK/pfelk_templates.sh
+     sudo bash /tmp/pfELK/pfelk_templates.sh > /dev/null 2>&1
      sleep 3
   fi
 else
@@ -114,32 +128,9 @@ else
   if ! [ "$SERVICE_ELASTIC" = 'active' ]; then
     { echo -e "\\n${WHITE_R}#${RESET} Failed to install pfELK Templates"; sleep 3; }
   else
-     sudo wget -q https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/scripts/pfelk-template-installer.sh -P /tmp/pfELK/
-     sudo chmod +x /tmp/pfELK/pfelk-template-installer.sh
-     sudo bash /tmp/pfELK/pfelk-template-installer.sh > /dev/null 2>&1
-     sleep 3
-  fi
-fi
-
-#Dashboards
-if ! [[ "${os_codename}" =~ (precise|maya|trusty|qiana|rebecca|rafaela|rosa) ]]; then
-  SERVICE_KIBANA=$(systemctl is-active kibana)
-  if ! [ "$SERVICE_KIBANA" = 'active' ]; then
-     { echo -e "\\n${RED}#${RESET} Failed to Install pfELK Dashboards\\n\\n"; sleep 3; }
-  else
-     sudo wget -q https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/scripts/pfelk-dashboard-installer.sh -P /tmp/pfELK/
-     sudo chmod +x /tmp/pfELK/pfelk-dashboard-installer.sh
-     sudo bash /tmp/pfELK/pfelk-dashboard-installer.sh > /dev/null 2>&1
-     sleep 3
-  fi
-else
-  SERVICE_KIBANA=$(systemctl is-active kibana)
-  if ! [ "$SERVICE_KIBANA" = 'active' ]; then
-    { echo -e "${RED}#${RESET} Failed to Install pfELK Dashboards\\n\\n"; sleep 3; }
-  else
-     sudo wget -q https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/scripts/pfelk-dashboard-installer.sh -P /tmp/pfELK/
-     sudo chmod +x /tmp/pfELK/pfelk-dashboard-installer.sh
-     sudo bash /tmp/pfELK/pfelk-dashboard-installer.sh
+     sudo wget -q https://raw.githubusercontent.com/cybermias/publicrep/master/microsoft/provisioning/AtlasLab/Elastic/pfelk_templates.sh -P /tmp/pfELK/
+     sudo chmod +x /tmp/pfELK/pfelk_templates.sh
+     sudo bash /tmp/pfELK/pfelk_templates.sh > /dev/null 2>&1
      sleep 3
   fi
 fi
