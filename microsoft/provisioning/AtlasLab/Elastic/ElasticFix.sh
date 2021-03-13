@@ -95,7 +95,7 @@ else
   fi
 fi
 # Replacing the syslog port (as configured in pfsense) <== Requires parameter automation
-sudo sed -i "s/5141/20514/g" /etc/pfelk/conf.d/01-inputs.conf
+sudo sed -i "s/5140/20514/g" /etc/pfelk/conf.d/01-inputs.conf
 
 sudo systemctl enable logstash
 sudo systemctl start logstash
