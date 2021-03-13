@@ -46,6 +46,10 @@ Restart-Service wecsvc
 # Altering the default domain policy (as my attempts to create a new policy and enforce it went to valhalla. Apperantly, the default policy already has a misconfigured SubscriptionManager without the "Server=" element in it)
 Set-GPRegistryValue -Name "Default Domain Policy" -Key "HKLM\Software\Policies\Microsoft\Windows\EventLog\EventForwarding\SubscriptionManager" -ValueName 1 -Type String -Value "Server=http://$($fqdn):5985/wsman/SubscriptionManager/WEC,Refresh=60"
 
+# Clear all the relevant logs (old snapshot logs and provisioning-generated logs, so fresh start). Enforcing final Restart.
+Get-EventLog -LogName * | ForEach { Clear-EventLog $_.Log }
+
+
 if ($deploy -eq "splunk")
 {
 	# Install nxlog and fix nxlog.conf (Not using UF until licenses are cleared)
@@ -80,8 +84,10 @@ if ($deploy -eq "elastic")
 
 	((Get-Content -path $winlogbeatYml -Raw) -replace 'localhost',$siemip) | Set-Content -Path $winlogbeatYml
 	((Get-Content -path $winlogbeatYml -Raw) -replace '#host:','host:') | Set-Content -Path $winlogbeatYml
-
+	
+	start-sleep -s 2
 	start-process winlogbeat.exe 'setup -e' -wait
+	start-sleep -s 12
 	Start-Service winlogbeat
 	# Assign Elastic with DNS record (future: automate the hostname)
 	Add-DnsServerResourceRecordA -Name "elasticsearch" -IPv4Address $siemip -ZoneName $domain -ComputerName $env:ComputerName -CreatePtr
@@ -91,5 +97,3 @@ if ($deploy -eq "elastic")
 # Clear some Azure Crap
 # Remove-Item 'C:\WindowsAzure\Logs\Plugins','C:\WindowsAzure\Logs\AggregateStatus','C:\WindowsAzure\CollectGuestLogsTemp','C:\Packages\Plugins\Microsoft.Compute.CustomScriptExtension' -Force -Confirm:$False -recurse -ErrorAction SilentlyContinue | out-null
 
-# Clear all the relevant logs (old snapshot logs and provisioning-generated logs, so fresh start). Enforcing final Restart.
-Get-EventLog -LogName * | ForEach { Clear-EventLog $_.Log }
