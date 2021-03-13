@@ -24,21 +24,21 @@ sudo bash -c 'echo "Servers=10.200.11.200" >> /etc/systemd/timesyncd.conf'
 ## 3) Some configurations required extra efforts to avoid unknown conflicts post deployments (index / pattern may not appear)
 
 #configure logstash for pfSense (with pfelk https://github.com/pfelk/pfelk/blob/main/install/ubuntu.md)
-sudo mkdir -p /etc/pfelk/{conf.d,config,logs,databases,patterns,scripts,templates}
+sudo mkdir -p /etc/logstash/{config,logs,databases,patterns,scripts,templates}
 sudo mkdir /tmp/pfELK
-sudo rm /etc/logstash/pipelines.yml
-sudo wget -q https://raw.githubusercontent.com/pfelk/pfelk/main/etc/logstash/pipelines.yml -P /etc/logstash/
+#sudo rm /etc/logstash/pipelines.yml
+#sudo wget -q https://raw.githubusercontent.com/pfelk/pfelk/main/etc/logstash/pipelines.yml -P /etc/logstash/
 
-sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/conf.d/01-inputs.conf -P /etc/pfelk/conf.d/
-sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/conf.d/02-types.conf -P /etc/pfelk/conf.d/
-sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/conf.d/03-filter.conf -P /etc/pfelk/conf.d/
-sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/conf.d/05-apps.conf -P /etc/pfelk/conf.d/
-sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/conf.d/20-interfaces.conf -P /etc/pfelk/conf.d/
-sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/conf.d/30-geoip.conf -P /etc/pfelk/conf.d/
-sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/conf.d/50-outputs.conf -P /etc/pfelk/conf.d/
+sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/conf.d/01-inputs.conf -P /etc/logstash/conf.d/
+sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/conf.d/02-types.conf -P /etc/logstash/conf.d/
+sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/conf.d/03-filter.conf -P /etc/logstash/conf.d/
+sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/conf.d/05-apps.conf -P /etc/logstash/conf.d/
+sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/conf.d/20-interfaces.conf -P /etc/logstash/conf.d/
+sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/conf.d/30-geoip.conf -P /etc/logstash/conf.d/
+sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/conf.d/50-outputs.conf -P /etc/logstash/conf.d/
 
 # Fix outputs to avoid all the crap around it
-sudo cat <<EOF > /etc/pfelk/conf.d/50-outputs.conf
+sudo cat <<EOF > /etc/logstash/conf.d/50-outputs.conf
   if "firewall" in [tags] {
     elasticsearch {
       hosts => ["http://localhost:9200"]
@@ -49,7 +49,7 @@ sudo cat <<EOF > /etc/pfelk/conf.d/50-outputs.conf
 EOF
 
 # Making some adaptations to the inputs file (clearing most of the non-currently-used techs: Suricata, haproxy, etc.
-sudo cat <<EOF > /etc/pfelk/conf.d/01-inputs.conf
+sudo cat <<EOF > /etc/logstash/conf.d/01-inputs.conf
 input {
   udp {
     id => "pfelk-2" 
@@ -60,7 +60,7 @@ input {
 EOF
 
 # Adjusting 02-types.conf to fit only necessary types (firewall-2 for pfelk)
-sudo cat <<EOF > /etc/pfelk/conf.d/02-types.conf
+sudo cat <<EOF > /etc/logstash/conf.d/02-types.conf
   if [type] == "firewall-2" {
     mutate {
       add_field => [ "[observer][type]", "firewall" ]
@@ -85,16 +85,16 @@ EOF
 #sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/databases/service-names-port-numbers.csv -P /etc/pfelk/databases/
 
 # Replacing the syslog port (as configured in pfsense) <== Requires parameter automation
-sudo sed -i "s/@PORT@/20514/g" /etc/pfelk/conf.d/01-inputs.conf
+sudo sed -i "s/@PORT@/20514/g" /etc/logstash/conf.d/01-inputs.conf
 
 # Additional error-collecting script from current pfelk
-sudo wget -q https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/scripts/error-data.sh -P /etc/pfelk/scripts/
-sudo chmod +x /etc/pfelk/scripts/error-data.sh
+sudo wget -q https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/scripts/error-data.sh -P /etc/logstash/scripts/
+sudo chmod +x /etc/logstash/scripts/error-data.sh
 sleep 4
 
 # Adding the grok pattern offered by current pfelk
-sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/patterns/pfelk.grok -P /etc/pfelk/patterns/
-sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/patterns/openvpn.grok -P /etc/pfelk/patterns/
+sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/patterns/pfelk.grok -P /etc/logstash/patterns/
+sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/patterns/openvpn.grok -P /etc/logstash/patterns/
 
 
 ## Leftovers from other pfelk version - requiring the pfsense IP. Not used for currently implementation.
