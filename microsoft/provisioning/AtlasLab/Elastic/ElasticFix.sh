@@ -7,21 +7,12 @@
 # UDP SYSLOG (from pfsense) is fixated at 20514 [sed'ing @PORT@ from 01-inputs.conf. Requires Input from template file
 #
 
-sudo service logstash stop
-
-## Changing some elastic configurations
-# Fixing yml for "localhost" and adding a non-cluster parameter required to work properly
-sudo sed -i 's/\"localhost\"/\"0.0.0.0\"/g' /etc/elasticsearch/elasticsearch.yml
-sudo bash -c 'echo "discovery.type: single-node" >> /etc/elasticsearch/elasticsearch.yml'
-#sudo systemctl restart elasticsearch 
-
 # DNS nameserver addition (for the AD, requires automation through parameter)
 sudo bash -c 'echo "nameserver 10.200.11.200" >> /etc/resolv.conf'
 # NTP addition (for the AD, requires automation through parameter)
 sudo bash -c 'echo "Servers=10.200.11.200" >> /etc/systemd/timesyncd.conf'
 
 
-sudo apt install apt-transport-https
 ## PFELK configruations. Not the original instructions as they include from malconfigured declarations
 ## 1) pfelk_installer.sh requires human intervention, initial attempts at bypassing this requires too much efforts with minimal success
 ## 2) Reverting to making changes according to manual installation instructions.
@@ -58,9 +49,6 @@ sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/conf.d/45
 sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/patterns/pfelk.grok -P /etc/pfelk/patterns/
 sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/patterns/openvpn.grok -P /etc/pfelk/patterns/
 
-# Replacing the syslog port (as configured in pfsense) <== Requires parameter automation
-sudo sed -i "s/5141/20514/g" /etc/pfelk/conf.d/01-inputs.conf
-
 # Additional error-collecting script from current pfelk
 #sudo wget -q https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/scripts/error-data.sh -P /etc/logstash/scripts/
 #sudo chmod +x /etc/logstash/scripts/error-data.sh
@@ -79,8 +67,7 @@ sudo sed -i "s/5141/20514/g" /etc/pfelk/conf.d/01-inputs.conf
 #sudo sed -i "s/FiOS/UNTRUST/g" /etc/pfelk/conf.d/20-interfaces.conf
 #sudo sed -i "s/Home Network/TRUST/g" /etc/pfelk/conf.d/20-interfaces.conf
 
-sudo systemctl enable logstash
-sudo systemctl start logstash
+
 ## Get everything up and running
 sleep 5
 
@@ -107,5 +94,8 @@ else
      sleep 3
   fi
 fi
+# Replacing the syslog port (as configured in pfsense) <== Requires parameter automation
+sudo sed -i "s/5141/20514/g" /etc/pfelk/conf.d/01-inputs.conf
 
-
+sudo systemctl enable logstash
+sudo systemctl start logstash
