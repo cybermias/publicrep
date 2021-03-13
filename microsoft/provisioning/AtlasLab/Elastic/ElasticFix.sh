@@ -37,45 +37,8 @@ sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/conf.d/20
 sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/conf.d/30-geoip.conf -P /etc/logstash/conf.d/
 sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/conf.d/50-outputs.conf -P /etc/logstash/conf.d/
 
-# Fix outputs to avoid all the crap around it
-sudo cat <<EOF > /etc/logstash/conf.d/50-outputs.conf
-output {
-  if "firewall" in [tags] {
-    elasticsearch {
-      hosts => ["http://localhost:9200"]
-      index => "pfelk-firewall-%{+YYYY.MM}"
-      manage_template => false
-    }
-  }
-}
-EOF
-
-# Making some adaptations to the inputs file (clearing most of the non-currently-used techs: Suricata, haproxy, etc.
-sudo cat <<EOF > /etc/logstash/conf.d/01-inputs.conf
-input {
-  udp {
-    id => "pfelk-1" 
-    type => "firewall-1"
-    port => @PORT@
-  }
-}
-EOF
-
-# Adjusting 02-types.conf to fit only necessary types (firewall-2 for pfelk)
-sudo cat <<EOF > /etc/logstash/conf.d/02-types.conf
-filter {
-  if [type] == "firewall-1" {
-    mutate {
-      add_field => [ "[observer][type]", "firewall" ]
-      ### Adjust the name, product and serial_number as desired ###
-      add_field => [ "[observer][name]", "pfSense" ]
-      add_field => [ "[observer][product]", "pfSense" ]
-      add_field => [ "[observer][serial_number]", "001" ]
-      rename => { "host" => "[observer][ip]" } 
-    }
-  }
-}
-EOF
+## REMOVED EOF
+## REMOVED EOF
 
 # Removed pfelk confs that were either not used (or had no value in the initial pfelk installation - some of them apperantly not used too)
 # cleanup was also removed for debugging purposes
