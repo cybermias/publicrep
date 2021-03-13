@@ -7,6 +7,8 @@
 # UDP SYSLOG (from pfsense) is fixated at 20514 [sed'ing @PORT@ from 01-inputs.conf. Requires Input from template file
 #
 
+sudo service logstash stop
+
 ## Changing some elastic configurations
 # Fixing yml for "localhost" and adding a non-cluster parameter required to work properly
 sudo sed -i 's/\"localhost\"/\"0.0.0.0\"/g' /etc/elasticsearch/elasticsearch.yml
@@ -57,7 +59,7 @@ sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/patterns/
 sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/patterns/openvpn.grok -P /etc/pfelk/patterns/
 
 # Replacing the syslog port (as configured in pfsense) <== Requires parameter automation
-#sudo sed -i "s/@PORT@/20514/g" /etc/pfelk/conf.d/01-inputs.conf
+sudo sed -i "s/5141/20514/g" /etc/pfelk/conf.d/01-inputs.conf
 
 # Additional error-collecting script from current pfelk
 #sudo wget -q https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/scripts/error-data.sh -P /etc/logstash/scripts/
