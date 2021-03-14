@@ -36,6 +36,9 @@ sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/conf.d/45
 ## REMOVED EOF
 ## REMOVED EOF
 
+## GOD D*** PFELK - Mismtach of regexp in 05-apps.conf - Apperantly they regexp "filterlog$" and NOT "filterlog:" :/ Fixing here (20210314)
+sed -i 's/filterlog\$/filterlog:\$/g' /etc/pfelk/conf.d/05-apps.conf
+
 # Removed pfelk confs that were either not used (or had no value in the initial pfelk installation - some of them apperantly not used too)
 #sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/conf.d/35-rules-desc.conf -P /etc/pfelk/conf.d/
 #sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/conf.d/36-ports-desc.conf -P /etc/pfelk/conf.d/
