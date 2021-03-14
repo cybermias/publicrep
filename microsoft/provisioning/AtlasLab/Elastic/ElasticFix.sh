@@ -74,6 +74,7 @@ sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/patterns/
 ## Get everything up and running
 sleep 5
 
+
 ## Add Dashboards and Templates for pfelk
 # Templates
 if ! [[ "${os_codename}" =~ (precise|maya|trusty|qiana|rebecca|rafaela|rosa) ]]; then
@@ -98,7 +99,11 @@ else
   fi
 fi
 # Replacing the syslog port (as configured in pfsense) <== Requires parameter automation
-sudo sed -i "s/5140/20514/g" /etc/pfelk/conf.d/01-inputs.conf
 
+sudo wget https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/scripts/pfelk-dashboard-installer.sh
+sudo chmod +x pfelk-dashboard-installer.sh
+sudo ./pfelk-dashboard-installer.sh
+
+sudo sed -i "s/5141/20514/g" /etc/pfelk/conf.d/01-inputs.conf
 sudo systemctl enable logstash
 sudo systemctl start logstash
