@@ -15,6 +15,9 @@ do
   esac
 done
 
+# Set timezone to UTC (not automated currently)
+sudo cp /usr/share/zoneinfo/UTC /etc/localtime
+
 ## Additional manual configuration due to outdated snapshots (adding log and nat)
 sudo sed -i "" '/<syslog>/,/<\/syslog>/{//!d;}' /conf/config.xml
 sudo sed -i "" '/<nat>/,/<\/nat>/{//!d;}' /conf/config.xml
