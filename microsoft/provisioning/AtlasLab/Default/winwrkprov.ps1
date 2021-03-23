@@ -12,7 +12,6 @@ param(
   [String]$domain,
   [String]$domAdminUsr,
   [String]$domAdminPwd,
-  [String]$localpath,
   [String]$downloadlink,
   [String]$hostname
 )
