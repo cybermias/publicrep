@@ -13,6 +13,7 @@ if [ -e "/bin/blink_config" ]; then
   echo "Configuring Image Using Blink_Config" | tee /dev/console >> $FTW_LOG
   blink_config -t $BLINK_CONF
   sed -i 's:download_info=".*":download_info="true":g' $BLINK_CONF
+  sed -i 's:install_security_managment=".*":install_security_managment="true":g' $BLINK_CONF
   sed -i 's:upload_info=".*":upload_info="false":g' $BLINK_CONF
   sed -i "s:ftw_sic_key='':ftw_sic_key='$SIC_KEY':g" $BLINK_CONF
   sed -i 's:upload_info=".*":upload_info="true":g' $BLINK_CONF
