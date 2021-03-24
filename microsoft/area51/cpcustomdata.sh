@@ -14,7 +14,7 @@ NEWSYS_CONF=/home/admin/blink2.conf
 if [ -e "/bin/blink_config" ]; then
   echo "Prefered to use blink" >> /home/admin/trueblink
   echo "Configuring Image Using Blink_Config" | tee /dev/console >> $FTW_LOG
-#  blink_config -t $BLINK_CONF
+  blink_config -t $BLINK_CONF
 #  sed -i 's:download_info=".*":download_info="true":g' $BLINK_CONF
 #  sed -i 's:install_security_managment=".*":install_security_managment="true":g' $BLINK_CONF
 #  sed -i 's:upload_info=".*":upload_info="false":g' $BLINK_CONF
@@ -23,8 +23,8 @@ if [ -e "/bin/blink_config" ]; then
 #  sed -i "s:admin_hash='':admin_hash='$ADMIN_HASH':g" $BLINK_CONF
 #  #sed -i "s:admin_password_regular='':admin_password_regular='$ADMIN_PW':g" $BLINK_CONF
 #  echo "install_security_managment=\"true\"" >> $BLINK_CONF
-  config_system -t $BLINK_CONF
-  sed -i 's:install_security_gw=:install_security_gw="false":g' $BLINK_CONF
+#  config_system -t $BLINK_CONF
+  sed -i 's:install_security_gw=:install_security_gw="true":g' $BLINK_CONF
   # IMPORTANT: There is a typo in the template file so don't change the next line
   sed -i 's:install_security_managment=:install_security_managment="true":g' $BLINK_CONF
   sed -i 's:install_mgmt_primary=:install_mgmt_primary="true":g' $BLINK_CONF
