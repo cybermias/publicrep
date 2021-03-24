@@ -24,7 +24,7 @@ if [ -e "/bin/blink_config" ]; then
   blink_config -f $BLINK_CONF >> $FTW_LOG 2>&1
 else
   echo "Configuring Image Using Config_System" | tee /dev/console >> $FTW_LOG
-  config_system -s "install_security_gw=true&install_ppak=true&gateway_cluster_member=false&install_security_managment=false&ftw_sic_key=$SIC_KEY" >> $FTW_LOG 2>&1
+  config_system -s "install_security_gw=true&install_ppak=true&gateway_cluster_member=false&install_security_managment=true&ftw_sic_key=$SIC_KEY" >> $FTW_LOG 2>&1
   clish -c "lock database override"
   clish -c "set user admin password-hash $ADMIN_PW_HASH" -s
 fi
