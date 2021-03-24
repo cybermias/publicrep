@@ -29,7 +29,7 @@ if [ -e "/bin/blink_config" ]; then
 else
   echo "Configuring Image Using Config_System" | tee /dev/console >> $FTW_LOG
   config_system -t $NEWSYS_CONF
-  sed -i 's:install_security_gw=:install_security_gw="false":g' $NEWSYS_CONF
+  sed -i 's:install_security_gw=:install_security_gw="true":g' $NEWSYS_CONF
   # IMPORTANT: There is a typo in the template file so don't change the next line
   sed -i 's:install_security_managment=:install_security_managment="true":g' $NEWSYS_CONF
   sed -i 's:install_mgmt_primary=:install_mgmt_primary="true":g' $NEWSYS_CONF
