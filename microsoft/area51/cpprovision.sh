@@ -22,8 +22,8 @@ NEWSYS_CONF=/home/admin/blink.conf
   sed -i 's:download_info=".*":download_info="true":g' $NEWSYS_CONF
   sed -i 's:upload_info=".*":upload_info="true":g' $NEWSYS_CONF
   sed -i 's:mgmt_admin_radio=:mgmt_admin_radio="gaia_admin":g' $NEWSYS_CONF
-  sed -i 's:mgmt_admin_user=:mgmt_admin_radio="admin":g' $NEWSYS_CONF
-  sed -i 's:mgmt_admin_passwd=:mgmt_admin_radio="admin123":g' $NEWSYS_CONF
+  sed -i 's:mgmt_admin_user=:mgmt_admin_user="admin":g' $NEWSYS_CONF
+  sed -i 's:mgmt_admin_passwd=:mgmt_admin_passwd="admin123":g' $NEWSYS_CONF
   sed -i 's:mgmt_gui_clients_radio=:mgmt_gui_clients_radio="any":g' $NEWSYS_CONF
   sed -i "s:admin_hash='':admin_hash='$ADMIN_HASH':g" $NEWSYS_CONF
   sed -i 's:reboot_if_required=:reboot_if_required="false":g' $NEWSYS_CONF
