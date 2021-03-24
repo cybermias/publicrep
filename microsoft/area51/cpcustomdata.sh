@@ -1,5 +1,9 @@
 #!/bin/bash
 
+
+# TESTED WITH BLINK - Apperantly CPMGMT rpm isn't available under /sysimg/CPwrapper/linux this it doesn't get installed.
+# Even azure GUI deployment, once "BYOL" is specified, places isblink=false and does it the old fashioned way (config_system)
+
 # all set to admin123 (replaced later)
 SIC_KEY='admin123'
 ADMIN_HASH='$6$0rVzHRkDOMwsB9cP$dm60oGLtEfgNGZK.WiiECa4FP3MPBbhob.oG.a33LyoEZvlbfL.5AFRzKmzRB4OQq0rgDF4JymvibXz3hNB2z/'
