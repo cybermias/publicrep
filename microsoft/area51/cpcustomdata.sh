@@ -32,6 +32,8 @@ if [ -e "/bin/blink_config" ]; then
   echo "install_security_gw=\"true\"" >> $BLINK_CONF
   echo "install_security_managment=\"true\"" >> $BLINK_CONF
   echo "mgmt_gui_clients_radio=\"any\"" >> $BLINK_CONF
+  echo "mgmt_admin_name=\"admin\"" >> $BLINK_CONF
+  echo "mgmt_admin_passwd=\"Admin123\"" >> $BLINK_CONF
   # IMPORTANT: There is a typo in the template file so don't change the next line
   #sed -i 's:install_security_managment=:install_security_managment="true":g' $BLINK_CONF
   #sed -i 's:install_mgmt_primary=:install_mgmt_primary="true":g' $BLINK_CONF
