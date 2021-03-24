@@ -7,6 +7,7 @@ ADMIN_PW='admin123'
 
 FTW_LOG=/var/log/ftw.log
 BLINK_CONF=/home/admin/blink.conf
+cpprod_util FwSetStandAlone 1
 
 # Gaia first time wizard
 if [ -e "/bin/blink_config" ]; then
@@ -20,6 +21,7 @@ if [ -e "/bin/blink_config" ]; then
   sed -i 's:upload_info=".*":upload_info="true":g' $BLINK_CONF
   sed -i "s:admin_hash='':admin_hash='$ADMIN_HASH':g" $BLINK_CONF
   #sed -i "s:admin_password_regular='':admin_password_regular='$ADMIN_PW':g" $BLINK_CONF
+  echo "install_security_managment=\"true\"" >> $BLINK_CONF
   echo "##### BLINK CONF #####" >> $FTW_LOG
   cat $BLINK_CONF >> $FTW_LOG
   echo "##### END BLINK CONF #####" >> $FTW_LOG
