@@ -15,7 +15,7 @@ BLINK_CONF=/home/admin/blink.conf
 NEWSYS_CONF=/home/admin/blink2.conf
 
 # Gaia first time wizard
-if [ -e "/bin/blink_config" ]; then
+if [ -e "/bin/blink" ]; then
   echo "Prefered to use blink" >> /home/admin/trueblink
   echo "Configuring Image Using Blink_Config" | tee /dev/console >> $FTW_LOG
   blink_config -t $BLINK_CONF
