@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# all set to admin123
+# all set to admin123 (replaced later)
 SIC_KEY='admin123'
 ADMIN_HASH='$6$0rVzHRkDOMwsB9cP$dm60oGLtEfgNGZK.WiiECa4FP3MPBbhob.oG.a33LyoEZvlbfL.5AFRzKmzRB4OQq0rgDF4JymvibXz3hNB2z/'
 ADMIN_PW='admin123'
