@@ -10,6 +10,7 @@ BLINK_CONF=/home/admin/blink.conf
 
 # Gaia first time wizard
 if [ -e "/bin/blink_config" ]; then
+  echo "Prefered to use blink" >> /home/admin/trueblink
   echo "Configuring Image Using Blink_Config" | tee /dev/console >> $FTW_LOG
   blink_config -t $BLINK_CONF
   sed -i 's:download_info=".*":download_info="true":g' $BLINK_CONF
@@ -25,6 +26,7 @@ if [ -e "/bin/blink_config" ]; then
   blink_config -f $BLINK_CONF --dry-run >> $FTW_LOG 2>&1
   blink_config -f $BLINK_CONF >> $FTW_LOG 2>&1
 else
+  echo "Prefered to use clish" >> /home/admin/trueclish
   echo "Configuring Image Using Config_System" | tee /dev/console >> $FTW_LOG
   config_system -s "install_security_gw=true&install_ppak=true&gateway_cluster_member=false&install_security_managment=true&ftw_sic_key=$SIC_KEY" >> $FTW_LOG 2>&1
   clish -c "lock database override"
