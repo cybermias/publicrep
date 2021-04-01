@@ -1,25 +1,26 @@
 #!/bin/bash
 
+
 sudo apt update
 sudo apt install apt-transport-https ca-certificates curl software-properties-common -y
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
 sudo apt update
-sudo apt install docker-ce -y
-sudo apt-get install docker-compose -y
+sudo apt install docker-ce docker-compose -y
 
-sudo docker pull linuxserver/openvpn-as
-sudo docker pull guacamole/guacamole
-sudo docker pull guacamole/guacd
+# Pulling mysql first, because this lame-ass orchestration takes time to load once docker is run
 sudo docker pull mysql
-
+sudo docker pull guacamole/guacamole
 sudo mkdir /tmp/mysql
 sudo docker run --rm guacamole/guacamole /opt/guacamole/bin/initdb.sh --mysql > /tmp/mysql/initdb.sql
-
 sudo docker run --name guac-mysql -v /tmp/mysql:/tmp/mysql -e MYSQL_ROOT_PASSWORD=guacNGr00tPass -d mysql:latest
 
-# Add sleep to allow mysql to GET THE FLUFF ON TOP OF ITSELF! :(
+sudo docker pull linuxserver/openvpn-as
+sudo docker pull guacamole/guacd
 sleep 5
+
+# Hopefuly after so long - mysql is running properly
+# [FUTURE] add ping to mysql service to verify it runs (to optimize waiting time)
 sudo docker exec -it guac-mysql bash -c "mysql -u root -p'guacNGr00tPass' -e \"CREATE DATABASE guacamole; CREATE USER 'guacamole' IDENTIFIED BY 'guacNGguacPass'; GRANT SELECT,INSERT,UPDATE,DELETE ON guacamole.* TO 'guacamole'; FLUSH PRIVILEGES;\" && cat /tmp/mysql/initdb.sql | mysql -u root -p'guacNGr00tPass' guacamole;"
 
 docker run --name guacd -d guacamole/guacd
