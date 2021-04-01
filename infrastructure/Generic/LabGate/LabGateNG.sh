@@ -11,31 +11,22 @@ sudo apt install docker-ce docker-compose -y
 # Pulling mysql first, because this lame-ass orchestration takes time to load once docker is run
 sudo docker pull mysql
 sudo docker pull guacamole/guacamole
-sudo mkdir /tmp/mysql
-sudo docker run --rm guacamole/guacamole /opt/guacamole/bin/initdb.sh --mysql > /tmp/mysql/initdb.sql
-sudo docker run --name guac-mysql -v /tmp/mysql:/tmp/mysql -e MYSQL_ROOT_PASSWORD=guacNGr00tPass -d mysql:latest
-
 sudo docker pull linuxserver/openvpn-as
 sudo docker pull guacamole/guacd
+
+sudo mkdir /opt/guacamole
+cd /opt/guacamole
+
+## Pre-made Docker-Compose file (notice the init-mysql crap)
+sudo wget https://raw.githubusercontent.com/cybermias/publicrep/master/infrastructure/Generic/docker-compose-mysql.yml
+sudo mkdir init-mysql
+
 sleep 5
+sudo docker run --rm guacamole/guacamole /opt/guacamole/bin/initdb.sh --mysql > /opt/guacamole/init-mysql/initdb.sql
 
-# Hopefuly after so long - mysql is running properly
-# [FUTURE] add ping to mysql service to verify it runs (to optimize waiting time)
-sudo docker exec -it guac-mysql bash -c "mysql -u root -p'guacNGr00tPass' -e \"CREATE DATABASE guacamole; CREATE USER 'guacamole' IDENTIFIED BY 'guacNGguacPass'; GRANT SELECT,INSERT,UPDATE,DELETE ON guacamole.* TO 'guacamole'; FLUSH PRIVILEGES;\" && cat /tmp/mysql/initdb.sql | mysql -u root -p'guacNGr00tPass' guacamole;"
-
-docker run --name guacd -d guacamole/guacd
-
-docker run --name guacamole --link guacd:guacd --link guac-mysql:mysql \
--e MYSQL_DATABASE='guacamole' \
--e MYSQL_USER='guacamole' \
--e MYSQL_PASSWORD='guacNGguacPass' \
--d -p 8080:8080 guacamole/guacamole
-
-# Harden some of the guacamole Tomcat configurations
 sudo docker exec -it guacamole bash -c "sed -i 's/redirectPort=\"8443\"/redirectPort=\"8443\" server=\"\" secure=\"true\"/g' /usr/local/tomcat/conf/server.xml && sed -i 's/<Server port=\"8005\" shutdown=\"SHUTDOWN\">/<Server port=\"-1\" shutdown=\"SHUTDOWN\">/g' /usr/local/tomcat/conf/server.xml && rm -Rf /usr/local/tomcat/webapps/docs/ && rm -Rf /usr/local/tomcat/webapps/examples/ && rm -Rf /usr/local/tomcat/webapps/manager/ && rm -Rf /usr/local/tomcat/webapps/host-manager/ && chmod -R 400 /usr/local/tomcat/conf"
 
-## Rest for a moment
-sleep 2
+sudo docker-compose -f docker-compose-mysql.yml up -d
 
 ## guacamole mysql change guacadmin (master administrator to the server)
 #change password
