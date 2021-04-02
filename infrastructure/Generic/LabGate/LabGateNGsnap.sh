@@ -29,6 +29,9 @@ sudo docker run --rm guacamole/guacamole /opt/guacamole/bin/initdb.sh --mysql > 
 sudo docker-compose up -d
 
 ## guacamole mysql change guacadmin (master administrator to the server)
+# Sleep for 45 seconds. mysql takes time to initialize and any automated solution is beyond my scope atm.
+sleep 45
+
 #change password
 sudo docker-compose exec -T mysql bash -c "mysql -u root -p'guacNGr00tPass' -e \"SET @salt = UNHEX(SHA2(UUID(), 256)); update guacamole_user set password_salt = @salt, password_hash = UNHEX(SHA2(CONCAT('@guacAdmin@', HEX(@salt)), 256)) where entity_id = '1';\" guacamole;"
 
