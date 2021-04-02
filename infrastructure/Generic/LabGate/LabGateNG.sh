@@ -14,8 +14,8 @@ sudo docker pull linuxserver/openvpn-as
 sudo docker pull guacamole/guacd
 
 ## Prepare for docker-compose inside newly generated guacamole folder
-sudo mkdir /opt/guacamole
-cd /opt/guacamole
+sudo mkdir /opt/labGateNG
+cd /opt/labGateNG
 
 ## Pre-made Docker-Compose file (notice the init-mysql crap)
 sudo wget https://raw.githubusercontent.com/cybermias/publicrep/master/infrastructure/Generic/docker-compose-mysql.yml
@@ -25,7 +25,7 @@ sudo wget https://raw.githubusercontent.com/cybermias/publicrep/master/infrastru
 sudo mkdir init-mysql
 
 # Next command runs outide the docker-compose scope - just to create the initdb file.
-sudo docker run --rm guacamole/guacamole /opt/guacamole/bin/initdb.sh --mysql > /opt/guacamole/init-mysql/initdb.sql
+sudo docker run --rm guacamole/guacamole /opt/labGateNG/bin/initdb.sh --mysql > /opt/labGateNG/init-mysql/initdb.sql
 
 #sudo docker exec -it guacamole bash -c "sed -i 's/redirectPort=\"8443\"/redirectPort=\"8443\" server=\"\" secure=\"true\"/g' /usr/local/tomcat/conf/server.xml && sed -i 's/<Server port=\"8005\" shutdown=\"SHUTDOWN\">/<Server port=\"-1\" shutdown=\"SHUTDOWN\">/g' /usr/local/tomcat/conf/server.xml && rm -Rf /usr/local/tomcat/webapps/docs/ && rm -Rf /usr/local/tomcat/webapps/examples/ && rm -Rf /usr/local/tomcat/webapps/manager/ && rm -Rf /usr/local/tomcat/webapps/host-manager/ && chmod -R 400 /usr/local/tomcat/conf"
 
