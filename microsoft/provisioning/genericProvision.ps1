@@ -67,6 +67,14 @@ Set-NetFirewallRule -Name 'WINRM-HTTP-In-TCP' -RemoteAddress Any
 Set-TimeZone -Id "Middle East Standard Time"
 net time \\$domain /set /y
 
+# Fixed / Static addons (mainly for SmartDashboard Portable)
+# Fixing IE FirstTime crap (probably due to Domain GPO at this stage of the script)
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Internet Explorer\Main" -Name "DisableFirstRunCustomize" -Value 2
+# Chocoing in relevant additionals
+choco install dotnet4.5 vcredist2017 vcredist2012 -y
+# curling the checkpoint smartconsole
+Invoke-WebRequest -uri "https://hustonftlauderdale.blob.core.windows.net/miami/software/Check_Point_R80.40_T294_Portable_SmartConsole_Windows.zip" -OutFile "c:\Check_Point_R80.40_T294_Portable_SmartConsole_Windows.zip"
+
 # Fix evaluation license
 cscript c:\windows\system32\slmgr.vbs /rearm
 
