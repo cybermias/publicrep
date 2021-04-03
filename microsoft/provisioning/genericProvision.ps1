@@ -30,6 +30,9 @@ param(
   [String]$hostname
 )
 
+# Fixate TimeZone on GMT+2 for now
+Set-TimeZone -Id "Middle East Standard Time"
+
 # Define PSCredential variables following input from arguments (Domain and Local)
 #   First credentials refer to local user configured in snapshot
 #   Second credentials refer to domain admin.
@@ -54,19 +57,10 @@ add-computer -domainname $domain -domaincredential $domaincred -Options JoinWith
 # Adding the domain users group to "remote desktop users" - which would allow RDP for domain users (default to "prevent" in used Windows versions)
 # Since this functions returns an error (and unsure if it succeeds or not), we add another duplicate
 #Add-LocalGroupMember -group "Remote Desktop Users" -member ($domain + "\Domain Users") | Out-Null
-NET LOCALGROUP "Remote Desktop Users" /ADD "Domain Users"
+NET LOCALGROUP "Remote Desktop Users" /ADD "Everyone"
 
 # Enabling PS-REMOTING and WINRM, making sure FW reacts as well
 ### DISABLED! Attempting through preview-feature as GPO in genAdProvision.ps1
-#Enable-PSRemoting -Force
-#winrm quickconfig -q
-#& sc.exe config WinRM start= auto
-#Set-NetFirewallRule -Name 'WINRM-HTTP-In-TCP' -RemoteAddress Any
-
-# Fixing timezone (and sync with DC)
-# Fixate TimeZone on GMT+2 for now
-Set-TimeZone -Id "Middle East Standard Time"
-net time \\$domain /set /y
 
 # Fixed / Static addons (mainly for SmartDashboard Portable)
 # Fixing IE FirstTime crap (probably due to Domain GPO at this stage of the script)
