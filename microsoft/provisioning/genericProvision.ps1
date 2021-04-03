@@ -32,7 +32,12 @@ param(
 
 # Fixate TimeZone on GMT+2 for now
 Set-TimeZone -Id "Middle East Standard Time"
-
+# Before anything, get rid of OneDrive!
+If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive")) {
+  New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive" | Out-Null
+}
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive" -Name "DisableFileSyncNGSC" -Type DWord -Value 1
+  
 # Define PSCredential variables following input from arguments (Domain and Local)
 #   First credentials refer to local user configured in snapshot
 #   Second credentials refer to domain admin.
