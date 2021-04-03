@@ -33,9 +33,6 @@ param(
 # Fixate TimeZone on GMT+2 for now
 Set-TimeZone -Id "Middle East Standard Time"
 # Before anything, get rid of OneDrive!
-Write-Output "Kill OneDrive process"
-taskkill.exe /F /IM "OneDrive.exe"
-taskkill.exe /F /IM "explorer.exe"
 if (Test-Path "$env:systemroot\System32\OneDriveSetup.exe") {
     & "$env:systemroot\System32\OneDriveSetup.exe" /uninstall
 }
