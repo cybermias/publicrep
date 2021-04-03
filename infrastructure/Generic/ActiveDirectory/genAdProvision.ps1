@@ -23,6 +23,8 @@ Clear-DnsClientCache
 Get-ADComputer "WIN7DSKTP" | Remove-ADObject -Recursive -Confirm:$false
 #Fixate TimeZone on GMT+2 for now
 Set-TimeZone -Id "Middle East Standard Time"
+#Fixing the IE FirstRun (disabling invoke, curl and wget)
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Internet Explorer\Main" -Name "DisableFirstRunCustomize" -Value 2
 
 
 ## WinRM, PS-REMOTING and FW considerations (FW is off for the purposes of these experiments)
