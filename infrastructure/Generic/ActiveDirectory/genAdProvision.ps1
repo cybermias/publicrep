@@ -58,7 +58,7 @@ if (-Not ($usersCsv -eq $null)) {
       New-ADUser `
           -Name $($_.FirstName + " " + $_.LastName) `
           -GivenName $_.FirstName `
-          -DisplayName $($_.FirstName + " " + $_.LastName + $_.Title) `
+          -DisplayName $($_.FirstName + " " + $_.LastName + " " + $_.Title) `
           -UserPrincipalName $_.UserPrincipalName `
           -SamAccountName $_.SamAccountName `
           -AccountPassword $(ConvertTo-SecureString $_.Password -AsPlainText -Force) `
