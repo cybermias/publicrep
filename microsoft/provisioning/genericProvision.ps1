@@ -33,12 +33,12 @@ param(
 # Fixate TimeZone on GMT+2 for now
 Set-TimeZone -Id "Middle East Standard Time"
 # Before anything, get rid of OneDrive!
-if (Test-Path "$env:systemroot\System32\OneDriveSetup.exe") {
-    c:\windows\System32\OneDriveSetup.exe /uninstall
-}
-if (Test-Path "$env:systemroot\SysWOW64\OneDriveSetup.exe") {
-    c:\windows\SysWOW64\OneDriveSetup.exe /uninstall
-}
+#if (Test-Path "$env:systemroot\System32\OneDriveSetup.exe") {
+#    c:\windows\System32\OneDriveSetup.exe /uninstall
+#}
+#if (Test-Path "$env:systemroot\SysWOW64\OneDriveSetup.exe") {
+#    c:\windows\SysWOW64\OneDriveSetup.exe /uninstall
+#}
   
 # Define PSCredential variables following input from arguments (Domain and Local)
 #   First credentials refer to local user configured in snapshot
@@ -74,12 +74,11 @@ NET LOCALGROUP "Remote Desktop Users" /ADD "Everyone"
 #Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Internet Explorer\Main" -Name "DisableFirstRunCustomize" -Value 2
 # Chocoing in relevant additionals
 #choco install dotnet4.5 vcredist2017 vcredist2012 -y
-# curling the checkpoint smartconsole
-#Invoke-WebRequest -uri "https://hustonftlauderdale.blob.core.windows.net/miami/software/Check_Point_R80.40_T294_Portable_SmartConsole_Windows.zip" -OutFile "c:\Check_Point_R80.40_T294_Portable_SmartConsole_Windows.zip"
 
 # Fix evaluation license
 cscript c:\windows\system32\slmgr.vbs /rearm
 
 # Clear all the relevant logs (old snapshot logs and provisioning-generated logs, so fresh start). Enforcing final Restart.
 Get-EventLog -LogName * | ForEach { Clear-EventLog $_.Log }
-shutdown /r /t 03
+
+shutdown /r /t 04 /f
