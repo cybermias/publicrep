@@ -12,7 +12,7 @@ UsersCsv example: https://raw.githubusercontent.com/cybermias/publicrep/master/i
 #>
 
 param(
-  [String]$domain
+  [String]$domain,
   [String]$usersCsv
 )
 ## Old Atlas.Lab snapshot cleaning and fixing
