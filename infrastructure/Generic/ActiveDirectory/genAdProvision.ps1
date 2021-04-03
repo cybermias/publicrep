@@ -50,6 +50,7 @@ redircmp $OU
 New-GPO -Name "Remote Management Automation" -StarterGpoName "Group Policy Remote Update Firewall Ports" | New-GPLink -Target "OU=$($genCompOu),DC=$($dc[0]),DC=$($dc[1])" -LinkEnabled yes
 
 # Creating AD users (if parameters allow this)
+# See CSV reference here: https://github.com/cybermias/publicrep/raw/master/infrastructure/Generic/ActiveDirectory/genUserData.csv
 if (-Not ($usersCsv -eq $null)) {
   [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
   $adUsers = ConvertFrom-CSV (Invoke-WebRequest -uri $usersCsv).ToString()
@@ -59,7 +60,7 @@ if (-Not ($usersCsv -eq $null)) {
           -Name $($_.FirstName + " " + $_.LastName) `
           -GivenName $_.FirstName `
           -DisplayName $($_.FirstName + " " + $_.LastName + " " + $_.Title) `
-          -UserPrincipalName $_.UserPrincipalName `
+          -UserPrincipalName $($_.UserPrincipalName + $domain) `
           -SamAccountName $_.SamAccountName `
           -AccountPassword $(ConvertTo-SecureString $_.Password -AsPlainText -Force) `
           -Enabled $True `
