@@ -52,7 +52,9 @@ start-sleep -seconds $halt
 add-computer -domainname $domain -domaincredential $domaincred -Options JoinWithNewName,AccountCreate -force
 
 # Adding the domain users group to "remote desktop users" - which would allow RDP for domain users (default to "prevent" in used Windows versions)
+# Since this functions returns an error (and unsure if it succeeds or not), we add another duplicate
 Add-LocalGroupMember -group "Remote Desktop Users" -member ($domain + "\Domain Users") | Out-Null
+NET LOCALGROUP "Remote Desktop Users" /ADD "Domain Users"
 
 # Fix evaluation license
 cscript c:\windows\system32\slmgr.vbs /rearm
