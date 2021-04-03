@@ -1,5 +1,5 @@
-FirstName, LastName, Title, UserPrincipalName, SamAccountName, Password
-Simon, Mankali, (CEO), Simon@atlas.lab, Simon, cmtsAdmin12#
-Yoni, Kalkali, (CFO), Yoni@atlas.lab, Yoni, cmtsAdmin12#
-Samuel, Teknikali, (CTO), Samuel@atlas.lab, Samual, cmtsAdmin12#
-Sveta, Amasha, (VPHR), Sveta@atlas.lab, Sveta, cmtsAdmin12#
+SamAccountName, Password, FirstName, LastName, Title, UserPrincipalName
+Simon, cmtsAdmin12#, Simon, Mankali, (CEO), Simon@
+Yoni, cmtsAdmin12#, Yoni, Kalkali, (CFO), Yoni@
+Samual, cmtsAdmin12#, Samuel, Teknikali, (CTO), Samuel@
+Sveta, cmtsAdmin12#, Sveta, Amasha, (VPHR), Sveta@
