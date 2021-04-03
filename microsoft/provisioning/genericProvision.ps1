@@ -33,10 +33,15 @@ param(
 # Fixate TimeZone on GMT+2 for now
 Set-TimeZone -Id "Middle East Standard Time"
 # Before anything, get rid of OneDrive!
-If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive")) {
-  New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive" | Out-Null
+Write-Output "Kill OneDrive process"
+taskkill.exe /F /IM "OneDrive.exe"
+taskkill.exe /F /IM "explorer.exe"
+if (Test-Path "$env:systemroot\System32\OneDriveSetup.exe") {
+    & "$env:systemroot\System32\OneDriveSetup.exe" /uninstall
 }
-Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive" -Name "DisableFileSyncNGSC" -Type DWord -Value 1
+if (Test-Path "$env:systemroot\SysWOW64\OneDriveSetup.exe") {
+    & "$env:systemroot\SysWOW64\OneDriveSetup.exe" /uninstall
+}
   
 # Define PSCredential variables following input from arguments (Domain and Local)
 #   First credentials refer to local user configured in snapshot
