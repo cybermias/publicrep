@@ -62,6 +62,11 @@ winrm quickconfig -q
 & sc.exe config WinRM start= auto
 Set-NetFirewallRule -Name 'WINRM-HTTP-In-TCP' -RemoteAddress Any
 
+# Fixing timezone (and sync with DC)
+# Fixate TimeZone on GMT+2 for now
+Set-TimeZone -Id "Middle East Standard Time"
+net time \\$domain /set /y
+
 # Fix evaluation license
 cscript c:\windows\system32\slmgr.vbs /rearm
 
