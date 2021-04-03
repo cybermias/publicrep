@@ -56,6 +56,12 @@ add-computer -domainname $domain -domaincredential $domaincred -Options JoinWith
 Add-LocalGroupMember -group "Remote Desktop Users" -member ($domain + "\Domain Users") | Out-Null
 NET LOCALGROUP "Remote Desktop Users" /ADD "Domain Users"
 
+# Enabling PS-REMOTING and WINRM, making sure FW reacts as well
+Enable-PSRemoting -Force
+winrm quickconfig -q
+& sc.exe config WinRM start= auto
+Set-NetFirewallRule -Name 'WINRM-HTTP-In-TCP' -RemoteAddress Any
+
 # Fix evaluation license
 cscript c:\windows\system32\slmgr.vbs /rearm
 
