@@ -53,7 +53,7 @@ add-computer -domainname $domain -domaincredential $domaincred -Options JoinWith
 
 # Adding the domain users group to "remote desktop users" - which would allow RDP for domain users (default to "prevent" in used Windows versions)
 # Since this functions returns an error (and unsure if it succeeds or not), we add another duplicate
-Add-LocalGroupMember -group "Remote Desktop Users" -member ($domain + "\Domain Users") | Out-Null
+#Add-LocalGroupMember -group "Remote Desktop Users" -member ($domain + "\Domain Users") | Out-Null
 NET LOCALGROUP "Remote Desktop Users" /ADD "Domain Users"
 
 # Enabling PS-REMOTING and WINRM, making sure FW reacts as well
