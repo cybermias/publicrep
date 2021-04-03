@@ -15,6 +15,9 @@ param(
   [String]$domain,
   [String]$usersCsv
 )
+
+## Sometimes Azure really is fast! Let the AD sleep for a few seconds just in case (some AD errors spawned occasionally)
+Start-Sleep -s 10
 ## Old Atlas.Lab snapshot cleaning and fixing
 # Old Atlas.Lab forwards require the Azure forwarder (some Atlas.Lab don't include it for some reason)
 Add-DnsServerForwarder -IPAddress 168.63.129.16 -PassThru 
