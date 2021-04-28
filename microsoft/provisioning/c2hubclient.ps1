@@ -48,9 +48,9 @@ add-content $startup "powershell -c start -verb runas `'$localpath`' -windowstyl
 add-content $startup "echo $hostname"
 
 # Rename the computer according to the Arguments
-rename-computer -newname $hostname -force -PassThru -ErrorAction Stop -DomainCredential $domaincred
+rename-computer -newname $hostname -LocalCredential $localcred -force -PassThru 
 
 Get-EventLog -LogName * | ForEach { Clear-EventLog $_.Log }
-wevtutil el | Foreach-Object {wevtutil cl $_} -ErrorAction SilentlyContinue
+wevtutil el | Foreach-Object {wevtutil cl $_}
 
 shutdown /r /t 03
