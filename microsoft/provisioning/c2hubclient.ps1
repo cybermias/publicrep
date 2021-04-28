@@ -40,6 +40,6 @@ add-content $startup "echo $hostname"
 rename-computer -newname $hostname -force -PassThru -ErrorAction Stop -DomainCredential $domaincred
 
 Get-EventLog -LogName * | ForEach { Clear-EventLog $_.Log }
-Get-WinEvent -ListLog * | where {$_.RecordCount} | ForEach-Object -Process { [System.Diagnostics.Eventing.Reader.EventLogSession]::GlobalSession.ClearLog($_.LogName) }
+wevtutil el | Foreach-Object {wevtutil cl $_} -ErrorAction SilentlyContinue
 
 shutdown /r /t 03
