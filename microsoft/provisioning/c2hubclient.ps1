@@ -9,6 +9,7 @@ param(
   [string]$localpath,
   [String]$hostname
 )
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
 ### Still missing in current build
 #   Condition the following functions: Domain add, Computer rename, PSCredential creation, RAT addons, Evaluation rearm
