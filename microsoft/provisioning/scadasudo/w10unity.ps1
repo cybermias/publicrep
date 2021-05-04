@@ -6,7 +6,6 @@
 param(
   [String]$defAdminUsr, 
   [String]$defAdminPwd,
-  [string]$localpath,
   [String]$hostname
 )
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
