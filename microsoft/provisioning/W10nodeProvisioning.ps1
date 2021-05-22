@@ -75,6 +75,8 @@ add-computer -domainname $domain -domaincredential $domaincred -Options JoinWith
 #Add-LocalGroupMember -group "Remote Desktop Users" -member ($domain + "\Domain Users") | Out-Null
 NET LOCALGROUP "Remote Desktop Users" /ADD "Everyone"
 
+### CALDERA OPERATIONS - Will be using GoLang!
+choco install golang -y
 
 # Fix evaluation license
 cscript c:\windows\system32\slmgr.vbs /rearm
