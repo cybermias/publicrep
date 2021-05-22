@@ -36,6 +36,9 @@ param(
 # Static URLs to download ProvisioningVM* and static download location
 $wefscript = "https://raw.githubusercontent.com/cybermias/publicrep/master/microsoft/provisioning/wef/provisionWef.ps1"
 
+### CALDERA UNIQUE COMMAND (In case of C2 - Requires Revision!)
+netsh advfirewall firewall set rule group="File and Printer Sharing" new enable=Yes
+
 # Fixate TimeZone on GMT+2 for now
 Set-TimeZone -Id "Middle East Standard Time"
 # Before anything, get rid of OneDrive!
