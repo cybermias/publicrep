@@ -182,12 +182,7 @@ for ((i=10; i<100; i+=1))
 sudo iptables -t nat -A PREROUTING -p tcp --dport 33200 -j DNAT --to-destination $lbhLan.200:3389
 sudo iptables -t nat -A PREROUTING -p tcp --dport 33122 -j DNAT --to-destination $lbhLan.100:22
 sudo iptables -t nat -A PREROUTING -p tcp --dport 33180 -j DNAT --to-destination $lbhLan.100:80
-
-#CALDERA TRYOUTS
-sudo iptables -t nat -A PREROUTING -p tcp --dport 8888 -j DNAT --to-destination $lbhLan.100:8888
-sudo iptables -t nat -A PREROUTING -p tcp --dport 7010 -j DNAT --to-destination $lbhLan.100:7010
-sudo iptables -t nat -A PREROUTING -p udp --dport 7011 -j DNAT --to-destination $lbhLan.100:7011
-sudo iptables -t nat -A PREROUTING -p tcp --dport 7012 -j DNAT --to-destination $lbhLan.100:7012
+sudo iptables -t nat -A PREROUTING -p tcp --dport 33188 -j DNAT --to-destination $lbhLan.100:8888
 sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 
 
