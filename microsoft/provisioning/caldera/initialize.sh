@@ -10,6 +10,7 @@ sed -i -e "s/0.0.0.0/$ip/g" /home/cmtsadmin/caldera/conf/local.yml
 
 sudo kill -9 $(pgrep -f 'server.py')
 
+sleep 30s
 echo "script completed" > /home/cmtsadmin/finished
 
 sudo reboot now
