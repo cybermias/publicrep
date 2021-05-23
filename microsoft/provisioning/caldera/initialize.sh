@@ -3,11 +3,10 @@
 # Script will update caldera by git, and enforce it to run locally inside ATLAS lab (i.e 10.200.11.100).
 # Used with snapshot running golang1.16 and caldera git 3.1.0
 
-sudo apt update && sudo apt install -y python-is-python2
-sudo apt-get install -y net-tools
-
 # Adapt the local.yml file at conf directory to initialize caldera as the current local IP
-ip=$(ifconfig eth0 | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p')
+ip="$(/sbin/ip -o -4 addr list eth0 | awk '{print $4}' | cut -d. -f1-4 | cut -d/ -f1)"
 sed -i -e "s/0.0.0.0/$ip/g" /home/cmtsadmin/caldera/conf/local.yml
 
-sudo reboot now
+kill -9 $(pgrep -f 'server.py')
+cd /home/cmtsadmin/caldera
+/usr/bin/python3 server.py
