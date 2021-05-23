@@ -5,6 +5,7 @@
 
 ### CHANGELOG OF 20210124
 ### Added the possibility to iptables RDP connectivity to internal hosts (!!) [Macabi Client]
+### The current script treats LBH2.100 as CALDERA - Forcing a 7012 port for WS through the VPN until a more stable solution is found
 ### **NOTICE*** Due to time considerations, only *STATIC* iptables rules were assigned. Revise script for a more granular approach (automation! :D).
 
 ### CHANGELOG OF 20200111
@@ -183,6 +184,11 @@ sudo iptables -t nat -A PREROUTING -p tcp --dport 33200 -j DNAT --to-destination
 sudo iptables -t nat -A PREROUTING -p tcp --dport 33122 -j DNAT --to-destination $lbhLan.100:22
 sudo iptables -t nat -A PREROUTING -p tcp --dport 33180 -j DNAT --to-destination $lbhLan.100:80
 sudo iptables -t nat -A PREROUTING -p tcp --dport 33188 -j DNAT --to-destination $lbhLan.100:8888
+
+### CALDERA EDITION (Manx "reverse-shell" uses WS and it is expected at port 7012. As a pilot, it is configured to proxy it
+sudo iptables -t nat -A PREROUTING -p tcp --dport 7012 -j DNAT --to-destination $lbhLan.100:7012
+###
+
 sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 
 
