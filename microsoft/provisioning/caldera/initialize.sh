@@ -25,6 +25,16 @@ sed -i -e "s/app.contact.udp:.*/app.contact.udp: $PUBLICIP:7011/g"  /home/cmtsad
 sed -i -e "s/app.contact.websocket:.*/app.contact.websocket: $PUBLICIP:7012/g"  /home/cmtsadmin/caldera/conf/local.yml
 sed -i -e "s/app.contact.dns.domain:.*/app.contact.dns.domain: $1/g"  /home/cmtsadmin/caldera/conf/local.yml
 
+# Make sure the caldera OS is aware of its public IP (otherwise errors are shown and stability wasn't examined when server.py is run - cannot bind "public IP")
+sudo cat <<EOF > /etc/netplan/60-static.yaml
+network:
+    version: 2
+    ethernets:
+        eth0:
+            addresses:
+                - $PUBLICIP/32
+EOF
+sudo netplan apply
 
 echo "script completed" > /home/cmtsadmin/finished
 shutdown -r 1
