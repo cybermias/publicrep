@@ -18,7 +18,13 @@ PUBLICIP=$(curl -s ipecho.net/plain)
 while [ ! $PUBLICIP ]; do
         PUBLICIP=$(curl -s ipecho.net/plain)
 done
-sed -i -e "s/0.0.0.0/$PUBLICIP/g" /home/cmtsadmin/caldera/conf/local.yml
+sed -i -e "s/app.contact.dns.socket:.*/app.contact.dns.socket: $PUBLICIP:8853/g" /home/cmtsadmin/caldera/conf/local.yml
+sed -i -e "s/app.contact.http:.*/app.contact.http: http://$PUBLICIP:8888/g"  /home/cmtsadmin/caldera/conf/local.yml
+sed -i -e "s/app.contact.tcp:.*/app.contact.tcp: http://$PUBLICIP:7010/g"  /home/cmtsadmin/caldera/conf/local.yml
+sed -i -e "s/app.contact.udp:.*/app.contact.udp: http://$PUBLICIP:7011/g"  /home/cmtsadmin/caldera/conf/local.yml
+sed -i -e "s/app.contact.websocket:.*/app.contact.websocket: http://$PUBLICIP:7012/g"  /home/cmtsadmin/caldera/conf/local.yml
+sed -i -e "s/app.contact.dns.domain:.*/app.contact.dns.domain: $1/g"  /home/cmtsadmin/caldera/conf/local.yml
+
 
 echo "script completed" > /home/cmtsadmin/finished
 shutdown -r 1
