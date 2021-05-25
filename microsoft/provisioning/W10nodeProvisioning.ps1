@@ -76,7 +76,7 @@ add-computer -domainname $domain -domaincredential $domaincred -Options JoinWith
 NET LOCALGROUP "Remote Desktop Users" /ADD "Everyone"
 
 ### CALDERA OPERATIONS - Will be using GoLang!
-choco install golang -y --version=1.15.6
+choco install -y golang --version=1.15.6
 
 # Fix evaluation license
 cscript c:\windows\system32\slmgr.vbs /rearm
