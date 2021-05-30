@@ -213,6 +213,9 @@ time (while ps -opid= -C apt-get > /dev/null; do sleep 1; done); \
 #END OF IPTABLES KOMBINA
 
 sudo systemctl start openvpnas
-sudo service guacd restart
-sudo service tomcat restart
-sleep 3s
+#reboot now
+sudo systemctl restart guacd
+sudo systemctl restart nginx 
+sudo systemctl restart tomcat 
+sleep 5s
+sudo systemctl restart guacd
