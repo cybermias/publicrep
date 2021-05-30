@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Based on common Guacamole configurations in Envario (guacIptables.sh). 
-# Intended for ScadaSudo attemps (VNET changed to 10.0.0.0/8, however openVPN is implemented with all other resources into 10.0.0.0/24 (TRUST SUBNET).
+# Intended for ScadaSudo attemps (VNET changed to 10.0.0.0/8, however openVPN is implemented externally to all other resources in 10.0.0.0/24 (TRUST SUBNET).
 # Additionally, a new guacamole credentials are integrated for the Pulse HMI pre-made OVA (RDPhmi)
 
 ### CHANGELOG OF 20210530
@@ -11,8 +11,8 @@
 
 
 vnet="$(/sbin/ip -o -4 addr list eth0 | awk '{print $4}' | cut -d. -f1-2).0.0/16"
-static="$(/sbin/ip -o -4 addr list eth0 | awk '{print $4}' | cut -d. -f1-2).0.5"
-brnet="$(/sbin/ip -o -4 addr list eth0 | awk '{print $4}' | cut -d. -f1-2).0.0"
+static="$(/sbin/ip -o -4 addr list eth0 | awk '{print $4}' | cut -d. -f1-2).253.252"
+brnet="$(/sbin/ip -o -4 addr list eth0 | awk '{print $4}' | cut -d. -f1-2).253.0"
 
 args=("$@")
 
