@@ -23,6 +23,7 @@ $localcred = New-Object -TypeName System.Management.Automation.PSCredential -Arg
 rename-computer -newname $hostname -LocalCredential $localcred -force -PassThru 
 
 cscript c:\windows\system32\slmgr.vbs /rearm
+optimize-volume c -verbose
 
 Get-EventLog -LogName * | ForEach { Clear-EventLog $_.Log }
 wevtutil el | Foreach-Object {wevtutil cl $_}
